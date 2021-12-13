@@ -104,8 +104,6 @@ export default class Client {
         },
       });
 
-      console.log(xml);
-
       axios
         .post(this.postUrl, xml, {
           headers: { 'Content-Type': 'text/xml', 'Cache-Control': 'no-cache', Pragma: 'no-cache', Expires: '0' },
