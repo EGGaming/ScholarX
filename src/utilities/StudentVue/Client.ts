@@ -24,7 +24,7 @@ class Client {
     return this.password;
   }
 
-  public async studentInfo(): Promise<any> {
+  public async studentInfo(): Promise<StudentInfo['StudentInfo']> {
     const data = await this.client.processRequest(this.username, this.password, Service.PXPWebServices, 'StudentInfo', {
       ChildIntID: 0,
     });

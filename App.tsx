@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
 import StudentVue, { Client } from './src/utilities/StudentVue';
 
 export default function App() {
@@ -9,11 +9,11 @@ export default function App() {
   const [district, setDistrict] = React.useState<string>('');
   const [zipCode, setZipCode] = React.useState<string>('');
   const [client, setClient] = React.useState<Client>();
+  const [image, setImage] = React.useState<string | null>(null);
 
   async function login() {
     try {
       const d = await StudentVue.login('https://student.tusd1.org', username, password);
-
       setClient(d);
     } catch (e) {
       console.error(e);
@@ -26,7 +26,12 @@ export default function App() {
 
   async function getStudentInfo() {
     const info = await client?.studentInfo();
+    setImage(`data:image/png;base64,${info!.Photo[0]}`);
     console.log(info);
+  }
+
+  function signout() {
+    setClient(undefined);
   }
 
   return (
@@ -41,7 +46,9 @@ export default function App() {
       <Text>ScholarX</Text>
       {client ? (
         <>
+          <Image source={{ uri: image ?? '' }} style={{ width: 200, height: 200 }} />
           <Button title='Get student info' onPress={getStudentInfo} />
+          <Button title='Sign out' onPress={signout} />
         </>
       ) : (
         <>
