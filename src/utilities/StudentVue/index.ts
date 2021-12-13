@@ -9,13 +9,14 @@ class StudentVue {
     return new Promise(async (res) => {
       const host = url.parse(domain).host;
       const endpoint: string = `https://${host}/Service/PXPCommunication.asmx`;
-      const client = new Client(username, password, new SoapClient(endpoint));
+      const soap = new SoapClient(endpoint);
+      const client = new Client(username, password, soap);
       try {
         await client.studentInfo();
+        res(client);
       } catch (e) {
-        throw Error(String(e));
+        throw Error(e as any);
       }
-      res(client);
     });
   }
 

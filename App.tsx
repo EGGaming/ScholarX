@@ -8,13 +8,17 @@ export default function App() {
   const [password, setPassword] = React.useState<string>('');
   const [district, setDistrict] = React.useState<string>('');
   const [zipCode, setZipCode] = React.useState<string>('');
-  const [client, setClient] = React.useState<Client>();
+  const [client, setClient] = React.useState<Client | null>(null);
   const [image, setImage] = React.useState<string | null>(null);
+
+  // React.useEffect(() => {
+  //   console.log(client?.getUsername(), client?.getPassword(), image);
+  // }, [client, image]);
 
   async function login() {
     try {
-      const d = await StudentVue.login('https://student.tusd1.org', username, password);
-      setClient(d);
+      const student = await StudentVue.login('https://student.tusd1.org', username, password);
+      setClient(student);
     } catch (e) {
       console.error(e);
     }
@@ -26,12 +30,15 @@ export default function App() {
 
   async function getStudentInfo() {
     const info = await client?.studentInfo();
+    console.log(`The name of this student is ${info?.FormattedName[0]}`);
     setImage(`data:image/png;base64,${info!.Photo[0]}`);
-    console.log(info);
   }
 
   function signout() {
-    setClient(undefined);
+    setClient(null);
+    setUsername('');
+    setPassword('');
+    setImage(null);
   }
 
   return (
@@ -46,7 +53,7 @@ export default function App() {
       <Text>ScholarX</Text>
       {client ? (
         <>
-          <Image source={{ uri: image ?? '' }} style={{ width: 200, height: 200 }} />
+          {image && <Image source={{ uri: image ?? '' }} style={{ width: 200, height: 200 }} />}
           <Button title='Get student info' onPress={getStudentInfo} />
           <Button title='Sign out' onPress={signout} />
         </>

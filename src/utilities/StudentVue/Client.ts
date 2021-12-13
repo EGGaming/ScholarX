@@ -25,11 +25,22 @@ class Client {
   }
 
   public async studentInfo(): Promise<StudentInfo['StudentInfo']> {
-    const data = await this.client.processRequest(this.username, this.password, Service.PXPWebServices, 'StudentInfo', {
-      ChildIntID: 0,
-    });
+    try {
+      const data = await this.client.processRequest(
+        this.username,
+        this.password,
+        Service.PXPWebServices,
+        'StudentInfo',
+        {
+          ChildIntID: 0,
+        }
+      );
 
-    return (await SoapClient.parseString<StudentInfo>(data)).StudentInfo;
+      const t = await SoapClient.parseString<StudentInfo>(data);
+      return t.StudentInfo;
+    } catch (e) {
+      throw Error(e as any);
+    }
   }
 }
 

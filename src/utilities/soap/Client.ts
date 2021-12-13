@@ -75,42 +75,43 @@ export default class Client {
     methodName: string,
     params: Object
   ): Promise<string> {
-    return new Promise(async (res) => {
-      try {
-        const paramStr = parseParam(params);
+    return new Promise((res) => {
+      const paramStr = parseParam(params);
 
-        const xml = builder.buildObject({
-          'soap:Envelope': {
-            $: {
-              'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-              'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
-              'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/',
-            },
-            'soap:Body': {
-              ProcessWebServiceRequest: {
-                $: {
-                  xmlns: 'http://edupoint.com/webservices/',
-                },
-                ...({
-                  userID: username,
-                  password: password,
-                  skipLoginLog: 1,
-                  parent: 0,
-                  webServiceHandleName: serviceName,
-                  methodName,
-                  paramStr,
-                } as IProcessWebServiceRequest),
+      const xml = builder.buildObject({
+        'soap:Envelope': {
+          $: {
+            'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+            'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
+            'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/',
+          },
+          'soap:Body': {
+            ProcessWebServiceRequest: {
+              $: {
+                xmlns: 'http://edupoint.com/webservices/',
               },
+              ...({
+                userID: username,
+                password: password,
+                skipLoginLog: 0,
+                parent: 0,
+                webServiceHandleName: serviceName,
+                methodName,
+                paramStr,
+              } as IProcessWebServiceRequest),
             },
           },
-        });
-        const data = await axios
-          .post(this.postUrl, xml, { headers: { 'Content-Type': 'text/xml' } })
-          .then((res) => res.data);
-        res(data);
-      } catch (e) {
-        console.error(e);
-      }
+        },
+      });
+
+      console.log(xml);
+
+      axios
+        .post(this.postUrl, xml, {
+          headers: { 'Content-Type': 'text/xml', 'Cache-Control': 'no-cache', Pragma: 'no-cache', Expires: '0' },
+        })
+        .then((results) => res(results.data))
+        .catch(console.error);
     });
   }
 
