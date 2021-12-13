@@ -1,11 +1,16 @@
-import soap from 'soap';
-import xml2json from 'xml2js';
+import xml2js from 'react-native-xml2js';
+import { Client as SoapClient } from '../soap/';
+import { StudentInfo } from './types';
+
+enum Service {
+  PXPWebServices = 'PXPWebServices',
+}
 
 class Client {
   private username: string;
   private password: string;
-  private client: soap.Client;
-  constructor(username: string, password: string, client: soap.Client) {
+  private client: SoapClient;
+  constructor(username: string, password: string, client: SoapClient) {
     this.username = username;
     this.password = password;
     this.client = client;
@@ -19,8 +24,12 @@ class Client {
     return this.password;
   }
 
-  public getClient() {
-    return this.client;
+  public async studentInfo(): Promise<any> {
+    const data = await this.client.processRequest(this.username, this.password, Service.PXPWebServices, 'StudentInfo', {
+      ChildIntID: 0,
+    });
+
+    return (await SoapClient.parseString<StudentInfo>(data)).StudentInfo;
   }
 }
 

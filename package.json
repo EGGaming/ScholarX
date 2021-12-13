@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "expo": "~43.0.2",
     "expo-asset": "^8.4.3",
     "expo-status-bar": "~1.1.0",
@@ -17,8 +18,8 @@
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
     "react-native-web": "0.17.1",
-    "soap": "^0.43.0",
-    "xml2js": "^0.4.23"
+    "react-native-xml2js": "^1.0.3",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
