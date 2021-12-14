@@ -42,6 +42,24 @@ class Client {
       throw Error(e as any);
     }
   }
+
+  public async messages(): Promise<any> {
+    try {
+      const data = await this.client.processRequest(
+        this.username,
+        this.password,
+        Service.PXPWebServices,
+        'GetPXPMessages',
+        {
+          childIntID: 0,
+        }
+      );
+
+      return await SoapClient.parseString(data);
+    } catch (e) {
+      throw Error(e as any);
+    }
+  }
 }
 
 export default Client;
