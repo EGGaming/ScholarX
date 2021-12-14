@@ -97,3 +97,39 @@ export interface StudentInfo {
     }[];
   };
 }
+
+export interface Message {
+  $: {
+    BeginDate: string;
+    Content: string;
+    Deletable: string;
+    Email: string;
+    From: string;
+    ID: string;
+    IconURL: string;
+    Module: string;
+    Read: string;
+    SMMsgPersonGU: string;
+    StaffGU: string;
+    Subject: string;
+    SubjectNoHTML: string;
+    Type: string;
+  };
+  AttachmentDatas: {
+    AttachmentName: string;
+    SmAttachmentGU: string;
+  }[];
+}
+
+export interface PXPMessagesData {
+  PXPMessagesData: {
+    $: {
+      SupportingSynergyMail: string;
+      'xmlns:xsd': string;
+      'xmlns:xsi': string;
+    };
+    MessageListings: {
+      MessageListing: Message[];
+    }[];
+  };
+}

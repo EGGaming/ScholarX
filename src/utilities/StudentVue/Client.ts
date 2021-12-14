@@ -1,6 +1,6 @@
 import xml2js from 'react-native-xml2js';
 import { Client as SoapClient } from '../soap/';
-import { StudentInfo } from './types';
+import { Message, PXPMessagesData, StudentInfo } from './types';
 
 enum Service {
   PXPWebServices = 'PXPWebServices',
@@ -43,7 +43,7 @@ class Client {
     }
   }
 
-  public async messages(): Promise<any> {
+  public async messages(): Promise<Message[]> {
     try {
       const data = await this.client.processRequest(
         this.username,
@@ -55,7 +55,8 @@ class Client {
         }
       );
 
-      return await SoapClient.parseString(data);
+      const t = await SoapClient.parseString<PXPMessagesData>(data);
+      return t.PXPMessagesData.MessageListings[0].MessageListing;
     } catch (e) {
       throw Error(e as any);
     }
