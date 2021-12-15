@@ -3,12 +3,14 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": "./src",
+    "jsx": "react-native",
     "paths": {
-      "@screens": ["screens/*"],
-      "@utilities": ["utilities/*"],
-      "@context": ["context/*"],
-      "@components": ["components/*"],
-      "RootComponent": ["Root.tsx"]
+      "@screens/*": ["./screens/*"],
+      "@utilities/*": ["./utilities/*"],
+      "@context/*": ["./context/*"],
+      "@components/*": ["./components/*"],
+      "@navigators/*": ["./navigators/*"],
+      "RootComponent": ["./Root.tsx"]
     }
   }
 }

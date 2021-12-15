@@ -24,6 +24,13 @@ export interface EmergencyContact {
   WorkPhone: string;
 }
 
+export interface Dentist {
+  Extn: string;
+  Name: string;
+  Office: string;
+  Phone: string;
+}
+
 export interface StudentInfo {
   StudentInfo: {
     $: {
@@ -40,12 +47,7 @@ export interface StudentInfo {
     CounselorStaffGU: string[];
     CurrentSchool: string[];
     Dentist: {
-      $: {
-        Extn: string;
-        Name: string;
-        Office: string;
-        Phone: string;
-      };
+      $: Dentist;
     }[];
     EMail: string[];
     EmergencyContacts: {

@@ -12,6 +12,7 @@ module.exports = function (api) {
             '@utilities': './src/utilities',
             '@context': './src/context',
             '@components': './src/components',
+            '@navigators': './src/navigators',
             RootComponent: './src/Root.tsx',
           },
         },
