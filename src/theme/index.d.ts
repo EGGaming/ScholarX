@@ -1,3 +1,4 @@
+import { ColorSchemeName } from 'react-native';
 import 'styled-components';
 
 interface ColorConstant {
@@ -13,10 +14,33 @@ interface ColorConstant {
   900: string;
 }
 
+type UserDefinedColors<T extends DefaultTheme['palette']> = {
+  [K in keyof T as T[K] extends { dark: string; main: string; light: string } | { default: string; paper: string }
+    ? K
+    : never]: T[K];
+};
+
+type AppDefinedColors<T extends DefaultTheme['palette']> = {
+  [K in keyof T as T[K] extends { dark: string; main: string; light: string } | { default: string; paper: string }
+    ? never
+    : K]: T[K];
+};
+
+type TypographyPalette = {
+  textPrimary: string;
+  textSecondary: string;
+  disabled: string;
+  hint: string;
+};
+
 declare module 'styled-components' {
   export interface DefaultTheme {
+    mode: ColorSchemeName;
     palette: {
-      constants: {};
+      constants: {
+        RED: ColorConstant;
+      };
+      typography: TypographyPalette;
       primary: {
         dark: string;
         main: string;
