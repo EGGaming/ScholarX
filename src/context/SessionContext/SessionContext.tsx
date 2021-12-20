@@ -1,6 +1,6 @@
-import { SessionContextActions, SessionContextState } from '@context/types/SessionContext';
+import { SessionContextActions, SessionContextState } from './SessionContext.types';
 import React from 'react';
-import { Reducer, UseReducerProvider } from './types';
+import { Reducer, UseReducerProvider } from '../helpers';
 
 const reducer: Reducer<SessionContextState, SessionContextActions> = (state, action) => {
   switch (action.type) {

@@ -1,18 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import BottomTab from '@navigators/BottomTab';
+import BottomTab from '@navigators/BottomTab/BottomTab';
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
-import StudentVue, { Client } from './utilities/StudentVue';
-import Dashboard from '@screens/Dashboard';
-import GradeBook from '@screens/GradeBook';
-import Profile from '@screens/Profile';
+import Dashboard from '@screens/Dashboard/Dashboard';
+import GradeBook from '@screens/GradeBook/GradeBook';
+import Profile from '@screens/Profile/Profile';
+import { useAppTheme } from '@theme/core';
+import Header from '@shared/@react-navigation/Header';
+import TabIcon from '@shared/@react-navigation/TabIcon';
 
 const Root: React.FC = () => {
   return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen name='Dashboard' component={Dashboard} options={{ tabBarLabel: 'DB' }} />
-      <BottomTab.Screen name='GradeBook' component={GradeBook} options={{ tabBarLabel: 'GB' }} />
-      <BottomTab.Screen name='Profile' component={Profile} options={{ tabBarLabel: 'Profile' }} />
+    <BottomTab.Navigator
+      screenOptions={{
+        header: (props) => <Header {...props} />,
+      }}>
+      <BottomTab.Screen
+        name='Dashboard'
+        component={Dashboard}
+        options={{
+          tabBarIcon: TabIcon('FontAwesome5', 'chart-area'),
+          tabBarLabel: 'Dashboard',
+        }}
+      />
+      <BottomTab.Screen
+        name='GradeBook'
+        component={GradeBook}
+        options={{ tabBarIcon: TabIcon('FontAwesome5', 'clipboard-list'), tabBarLabel: 'Report Card' }}
+      />
+      <BottomTab.Screen
+        name='Profile'
+        component={Profile}
+        options={{ tabBarIcon: TabIcon('FontAwesome5', 'user-graduate'), tabBarLabel: 'My Profile' }}
+      />
     </BottomTab.Navigator>
   );
 };

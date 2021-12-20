@@ -1,77 +1,235 @@
 import { DefaultTheme } from 'styled-components';
-import { AppDefinedColors, UserDefinedColors } from './index';
+import React from 'react';
+import { AppDefinedColors, UserDefinedColors } from './core.types';
+import { DefaultTheme as NavigationTheme, Theme as INavigationTheme } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import { css } from 'styled-components/native';
+
+const TypographyDefaults: DefaultTheme['typography'] = {
+  constants: {
+    bold: 700,
+    semibold: 600,
+    regular: 400,
+  },
+  body: css`
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0.5px;
+  `,
+  h1: css`
+    font-size: 40px;
+    line-height: 78px;
+    letter-spacing: -1px;
+  `,
+  h2: css`
+    font-size: 34px;
+    line-height: 66px;
+    letter-spacing: -0.6px;
+  `,
+  h3: css`
+    font-size: 26px;
+    line-height: 50px;
+    letter-spacing: -0.2px;
+  `,
+  button: css`
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    font-weight: 700;
+  `,
+  tab: css`
+    font-size: 10px;
+  `,
+};
 
 const PaletteConstants: DefaultTheme['palette']['constants'] = {
-  RED: {
-    50: '#ffebee',
-    100: '#ffcdd2',
-    200: '#ef9a9a',
-    300: '#e57373',
-    400: '#ef5350',
-    500: '#f44336',
-    600: '#e53935',
-    700: '#d32f2f',
-    800: '#c62828',
-    900: '#b71c1c',
+  GRAY: {
+    50: '#FAFAFA',
+    100: '#F5F5F5',
+    200: '#EEEEEE',
+    300: '#E0E0E0',
+    400: '#BDBDBD',
+    500: '#9E9E9E',
+    600: '#757575',
+    700: '#616161',
+    800: '#424242',
+    900: '#212121',
   },
 };
 
 const PaletteDefaults: AppDefinedColors<DefaultTheme['palette']> = {
   constants: PaletteConstants,
-  typography: {},
+  toColorValue: () => '',
+  getContrastText: () => '',
 };
 
-const lightTheme: DefaultTheme = {
+const ThemeDefaults: DefaultTheme = {
   mode: 'light',
+  typography: TypographyDefaults,
+  spacing: (...n) => {
+    switch (n.length) {
+      case 1:
+      default:
+        return `${n[0] * 8}px`;
+      case 2:
+        return `${n[0] * 8}px ${n[1] * 8}px`;
+      case 3:
+        return `${n[0] * 8}px ${n[1] * 8}px ${n[2] * 8}px`;
+      case 4:
+        return `${n[0] * 8}px ${n[1] * 8}px ${n[2] * 8}px ${n[3] * 8}px`;
+    }
+  },
   palette: {
     ...PaletteDefaults,
     primary: {
-      dark: '#001acb',
-      main: '#0055FF',
-      light: '#c7cdff',
+      dark: '',
+      main: '',
+      light: '',
     },
     secondary: {
-      dark: '#fe7f00',
-      main: '#ffaa00',
-      light: '#f8e814',
-    },
-    success: {
-      dark: '#00ea00',
-      main: '#1bff00',
-      light: '#a5ff90',
-    },
-    error: {
-      dark: '#be2629',
-      main: '#dd3636',
-      light: '#e85050',
-    },
-    warning: {
-      dark: '#f67716',
-      main: '#ffd22c',
-      light: '#ffec70',
+      dark: '',
+      main: '',
+      light: '',
     },
     background: {
-      default: '#303b75',
-      paper: '#303b75',
+      default: '',
+      paper: '',
+    },
+    text: {
+      primary: '',
+      secondary: '',
+      disabled: '',
     },
   },
 };
 
-export const useTheme = (theme: DefaultTheme): DefaultTheme => {
+const lightTheme: DefaultTheme = {
+  ...ThemeDefaults,
+  mode: 'light',
+  typography: TypographyDefaults,
+  palette: {
+    ...ThemeDefaults.palette,
+    primary: {
+      dark: '#193fe6',
+      main: '#2e54ff',
+      light: '#a4aeff',
+    },
+    secondary: {
+      dark: '#d96100',
+      main: '#d97e00',
+      light: '#da8e00',
+    },
+    background: {
+      default: '#FAFAFA',
+      paper: '#fff',
+    },
+    text: {
+      primary: 'rgba(0, 0, 0, 0.87)',
+      secondary: 'rgba(0, 0, 0, 0.60)',
+      disabled: 'rgba(0, 0, 0, 0.38)',
+    },
+  },
+};
+
+const darkTheme: DefaultTheme = {
+  ...ThemeDefaults,
+  mode: 'dark',
+  typography: TypographyDefaults,
+  palette: {
+    ...ThemeDefaults.palette,
+    primary: {
+      dark: '#425189',
+      main: '#a4aeff',
+      light: '#c9ceff',
+    },
+    secondary: {
+      dark: '#e9d481',
+      main: '#f1e5b7',
+      light: '#f8f5e7',
+    },
+    background: {
+      default: '#262c42',
+      paper: '#3a405a',
+    },
+    text: {
+      primary: '#fff',
+      secondary: 'rgba(255, 255, 255, 0.70)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
+    },
+  },
+};
+
+const getAppliedTheme = (): DefaultTheme => {
   const colorScheme = useColorScheme();
 
   switch (colorScheme) {
+    // case 'dark':
+    //   return darkTheme;
     default:
     case 'light':
-      return {
-        ...theme,
-        mode: 'light',
-      };
-    case 'dark':
-      return {
-        ...theme,
-        mode: 'dark',
-      };
+      return lightTheme;
   }
+};
+
+export const useAppTheme = (): DefaultTheme => {
+  const theme = getAppliedTheme();
+
+  return {
+    ...theme,
+    palette: {
+      ...theme.palette,
+      getContrastText: (hex) => {
+        const r = parseInt(hex.substring(1, 3), 16);
+        const g = parseInt(hex.substring(3, 5), 16);
+        const b = parseInt(hex.substring(5, 7), 16);
+
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        if (brightness >= 128) return '#000';
+        return '#fff';
+      },
+      toColorValue: (param): string => {
+        switch (param) {
+          case 'textSecondary':
+            return theme.palette.text.secondary;
+          default:
+          case 'textPrimary':
+            return theme.palette.text.primary;
+          case 'primary':
+          case 'secondary':
+            return theme.palette[param].main;
+          case 'disabled':
+            return theme.palette.text.disabled;
+          case 'inherit':
+            return param;
+        }
+      },
+    },
+  };
+};
+
+export const useNavigationTheme = (): INavigationTheme => {
+  const theme = useAppTheme();
+  const isDarkMode = React.useMemo<boolean>(() => {
+    switch (theme.mode) {
+      case 'dark':
+        return true;
+      default:
+      case 'light':
+        return false;
+    }
+  }, [theme]);
+
+  return {
+    ...NavigationTheme,
+    dark: isDarkMode,
+    colors: {
+      ...NavigationTheme.colors,
+      primary: theme.palette.primary.main,
+      background: theme.palette.background.default,
+      card: theme.palette.background.paper,
+      text: theme.palette.text.primary,
+      border: theme.palette.background.paper,
+    },
+  };
 };

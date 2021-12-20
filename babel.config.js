@@ -13,6 +13,8 @@ module.exports = function (api) {
             '@context': './src/context',
             '@components': './src/components',
             '@navigators': './src/navigators',
+            '@theme': './src/theme',
+            '@shared': './src/shared',
             RootComponent: './src/Root.tsx',
           },
         },

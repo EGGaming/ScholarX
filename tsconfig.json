@@ -10,6 +10,8 @@
       "@context/*": ["./context/*"],
       "@components/*": ["./components/*"],
       "@navigators/*": ["./navigators/*"],
+      "@theme/*": ["./theme/*"],
+      "@shared/*": ["./shared/*"],
       "RootComponent": ["./Root.tsx"]
     }
   }
