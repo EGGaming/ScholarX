@@ -23,12 +23,12 @@ const TypographyDefaults: DefaultTheme['typography'] = {
   `,
   h2: css`
     font-size: 34px;
-    line-height: 66px;
+    line-height: 40px;
     letter-spacing: -0.6px;
   `,
   h3: css`
-    font-size: 26px;
-    line-height: 50px;
+    font-size: 22px;
+    line-height: 30px;
     letter-spacing: -0.2px;
   `,
   button: css`
@@ -38,8 +38,21 @@ const TypographyDefaults: DefaultTheme['typography'] = {
     text-transform: uppercase;
     font-weight: 700;
   `,
+  'small-button': css`
+    font-size: 13px;
+    line-height: 24px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  `,
   tab: css`
     font-size: 10px;
+  `,
+  caption: css`
+    line-height: 20.25px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 400;
   `,
 };
 
@@ -62,6 +75,7 @@ const PaletteDefaults: AppDefinedColors<DefaultTheme['palette']> = {
   constants: PaletteConstants,
   toColorValue: () => '',
   getContrastText: () => '',
+  toRGBA: () => '',
 };
 
 const ThemeDefaults: DefaultTheme = {
@@ -92,6 +106,21 @@ const ThemeDefaults: DefaultTheme = {
       main: '',
       light: '',
     },
+    success: {
+      dark: '',
+      main: '',
+      light: '',
+    },
+    warning: {
+      dark: '',
+      main: '',
+      light: '',
+    },
+    error: {
+      dark: '',
+      main: '',
+      light: '',
+    },
     background: {
       default: '',
       paper: '',
@@ -101,6 +130,12 @@ const ThemeDefaults: DefaultTheme = {
       secondary: '',
       disabled: '',
     },
+    action: {
+      disabled: '',
+      disabledBackground: '',
+      disabledOpacity: 0,
+    },
+    divider: '',
   },
 };
 
@@ -124,11 +159,32 @@ const lightTheme: DefaultTheme = {
       default: '#FAFAFA',
       paper: '#fff',
     },
+    success: {
+      light: '#4caf50',
+      dark: '#1b5e20',
+      main: '#2e7d32',
+    },
+    warning: {
+      main: '#ed6c02',
+      light: '#ff9800',
+      dark: '#e65100',
+    },
+    error: {
+      main: '#d32f2f',
+      light: '#ef5350',
+      dark: '#c62828',
+    },
     text: {
       primary: 'rgba(0, 0, 0, 0.87)',
       secondary: 'rgba(0, 0, 0, 0.60)',
       disabled: 'rgba(0, 0, 0, 0.38)',
     },
+    action: {
+      disabled: 'rgba(0, 0, 0, 0.26)',
+      disabledBackground: 'rgba(0, 0, 0, 0.12)',
+      disabledOpacity: 0.38,
+    },
+    divider: 'rgba(0, 0, 0, 0.12)',
   },
 };
 
@@ -148,6 +204,21 @@ const darkTheme: DefaultTheme = {
       main: '#f1e5b7',
       light: '#f8f5e7',
     },
+    error: {
+      main: '#f44336',
+      light: '#e57373',
+      dark: '#d32f2f',
+    },
+    warning: {
+      main: '#ffa726',
+      light: '#ffb74d',
+      dark: '#f57c00',
+    },
+    success: {
+      main: '#66bb6a',
+      light: '#81c784',
+      dark: '#388e3c',
+    },
     background: {
       default: '#262c42',
       paper: '#3a405a',
@@ -157,6 +228,12 @@ const darkTheme: DefaultTheme = {
       secondary: 'rgba(255, 255, 255, 0.70)',
       disabled: 'rgba(255, 255, 255, 0.5)',
     },
+    action: {
+      disabled: 'rgba(255, 255, 255, 0.3)',
+      disabledBackground: 'rgba(255, 255, 255, 0.12)',
+      disabledOpacity: 0.38,
+    },
+    divider: 'rgba(255, 255, 255, 0.12)',
   },
 };
 
@@ -164,8 +241,8 @@ const getAppliedTheme = (): DefaultTheme => {
   const colorScheme = useColorScheme();
 
   switch (colorScheme) {
-    // case 'dark':
-    //   return darkTheme;
+    case 'dark':
+      return darkTheme;
     default:
     case 'light':
       return lightTheme;
@@ -185,8 +262,8 @@ export const useAppTheme = (): DefaultTheme => {
         const b = parseInt(hex.substring(5, 7), 16);
 
         const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        if (brightness >= 128) return '#000';
-        return '#fff';
+        if (brightness >= 128) return '#000000';
+        return '#ffffff';
       },
       toColorValue: (param): string => {
         switch (param) {
@@ -197,12 +274,21 @@ export const useAppTheme = (): DefaultTheme => {
             return theme.palette.text.primary;
           case 'primary':
           case 'secondary':
+          case 'success':
+          case 'warning':
+          case 'error':
             return theme.palette[param].main;
           case 'disabled':
             return theme.palette.text.disabled;
           case 'inherit':
             return param;
         }
+      },
+      toRGBA: (hex, opacity): string => {
+        const r = parseInt(hex.substring(1, 3), 16);
+        const g = parseInt(hex.substring(3, 5), 16);
+        const b = parseInt(hex.substring(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
       },
     },
   };

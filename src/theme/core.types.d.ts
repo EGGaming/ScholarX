@@ -3,7 +3,7 @@ import { css, DefaultTheme } from 'styled-components/native';
 import { FlattenSimpleInterpolation, ThemedCssFunction } from 'styled-components';
 import 'styled-components';
 
-export type AppColors = 'primary' | 'secondary' | 'inherit';
+export type AppColors = 'primary' | 'secondary' | 'inherit' | 'warning' | 'success' | 'error';
 export type TypographyColors = 'textPrimary' | 'textSecondary' | 'disabled' | AppColors;
 export type ButtonVariants = 'outlined' | 'text' | 'contained';
 
@@ -21,13 +21,23 @@ interface ColorConstant {
 }
 
 type UserDefinedColors<T extends DefaultTheme['palette']> = {
-  [K in keyof T as T[K] extends ColorPalette | { default: string; paper: string } | TypographyPalette
+  [K in keyof T as T[K] extends
+    | ColorPalette
+    | { default: string; paper: string }
+    | TypographyPalette
+    | string
+    | ActionPalette
     ? K
     : never]: T[K];
 };
 
 type AppDefinedColors<T extends DefaultTheme['palette']> = {
-  [K in keyof T as T[K] extends TypographyPalette | { default: string; paper: string } | ColorPalette
+  [K in keyof T as T[K] extends
+    | TypographyPalette
+    | { default: string; paper: string }
+    | ColorPalette
+    | string
+    | ActionPalette
     ? never
     : K]: T[K];
 };
@@ -49,6 +59,12 @@ type BackgroundPalette = {
   paper: string;
 };
 
+type ActionPalette = {
+  disabled: string;
+  disabledBackground: string;
+  disabledOpacity: number;
+};
+
 declare module 'styled-components' {
   export interface DefaultTheme {
     mode: ColorSchemeName;
@@ -63,18 +79,26 @@ declare module 'styled-components' {
       h2: FlattenSimpleInterpolation;
       h3: FlattenSimpleInterpolation;
       button: FlattenSimpleInterpolation;
+      'small-button': FlattenSimpleInterpolation;
       tab: FlattenSimpleInterpolation;
+      caption: FlattenSimpleInterpolation;
     };
     palette: {
       getContrastText: (hex: string) => string;
       toColorValue: (param: TypographyColors) => string;
+      toRGBA: (hex: string, opacity: number) => string;
       constants: {
         GRAY: ColorConstant;
       };
       text: TypographyPalette;
       primary: ColorPalette;
       secondary: ColorPalette;
+      success: ColorPalette;
+      warning: ColorPalette;
+      error: ColorPalette;
       background: BackgroundPalette;
+      divider: string;
+      action: ActionPalette;
     };
     spacing: (...n: number[]) => string;
   }

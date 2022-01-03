@@ -12,23 +12,6 @@ const IconButton: React.FC<
   const { icon, size = 'medium', variant = 'text', color = 'primary', hexColor = '', ...otherProps } = props;
   const theme = useAppTheme();
 
-  const iconPropsComponent: Partial<React.ComponentProps<typeof Icon>> = React.useMemo(() => {
-    switch (size) {
-      case 'small':
-        return {
-          component: 'button',
-        };
-      case 'medium':
-        return {
-          component: 'body',
-        };
-      case 'large':
-        return {
-          component: 'h3',
-        };
-    }
-  }, [size]);
-
   const iconPropsColor: Partial<React.ComponentProps<typeof Icon>> = React.useMemo(() => {
     switch (variant) {
       case 'contained':
@@ -48,7 +31,7 @@ const IconButton: React.FC<
     <IconButtonBase size={size} variant={variant} color={color} hexColor={hexColor} {...otherProps}>
       <IconButtonBaseContainer size={size} variant={variant} color={color} hexColor={hexColor}>
         {React.cloneElement(icon, {
-          ...iconPropsComponent,
+          size,
           ...iconPropsColor,
         })}
       </IconButtonBaseContainer>

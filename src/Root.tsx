@@ -1,37 +1,39 @@
-import BottomTab from '@navigators/BottomTab/BottomTab';
 import React from 'react';
-import Dashboard from '@screens/Dashboard/Dashboard';
-import GradeBook from '@screens/GradeBook/GradeBook';
-import Profile from '@screens/Profile/Profile';
-import { useAppTheme } from '@theme/core';
+import RootStack from '@navigators/Root/Root';
+import Main from '@screens/Main';
+import Login from '@screens/Login';
+import NotificationsScreen from '@screens/Notifications/Notifications';
 import Header from '@shared/@react-navigation/Header';
-import TabIcon from '@shared/@react-navigation/TabIcon';
+import IconButton from '@components/IconButton/IconButton';
+import Button from '@components/Button/Button';
+import NotificationViewer from '@screens/NotificationViewer/NotificationViewer';
 
 const Root: React.FC = () => {
   return (
-    <BottomTab.Navigator
-      screenOptions={{
-        header: (props) => <Header {...props} />,
-      }}>
-      <BottomTab.Screen
-        name='Dashboard'
-        component={Dashboard}
+    <RootStack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
+      <RootStack.Screen name='Main' component={Main} />
+      <RootStack.Screen name='Login' component={Login} />
+      <RootStack.Screen
+        name='Notifications'
+        component={NotificationsScreen}
         options={{
-          tabBarIcon: TabIcon('FontAwesome5', 'chart-area'),
-          tabBarLabel: 'Dashboard',
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerBackVisible: true,
+          headerRight: () => <Button title='Mark all Read' onPress={() => {}} size='small' />,
         }}
       />
-      <BottomTab.Screen
-        name='GradeBook'
-        component={GradeBook}
-        options={{ tabBarIcon: TabIcon('FontAwesome5', 'clipboard-list'), tabBarLabel: 'Report Card' }}
+      <RootStack.Screen
+        name='NotificationViewer'
+        component={NotificationViewer}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: '',
+          headerBackVisible: true,
+        }}
       />
-      <BottomTab.Screen
-        name='Profile'
-        component={Profile}
-        options={{ tabBarIcon: TabIcon('FontAwesome5', 'user-graduate'), tabBarLabel: 'My Profile' }}
-      />
-    </BottomTab.Navigator>
+    </RootStack.Navigator>
   );
 };
 

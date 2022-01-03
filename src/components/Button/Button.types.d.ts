@@ -5,6 +5,9 @@ export interface ButtonProps {
   variant?: ButtonVariants;
   color?: AppColors;
   hexColor?: string;
+  textCentered?: boolean;
+  disabled?: boolean;
+  size?: 'small' | 'medium';
 }
 export interface ButtonAccessoryProps {
   icon?: React.ReactElement<React.ComponentProps<typeof Icon>>;

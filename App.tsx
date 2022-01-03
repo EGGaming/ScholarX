@@ -6,20 +6,26 @@ import Root from 'RootComponent';
 import SessionContextProvider from '@context/SessionContext/SessionContext';
 import { ThemeProvider } from 'styled-components';
 import { useAppTheme, useNavigationTheme } from '@theme/core';
+import NotificationContextProvider from '@context/NotificationContext/NotificationContext';
+import StudentVueClientProvider from '@context/StudentVueClientContext/StudentVueClientContext';
 
 export default function App() {
   const theme = useAppTheme();
   const navigationTheme = useNavigationTheme();
   return (
     <ThemeProvider theme={theme}>
-      <SessionContextProvider>
-        <AppContextProvider>
-          <StatusBar />
-          <NavigationContainer theme={navigationTheme}>
-            <Root />
-          </NavigationContainer>
-        </AppContextProvider>
-      </SessionContextProvider>
+      <StudentVueClientProvider>
+        <NotificationContextProvider>
+          <SessionContextProvider>
+            <AppContextProvider>
+              <StatusBar />
+              <NavigationContainer theme={navigationTheme}>
+                <Root />
+              </NavigationContainer>
+            </AppContextProvider>
+          </SessionContextProvider>
+        </NotificationContextProvider>
+      </StudentVueClientProvider>
     </ThemeProvider>
   );
 }

@@ -1,6 +1,6 @@
 import { StudentInfo } from '@utilities/StudentVue/types';
 
-export type SessionContextState =
+export type SessionContextState = (
   | {
       validSession: true;
       name: string;
@@ -15,6 +15,10 @@ export type SessionContextState =
     }
   | {
       validSession: false;
-    };
+    }
+) & { staySignedIn: boolean };
 
-export type SessionContextActions = { type: 'LOGIN'; user: StudentInfo } | { type: 'LOGOUT' };
+export type SessionContextActions =
+  | { type: 'LOGIN'; user: StudentInfo['StudentInfo'] }
+  | { type: 'LOGOUT' }
+  | { type: 'TOGGLE_STAYED_SIGN_IN' };

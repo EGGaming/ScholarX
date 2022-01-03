@@ -24,23 +24,25 @@ class Client {
     return this.password;
   }
 
-  public async studentInfo(): Promise<StudentInfo['StudentInfo']> {
-    try {
-      const data = await this.client.processRequest(
-        this.username,
-        this.password,
-        Service.PXPWebServices,
-        'StudentInfo',
-        {
-          ChildIntID: 0,
-        }
-      );
+  public studentInfo(): Promise<StudentInfo> {
+    return new Promise(async (res, rej) => {
+      try {
+        const data = await this.client.processRequest(
+          this.username,
+          this.password,
+          Service.PXPWebServices,
+          'StudentInfo',
+          {
+            ChildIntID: 0,
+          }
+        );
 
-      const t = await SoapClient.parseString<StudentInfo>(data);
-      return t.StudentInfo;
-    } catch (e) {
-      throw Error(e as any);
-    }
+        const t = await SoapClient.parseString<StudentInfo>(data);
+        res((t as any).StudentInfo);
+      } catch (e) {
+        rej(new Error(e as any));
+      }
+    });
   }
 
   public async messages(): Promise<Message[]> {

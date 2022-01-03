@@ -7,26 +7,16 @@ import OctIcons from 'react-native-vector-icons/Octicons';
 import styled, { css } from 'styled-components/native';
 import { IconBaseProps } from '@components/Icon/Icon.types';
 
-export const FontAwesome5Base = styled(FontAwesome5)<IconBaseProps<typeof FontAwesome5>>`
-  ${(props) => props.theme.typography[props.component]}
-`;
+export const FontAwesome5Base = styled(FontAwesome5)<IconBaseProps<typeof FontAwesome5>>``;
 
-export const AntDesignBase = styled(AntDesign)<IconBaseProps<typeof AntDesign>>`
-  ${(props) => props.theme.typography[props.component]}
-`;
+export const AntDesignBase = styled(AntDesign)<IconBaseProps<typeof AntDesign>>``;
 
-export const MaterialCommunityIconsBase = styled(MaterialCommunityIcons)<IconBaseProps<typeof MaterialCommunityIcons>>`
-  ${(props) => props.theme.typography[props.component]}
-`;
+export const MaterialCommunityIconsBase = styled(MaterialCommunityIcons)<
+  IconBaseProps<typeof MaterialCommunityIcons>
+>``;
 
-export const FoundationBase = styled(Foundation)<IconBaseProps<typeof Foundation>>`
-  ${(props) => props.theme.typography[props.component]}
-`;
+export const FoundationBase = styled(Foundation)<IconBaseProps<typeof Foundation>>``;
 
-export const FeatherBase = styled(Feather)<IconBaseProps<typeof Feather>>`
-  ${(props) => props.theme.typography[props.component]}
-`;
+export const FeatherBase = styled(Feather)<IconBaseProps<typeof Feather>>``;
 
-export const OcticonsBase = styled(OctIcons)<IconBaseProps<typeof OctIcons>>`
-  ${(props) => props.theme.typography[props.component]}
-`;
+export const OcticonsBase = styled(OctIcons)<IconBaseProps<typeof OctIcons>>``;

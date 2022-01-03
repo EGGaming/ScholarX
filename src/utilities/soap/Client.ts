@@ -116,13 +116,13 @@ export default class Client {
   public static parseString<Result>(xml: string): Promise<Result> {
     return new Promise((res, rej) => {
       parser.parseString(xml, (err: any, data: any) => {
-        if (err) throw Error(err);
+        if (err) rej(new Error(err));
 
         const l =
           data['soap:Envelope']['soap:Body'][0].ProcessWebServiceRequestResponse[0].ProcessWebServiceRequestResult[0];
 
         parser.parseString(l, (err: any, data: any) => {
-          if (err) throw Error(err);
+          if (err) rej(new Error(err));
           if (data['RT_ERROR']) throw Error((data as SoapError).RT_ERROR.$.ERROR_MESSAGE);
           res(data);
         });

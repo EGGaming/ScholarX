@@ -29,7 +29,29 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
   ${(props) => css`
     display: flex;
     flex-direction: row;
-    padding: ${props.theme.spacing(1.3, 2.5)};
+    align-items: center;
+    ${() => {
+      switch (props.size) {
+        case 'small':
+          return css`
+            padding: ${props.theme.spacing(0.8, 1.5)};
+          `;
+        case 'medium':
+          return css`
+            padding: ${props.theme.spacing(1.2, 2)};
+          `;
+      }
+    }}
+    ${() => {
+      if (props.textCentered)
+        return css`
+          justify-content: center;
+        `;
+      return css`
+        justify-content: flex-start;
+      `;
+    }}
+    border-radius: 4px;
     ${() => {
       if (props.color === 'inherit')
         return css`
@@ -43,7 +65,13 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
           `;
         case 'outlined':
           return css`
-            border: 1px solid ${props.theme.palette[props.color].main};
+            border: 1px solid
+              ${props.disabled
+                ? props.theme.palette.toRGBA(
+                    props.theme.palette[props.color].main,
+                    props.theme.palette.action.disabledOpacity
+                  )
+                : props.theme.palette[props.color].main};
           `;
       }
     }}
@@ -57,7 +85,12 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
           return css``;
         case 'contained':
           return css`
-            background-color: ${props.theme.palette[props.color].main};
+            background-color: ${props.disabled
+              ? props.theme.palette.toRGBA(
+                  props.theme.palette[props.color].main,
+                  props.theme.palette.action.disabledOpacity
+                )
+              : props.theme.palette[props.color].main};
           `;
       }
     }}
@@ -67,6 +100,14 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
 export const ButtonText = styled.Text<RequireAll<ButtonProps>>`
   ${(props) => css`
     ${() => {
+      switch (props.size) {
+        case 'small':
+          return props.theme.typography['small-button'];
+        case 'medium':
+          return props.theme.typography.button;
+      }
+    }}
+    ${() => {
       if (props.color === 'inherit')
         return css`
           color: ${props.hexColor};
@@ -75,15 +116,24 @@ export const ButtonText = styled.Text<RequireAll<ButtonProps>>`
         case 'text':
         case 'outlined':
           return css`
-            color: ${props.theme.palette[props.color].main};
+            color: ${props.disabled
+              ? props.theme.palette.toRGBA(
+                  props.theme.palette[props.color].main,
+                  props.theme.palette.action.disabledOpacity
+                )
+              : props.theme.palette[props.color].main};
           `;
         case 'contained':
           return css`
-            color: ${props.theme.palette.getContrastText(props.theme.palette[props.color].main)};
+            color: ${props.disabled
+              ? props.theme.palette.toRGBA(
+                  props.theme.palette.getContrastText(props.theme.palette[props.color].main),
+                  props.theme.palette.action.disabledOpacity
+                )
+              : props.theme.palette.getContrastText(props.theme.palette[props.color].main)};
           `;
       }
     }}
-    ${props.theme.typography.button};
   `}
 `;
 

@@ -14,6 +14,9 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
     icon,
     iconPlacement = 'left',
     hexColor = '',
+    textCentered = false,
+    disabled = false,
+    size = 'medium',
     ...otherProps
   } = props;
 
@@ -45,10 +48,30 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
       case 'left':
       default:
         return (
-          <ButtonBase hexColor={hexColor} ref={ref as any} color={color} variant={variant} {...otherProps}>
-            <ButtonBaseContainer variant={variant} color={color} hexColor={hexColor}>
+          <ButtonBase
+            size={size}
+            disabled={disabled}
+            hexColor={hexColor}
+            ref={ref as any}
+            color={color}
+            variant={variant}
+            textCentered={textCentered}
+            {...otherProps}>
+            <ButtonBaseContainer
+              size={size}
+              disabled={disabled}
+              variant={variant}
+              color={color}
+              hexColor={hexColor}
+              textCentered={textCentered}>
               <ButtonIconContainer placement={iconPlacement}>{React.cloneElement(icon, iconProps)}</ButtonIconContainer>
-              <ButtonText variant={variant} color={color} hexColor={hexColor}>
+              <ButtonText
+                size={size}
+                disabled={disabled}
+                variant={variant}
+                color={color}
+                hexColor={hexColor}
+                textCentered={textCentered}>
                 {title}
               </ButtonText>
             </ButtonBaseContainer>
@@ -56,9 +79,30 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
         );
       case 'right':
         return (
-          <ButtonBase ref={ref as any} color={color} variant={variant} {...otherProps} hexColor={hexColor}>
-            <ButtonBaseContainer variant={variant} color={color} hexColor={hexColor}>
-              <ButtonText variant={variant} color={color} hexColor={hexColor}>
+          <ButtonBase
+            size={size}
+            disabled={disabled}
+            ref={ref as any}
+            color={color}
+            variant={variant}
+            {...otherProps}
+            hexColor={hexColor}
+            textCentered={textCentered}
+            {...otherProps}>
+            <ButtonBaseContainer
+              size={size}
+              disabled={disabled}
+              variant={variant}
+              color={color}
+              hexColor={hexColor}
+              textCentered={textCentered}>
+              <ButtonText
+                size={size}
+                disabled={disabled}
+                variant={variant}
+                color={color}
+                hexColor={hexColor}
+                textCentered={textCentered}>
                 {title}
               </ButtonText>
               <ButtonIconContainer placement={iconPlacement}>{React.cloneElement(icon, iconProps)}</ButtonIconContainer>
@@ -67,9 +111,29 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
         );
     }
   return (
-    <ButtonBase ref={ref as any} color={color} variant={variant} hexColor={hexColor} {...otherProps}>
-      <ButtonBaseContainer variant={variant} color={color} hexColor={hexColor}>
-        <ButtonText variant={variant} color={color} hexColor={hexColor}>
+    <ButtonBase
+      size={size}
+      disabled={disabled}
+      ref={ref as any}
+      color={color}
+      variant={variant}
+      hexColor={hexColor}
+      textCentered={textCentered}
+      {...otherProps}>
+      <ButtonBaseContainer
+        size={size}
+        disabled={disabled}
+        variant={variant}
+        color={color}
+        hexColor={hexColor}
+        textCentered={textCentered}>
+        <ButtonText
+          size={size}
+          disabled={disabled}
+          variant={variant}
+          color={color}
+          hexColor={hexColor}
+          textCentered={textCentered}>
           {title}
         </ButtonText>
       </ButtonBaseContainer>

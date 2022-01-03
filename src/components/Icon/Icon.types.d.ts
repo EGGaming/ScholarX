@@ -25,11 +25,9 @@ export type IconProps<T extends IconPack> = {
     : '';
   color?: TypographyColors;
   hexColor?: string;
-  component?: TypographyComponent;
+  size?: 'small' | 'large' | 'medium';
 };
 
 export type IconBaseProps<
   T extends typeof FontAwesome5 | typeof MaterialCommunityIcons | typeof AntDesign | typeof Feather | typeof Foundation
-> = React.ComponentProps<T> & {
-  component: TypographyComponent;
-};
+> = React.ComponentProps<T>;

@@ -15,6 +15,7 @@ module.exports = function (api) {
             '@navigators': './src/navigators',
             '@theme': './src/theme',
             '@shared': './src/shared',
+            '@public': './assets',
             RootComponent: './src/Root.tsx',
           },
         },

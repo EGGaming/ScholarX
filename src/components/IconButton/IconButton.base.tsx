@@ -4,7 +4,6 @@ import { IconButtonProps } from './IconButton.types';
 
 export const IconButtonBaseContainer = styled.View<Required<IconButtonProps>>`
   ${(props) => css`
-    padding: ${props.theme.spacing(1)};
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -13,30 +12,15 @@ export const IconButtonBaseContainer = styled.View<Required<IconButtonProps>>`
       switch (props.size) {
         case 'large':
           return css`
-            width: 64px;
-            height: 64px;
-            border-top-left-radius: 32px;
-            border-top-right-radius: 32px;
-            border-bottom-left-radius: 32px;
-            border-bottom-right-radius: 32px;
+            padding: ${props.theme.spacing(1)};
           `;
         case 'medium':
           return css`
-            width: 48px;
-            height: 48px;
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
+            padding: ${props.theme.spacing(0.5)};
           `;
         case 'small':
           return css`
-            width: 44px;
-            height: 44px;
-            border-top-left-radius: 22px;
-            border-top-right-radius: 22px;
-            border-bottom-left-radius: 22px;
-            border-bottom-right-radius: 22px;
+            padding: ${props.theme.spacing(0.5)};
           `;
       }
     }}

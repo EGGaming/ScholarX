@@ -32,72 +32,70 @@ export interface Dentist {
 }
 
 export interface StudentInfo {
-  StudentInfo: {
+  $: {
+    ShowPhysicianAndDentistInfo: string;
+    ShowStudentInfo: string;
+    Type: string;
+    'xmlns:xsd': string;
+    'xmlns:xsi': string;
+  };
+  Address: string[];
+  BirthDate: string[];
+  CounselorEmail: string[];
+  CounselorName: string[];
+  CounselorStaffGU: string[];
+  CurrentSchool: string[];
+  Dentist: {
+    $: Dentist;
+  }[];
+  EMail: string[];
+  EmergencyContacts: {
+    EmergencyContact: {
+      $: EmergencyContact;
+    }[];
+  }[];
+  FormattedName: string[];
+  Gender: string[];
+  Grade: string[];
+  HomeLanguage: string[];
+  HomeRoom: string[];
+  HomeRoomTch: string[];
+  HomeRoomTchEMail: string[];
+  HomeRoomTchStaffGU: string[];
+  LastNameGoesBy: string[];
+  LockerInfoRecords: string[];
+  NickName: string[];
+  OrgYearGU: string[];
+  PermID: string[];
+  Phone: string[];
+  Photo: string[];
+  Physician: {
     $: {
-      ShowPhysicianAndDentistInfo: string;
-      ShowStudentInfo: string;
-      Type: string;
-      'xmlns:xsd': string;
-      'xmlns:xsi': string;
+      Extn: string[];
+      Hospital: string[];
+      Name: string[];
+      Phone: string[];
     };
-    Address: string[];
-    BirthDate: string[];
-    CounselorEmail: string[];
-    CounselorName: string[];
-    CounselorStaffGU: string[];
-    CurrentSchool: string[];
-    Dentist: {
-      $: Dentist;
-    }[];
-    EMail: string[];
-    EmergencyContacts: {
-      EmergencyContact: {
-        $: EmergencyContact;
-      }[];
-    }[];
-    FormattedName: string[];
-    Gender: string[];
-    Grade: string[];
-    HomeLanguage: string[];
-    HomeRoom: string[];
-    HomeRoomTch: string[];
-    HomeRoomTchEMail: string[];
-    HomeRoomTchStaffGU: string[];
-    LastNameGoesBy: string[];
-    LockerInfoRecords: string[];
-    NickName: string[];
-    OrgYearGU: string[];
-    PermID: string[];
-    Phone: string[];
-    Photo: string[];
-    Physician: {
+  }[];
+  Track: string[];
+  UserDefinedGroupBoxes: {
+    UserDefinedGroupBox: {
       $: {
-        Extn: string[];
-        Hospital: string[];
-        Name: string[];
-        Phone: string[];
+        GroupBoxID: string;
+        GroupBoxLabel: string;
+        VCID: string;
       };
-    }[];
-    Track: string[];
-    UserDefinedGroupBoxes: {
-      UserDefinedGroupBox: {
+      UserDefinedItems: {
         $: {
-          GroupBoxID: string;
-          GroupBoxLabel: string;
+          ItemLabel: string;
+          ItemType: string;
+          SourceElement: string;
+          SourceObject: string;
           VCID: string;
         };
-        UserDefinedItems: {
-          $: {
-            ItemLabel: string;
-            ItemType: string;
-            SourceElement: string;
-            SourceObject: string;
-            VCID: string;
-          };
-        }[];
       }[];
     }[];
-  };
+  }[];
 }
 
 export interface Message {
