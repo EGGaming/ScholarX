@@ -4,11 +4,14 @@ import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import Typography from '@components/Typography/Typography';
 import React from 'react';
-import { EventContainer, EventHeaderContainer } from './Event.base';
+import { EventActionsContainer, EventContainer, EventHeaderContainer } from './Event.base';
 import { EventProps } from './Events.types';
 import { format, isThisWeek, isToday, isTomorrow } from 'date-fns';
-import { TypographyColors } from '@theme/core.types';
+import { AppColors, TypographyColors } from '@theme/core.types';
 import Space from '@components/Space/Space';
+import Chip from '@components/Chip/Chip';
+import { View } from 'react-native';
+import { useAppTheme } from '@theme/core';
 
 const Event: React.FC<EventProps> = ({ item }) => {
   const parsedDate = Date.parse(item.Date);
@@ -17,9 +20,7 @@ const Event: React.FC<EventProps> = ({ item }) => {
     ? 'error'
     : isTomorrow(parsedDate)
     ? 'warning'
-    : isThisWeek(parsedDate)
-    ? 'textPrimary'
-    : 'disabled';
+    : 'textPrimary';
   const teacherName = item.Title.match(/\w+, \w/)?.toString();
   const className = teacherName ? (item.Title.match(/.*(?=( : ))/) ?? [''])[0].substring(teacherName.length + 2) : '';
   const assignmentName =
@@ -29,23 +30,42 @@ const Event: React.FC<EventProps> = ({ item }) => {
           (item.Title.match(/.*(?=(  -))/) ?? [''])[0].length
         )
       : '';
+  const chipColor: AppColors = (() => {
+    switch (item.DayType) {
+      case 'Holiday':
+        return 'success';
+      default:
+        return 'primary';
+    }
+  })();
 
   return (
     <EventContainer>
-      <Space spacing={2} direction='vertical'>
+      <Space spacing={1.5} direction='vertical'>
         <Space spacing={0.5} direction='vertical'>
-          <Typography variant='h3'>{item.DayType}</Typography>
-          <Typography color={titleColor} variant='body'>
+          <Space direction='horizontal' spacing={0.5} alignItems='center'>
+            <Chip title={item.DayType} color={chipColor} />
+            <Typography variant='caption' color='textSecondary'>
+              {item.StartTime}
+            </Typography>
+          </Space>
+          <Typography color={titleColor} variant='body2'>
             {title}
           </Typography>
-          <Typography variant='caption' color='textSecondary'>
-            {item.StartTime}
-          </Typography>
         </Space>
-        <Typography numberOfLines={1}>{teacherName}</Typography>
-        <Typography>{className}</Typography>
-        <Typography>{assignmentName}</Typography>
       </Space>
+      {item.DayType == 'Assignment' ? (
+        <EventActionsContainer>
+          <Button
+            title='See Details'
+            icon={<Icon bundle='Feather' name='chevron-right' />}
+            iconPlacement='right'
+            onPress={() => console.log('Viewing Assignments')}
+          />
+        </EventActionsContainer>
+      ) : (
+        <Typography bold>{item.Title}</Typography>
+      )}
     </EventContainer>
   );
 };

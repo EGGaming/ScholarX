@@ -74,6 +74,7 @@ declare module 'styled-components' {
         semibold: number;
         regular: number;
       };
+      body2: FlattenSimpleInterpolation;
       body: FlattenSimpleInterpolation;
       h1: FlattenSimpleInterpolation;
       h2: FlattenSimpleInterpolation;

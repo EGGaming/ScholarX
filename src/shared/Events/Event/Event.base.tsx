@@ -9,7 +9,7 @@ export const EventContainer = styled(Paper)`
     margin: ${props.theme.spacing(2)};
     background-color: ${props.theme.palette.background.paper};
     border-radius: ${props.theme.borderRadius}px;
-    width: 400px;
+    width: 250px;
   `}
 `;
 
@@ -18,5 +18,12 @@ export const EventHeaderContainer = styled.View`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  `}
+`;
+
+export const EventActionsContainer = styled.View`
+  ${(props) => css`
+    display: flex;
+    justify-content: flex-end;
   `}
 `;

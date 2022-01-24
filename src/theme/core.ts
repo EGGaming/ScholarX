@@ -54,6 +54,11 @@ const TypographyDefaults: DefaultTheme['typography'] = {
     letter-spacing: 1px;
     font-weight: 400;
   `,
+  body2: css`
+    font-size: 15.75px;
+    line-height: 24px;
+    letter-spacing: 0.6px;
+  `,
 };
 
 const PaletteConstants: DefaultTheme['palette']['constants'] = {
