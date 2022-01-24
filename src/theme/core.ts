@@ -22,9 +22,9 @@ const TypographyDefaults: DefaultTheme['typography'] = {
     letter-spacing: -1px;
   `,
   h2: css`
-    font-size: 34px;
-    line-height: 40px;
-    letter-spacing: -0.6px;
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.4px;
   `,
   h3: css`
     font-size: 22px;
@@ -79,6 +79,7 @@ const PaletteDefaults: AppDefinedColors<DefaultTheme['palette']> = {
 };
 
 const ThemeDefaults: DefaultTheme = {
+  borderRadius: 16,
   mode: 'light',
   typography: TypographyDefaults,
   spacing: (...n) => {
@@ -242,7 +243,7 @@ const getAppliedTheme = (): DefaultTheme => {
 
   switch (colorScheme) {
     case 'dark':
-      return darkTheme;
+    // return darkTheme;
     default:
     case 'light':
       return lightTheme;

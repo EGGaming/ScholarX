@@ -11,4 +11,4 @@ const Notifications: React.FC<NotificationsProps> = ({ notifications }) => {
   return <FlatList data={notifications} keyExtractor={keyExtractor} renderItem={RenderNotificationItem} />;
 };
 
-export default React.memo(Notifications);
+export default Notifications;

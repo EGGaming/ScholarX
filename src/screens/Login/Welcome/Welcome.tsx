@@ -2,6 +2,7 @@ import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
+import { useAppReducer } from '@context/AppContext/AppContext';
 import { EducationImage, LoginContainer } from '@screens/Login/Welcome/Welcome.shared';
 import { WelcomeProps } from '@screens/Login/Welcome/Welcome.types';
 import React from 'react';

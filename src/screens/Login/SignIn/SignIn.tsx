@@ -37,7 +37,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     navigation.navigate('FindMySchoolDistrict');
   }
   function toggleSignIn() {
-    dispatchSession({ type: 'TOGGLE_STAYED_SIGN_IN' });
+    dispatch({ type: 'TOGGLE_STAY_SIGNED_IN' });
   }
   async function onSignIn() {
     try {
@@ -84,7 +84,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
         </Space>
         <Space spacing={1} justifyContent='flex-end' alignItems='center' direction='horizontal'>
           <Typography>Stay signed in?</Typography>
-          <Switch checked={session.staySignedIn} onChange={toggleSignIn} color='secondary' />
+          <Switch checked={state.staySignedIn} onChange={toggleSignIn} color='secondary' />
         </Space>
         <Button
           title='Log in'

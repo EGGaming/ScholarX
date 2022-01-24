@@ -1,6 +1,8 @@
 import xml2js from 'react-native-xml2js';
 import { Client as SoapClient } from '../soap/';
-import { Message, PXPMessagesData, StudentInfo } from './types';
+import Status from './Status';
+import { Calendar, CalendarListing, Message, MessageListingXML, PXPMessagesData, StudentInfo } from './types';
+import { format } from 'date-fns';
 
 enum Service {
   PXPWebServices = 'PXPWebServices',
@@ -58,10 +60,61 @@ class Client {
       );
 
       const t = await SoapClient.parseString<PXPMessagesData>(data);
+
       return t.PXPMessagesData.MessageListings[0].MessageListing;
     } catch (e) {
       throw Error(e as any);
     }
+  }
+
+  public async updateMessage(messageListing: Message): Promise<Status> {
+    return new Promise(async (res) => {
+      const MessageListing = SoapClient.parseXml('MessageListing', messageListing.$);
+
+      try {
+        await this.client.processRequest(
+          this.username,
+          this.password,
+          Service.PXPWebServices,
+          'UpdatePXPMessage',
+          MessageListing
+        );
+        res(Status.OK);
+      } catch (e) {
+        throw Error(e as any);
+      }
+    });
+  }
+
+  public calendar(date: Date | number): Promise<Calendar> {
+    // date has to be in format MM/DD/YYYY
+    return new Promise(async (res) => {
+      try {
+        const data = await this.client.processRequest(
+          this.username,
+          this.password,
+          Service.PXPWebServices,
+          'StudentCalendar',
+          {
+            childIntID: 0,
+            RequestDate: format(date, 'M/dd/yyyy'),
+          }
+        );
+
+        const t = await SoapClient.parseString<{ CalendarListing: CalendarListing }>(data);
+        res({
+          meta: {
+            MonthBegDate: t.CalendarListing.$.MonthBegDate,
+            MonthEndDate: t.CalendarListing.$.MonthEndDate,
+            SchoolBegDate: t.CalendarListing.$.SchoolBegDate,
+            SchoolEndDate: t.CalendarListing.$.SchoolEndDate,
+          },
+          events: t.CalendarListing.EventLists[0].EventList.map((event) => event.$),
+        });
+      } catch (e) {
+        throw Error(e as any);
+      }
+    });
   }
 }
 

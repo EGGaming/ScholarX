@@ -7,7 +7,7 @@ export type BottomTabParamList = {
   Dashboard: undefined;
   GradeBook: undefined;
   Profile: undefined;
-  Notifications: undefined;
+  Calendar: undefined;
 };
 
 export type MainBottomTabScreenProps = CompositeScreenProps<

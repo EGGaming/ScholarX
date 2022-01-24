@@ -6,11 +6,13 @@ import Profile from '@screens/Main/Profile/Profile';
 import Header from '@shared/@react-navigation/Header/BottomTabHeader';
 import TabIcon from '@shared/@react-navigation/TabIcon';
 import { useFocusEffect } from '@react-navigation/native';
-import { useNotificationReducer } from '@context/NotificationContext/NotificationContext';
+import { useNotificationDispatch, useNotificationReducer } from '@context/NotificationContext/NotificationContext';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
+import BottomTabComponent from '@shared/@react-navigation/BottomTab/BottomTab';
+import Calendar from './Calendar/Calendar';
 
 const Main: React.FC = () => {
-  const [state, dispatch] = useNotificationReducer();
+  const dispatch = useNotificationDispatch();
   const [client] = useStudentVue();
   React.useEffect(() => {
     (async () => {
@@ -31,24 +33,31 @@ const Main: React.FC = () => {
     <BottomTab.Navigator
       screenOptions={{
         header: (props) => <Header {...props} />,
-      }}>
+      }}
+      tabBar={(props) => <BottomTabComponent {...props} />}>
       <BottomTab.Screen
         name='Dashboard'
         component={Dashboard}
         options={{
-          tabBarIcon: TabIcon('FontAwesome5', 'chart-area'),
+          tabBarIcon: TabIcon('Feather', 'home'),
           tabBarLabel: 'Dashboard',
         }}
       />
       <BottomTab.Screen
         name='GradeBook'
         component={GradeBook}
-        options={{ tabBarIcon: TabIcon('FontAwesome5', 'clipboard-list'), tabBarLabel: 'Report Card' }}
+        options={{ tabBarIcon: TabIcon('Feather', 'clipboard'), tabBarLabel: 'Report Card' }}
+      />
+
+      <BottomTab.Screen
+        name='Calendar'
+        component={Calendar}
+        options={{ tabBarIcon: TabIcon('Feather', 'calendar'), tabBarLabel: 'School Calendar' }}
       />
       <BottomTab.Screen
         name='Profile'
         component={Profile}
-        options={{ tabBarIcon: TabIcon('FontAwesome5', 'user-graduate'), tabBarLabel: 'My Profile' }}
+        options={{ tabBarIcon: TabIcon('Feather', 'user'), tabBarLabel: 'My Profile' }}
       />
     </BottomTab.Navigator>
   );

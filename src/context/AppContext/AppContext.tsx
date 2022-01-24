@@ -1,9 +1,15 @@
+import Storage from '@utilities/Storage';
 import React from 'react';
 import { Reducer, UseReducer } from '../helpers';
 import { AppContextState, AppContextActions } from './AppContext.types';
 
 const reducer: Reducer<AppContextState, AppContextActions> = (state, action) => {
   switch (action.type) {
+    case 'TOGGLE_STAY_SIGNED_IN':
+      return {
+        ...state,
+        staySignedIn: !state.staySignedIn,
+      };
     case 'SETTER':
       return {
         ...state,
@@ -27,6 +33,8 @@ const reducer: Reducer<AppContextState, AppContextActions> = (state, action) => 
         districtName: '',
         districtUrl: '',
       };
+    case 'INITIALIZE':
+      return action.state;
     default:
       return state;
   }
@@ -37,6 +45,7 @@ const INITIAL_STATE: AppContextState = {
   password: '',
   districtUrl: '',
   districtName: '',
+  staySignedIn: false,
 };
 
 const AppContext = React.createContext<UseReducer<AppContextState, AppContextActions>>({} as any);
@@ -47,6 +56,7 @@ export const useAppDispatch = () => React.useContext(AppDispatchContext);
 
 const AppContextProvider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE);
+  Storage.useSyncEffect('AppContext', state, dispatch);
 
   return (
     <AppContext.Provider value={[state, dispatch]}>

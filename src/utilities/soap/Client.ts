@@ -15,13 +15,20 @@ interface IProcessWebServiceRequest {
   paramStr: string;
 }
 
-function parseParam(obj: Object): string {
+function parseParam(input: Object | string): string {
   let paramStr = '<Parms>';
-  Object.entries(obj).forEach(([key, value]) => {
-    paramStr += '<' + key + '>';
-    paramStr += value;
-    paramStr += '</' + key + '>';
-  });
+  switch (typeof input) {
+    case 'object':
+    default:
+      Object.entries(input).forEach(([key, value]) => {
+        paramStr += '<' + key + '>';
+        paramStr += value;
+        paramStr += '</' + key + '>';
+      });
+      break;
+    case 'string':
+      break;
+  }
   paramStr += '</Parms>';
 
   return paramStr;
@@ -73,7 +80,7 @@ export default class Client {
     password: string,
     serviceName: string,
     methodName: string,
-    params: Object
+    params: Object | string
   ): Promise<string> {
     return new Promise((res) => {
       const paramStr = parseParam(params);
@@ -128,5 +135,13 @@ export default class Client {
         });
       });
     });
+  }
+
+  public static parseXml(tagName: string, tags: Record<string, unknown>): string {
+    const xml = builder.buildObject({
+      [tagName]: tags,
+    });
+
+    return xml;
   }
 }

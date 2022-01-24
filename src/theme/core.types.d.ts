@@ -100,6 +100,7 @@ declare module 'styled-components' {
       divider: string;
       action: ActionPalette;
     };
+    borderRadius: number;
     spacing: (...n: number[]) => string;
   }
 }

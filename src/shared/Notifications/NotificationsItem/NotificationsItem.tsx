@@ -13,7 +13,7 @@ import { useWindowDimensions } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 
 const NotificationsItem: React.FC<NotificationsItemProps> = ({ item }) => {
-  const unread = React.useMemo(() => JSON.parse(item.$.Read) as boolean, [item.$.Read]);
+  const unread = React.useMemo(() => !JSON.parse(item.$.Read) as boolean, [item.$.Read]);
   const navigation = useRootNavigation();
   function onMessagePress() {
     navigation.navigate('NotificationViewer', { message: item });

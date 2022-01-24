@@ -7,7 +7,7 @@ export const CardContainer = styled(Paper)`
     display: flex;
     flex-direction: column;
     padding: ${props.theme.spacing(3)};
-    border-radius: 16px;
+    border-radius: ${props.theme.borderRadius}px;
   `}
 `;
 

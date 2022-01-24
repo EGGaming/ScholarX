@@ -1,6 +1,7 @@
 import { SessionContextActions, SessionContextState } from './SessionContext.types';
 import React from 'react';
 import { Reducer, UseReducer } from '../helpers';
+import Storage from '@utilities/Storage';
 
 const reducer: Reducer<SessionContextState, SessionContextActions> = (state, action) => {
   switch (action.type) {
@@ -20,12 +21,7 @@ const reducer: Reducer<SessionContextState, SessionContextActions> = (state, act
         photo: StudentInfo.Photo[0],
       };
     case 'LOGOUT':
-      return { validSession: false, staySignedIn: false };
-    case 'TOGGLE_STAYED_SIGN_IN':
-      return {
-        ...state,
-        staySignedIn: !state.staySignedIn,
-      };
+      return { validSession: false };
     default:
       return state;
   }
@@ -39,7 +35,6 @@ export const useSessionDispatch = () => React.useContext(SessionDispatchContext)
 
 const INITIAL_STATE: SessionContextState = {
   validSession: false,
-  staySignedIn: false,
 };
 
 const SessionContextProvider: React.FC = ({ children }) => {

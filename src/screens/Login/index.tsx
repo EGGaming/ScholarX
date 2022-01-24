@@ -10,12 +10,17 @@ import React from 'react';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [session, dispatch] = useSessionReducer();
+  const [app, dispatchApp] = useAppReducer();
+  const initialRoute = React.useMemo(() => {
+    if (app.districtUrl && app.districtName) return 'SignIn';
+    return 'Welcome';
+  }, [app.districtName, app.districtUrl]);
   React.useEffect(() => {
     if (session.validSession) navigation.navigate('Main');
   }, [session.validSession]);
 
   return (
-    <LoginStack.Navigator initialRouteName='Welcome' screenOptions={{ headerShown: false }}>
+    <LoginStack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
       <LoginStack.Screen name='Welcome' component={Welcome} />
       <LoginStack.Screen name='FindMySchoolDistrict' component={FindMySchoolDistrict} />
       <LoginStack.Screen name='SignIn' component={SignIn} />

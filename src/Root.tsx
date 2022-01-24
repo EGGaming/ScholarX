@@ -7,8 +7,16 @@ import Header from '@shared/@react-navigation/Header';
 import IconButton from '@components/IconButton/IconButton';
 import Button from '@components/Button/Button';
 import NotificationViewer from '@screens/NotificationViewer/NotificationViewer';
+import AppLoading from 'expo-app-loading';
+import Storage from '@utilities/Storage';
+import { useStorage } from '@utilities/Storage/context/StorageContext';
+import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 
 const Root: React.FC = () => {
+  const ready = Storage.initialize();
+
+  if (!ready) return <AppLoading />;
+
   return (
     <RootStack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
       <RootStack.Screen name='Main' component={Main} />

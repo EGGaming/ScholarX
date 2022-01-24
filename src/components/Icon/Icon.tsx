@@ -26,7 +26,7 @@ function Icon<T extends IconPack>(props: IconProps<T>) {
         return 32;
       default:
       case 'medium':
-        return 24;
+        return 20;
       case 'small':
         return 14;
     }

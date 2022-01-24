@@ -12,7 +12,7 @@ class StudentVue {
       const soap = new SoapClient(endpoint);
       const client = new Client(username, password, soap);
       try {
-        await client.studentInfo();
+        await client.messages();
         res(client);
       } catch (e) {
         rej(new Error(e as any));
@@ -37,5 +37,6 @@ class StudentVue {
 }
 
 export { default as Client } from './Client';
+export { default as Status } from './Status';
 
 export default new StudentVue();

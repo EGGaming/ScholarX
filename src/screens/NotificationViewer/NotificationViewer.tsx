@@ -2,6 +2,8 @@ import Container from '@components/Container/Container';
 import Divider from '@components/Divider/Divider';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
+import { useNotificationDispatch } from '@context/NotificationContext/NotificationContext';
+import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import { RootStackParamList } from '@navigators/Root/Root.types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useAppTheme } from '@theme/core';
@@ -14,7 +16,18 @@ const customHTMLElementModels = {
   'o:p': HTMLElementModel.fromCustomModel({
     tagName: 'o:p',
     mixedUAStyles: {
-      backgroundColor: 'blue',
+      fontSize: 18,
+      lineHeight: 27,
+      letterSpacing: 0.5,
+    },
+    contentModel: HTMLContentModel.block,
+  }),
+  font: HTMLElementModel.fromCustomModel({
+    tagName: 'font',
+    mixedUAStyles: {
+      fontSize: 18,
+      lineHeight: 27,
+      letterSpacing: 0.5,
     },
     contentModel: HTMLContentModel.block,
   }),
@@ -29,6 +42,8 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
     },
   } = props;
   const theme = useAppTheme();
+  const [client] = useStudentVue();
+  const dispatch = useNotificationDispatch();
 
   const tagStyles = React.useMemo(
     (): Record<string, MixedStyleDeclaration> => ({
@@ -38,34 +53,30 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
       p: {
         color: theme.palette.text.secondary,
         fontSize: 18,
-        lineHeight: 27,
-        letterSpacing: 0.5,
-        backgroundColor: theme.palette.background.default,
       },
       li: {
         color: theme.palette.text.secondary,
         fontSize: 18,
-        lineHeight: 27,
-        letterSpacing: 0.5,
-        backgroundColor: theme.palette.background.default,
         paddingLeft: 16,
       },
       span: {
         color: theme.palette.text.secondary,
         fontSize: 18,
-        lineHeight: 27,
-        letterSpacing: 0.5,
-      },
-      img: {
-        display: 'none',
       },
     }),
     [theme]
   );
 
   React.useEffect(() => {
-    console.log(message.AttachmentDatas[0].SmAttachmentGU);
-  }, [message]);
+    (async () => {
+      if (!JSON.parse(message.$.Read)) {
+        console.log(message.$.Read);
+        await client.updateMessage(message);
+        dispatch({ type: 'MARK_AS_READ', message });
+        console.log(message.$.Read);
+      }
+    })();
+  }, []);
 
   return (
     <Container scrollable>
@@ -82,11 +93,11 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
               {message.$.BeginDate}
             </Typography>
           </Space>
+          <Divider />
         </Space>
-        <Divider />
         <RenderHTML
-          enableCSSInlineProcessing={false}
-          ignoredDomTags={['meta', 'font']}
+          // enableCSSInlineProcessing={false}
+          ignoredDomTags={['meta']}
           contentWidth={width}
           source={{ html: message.$.Content }}
           tagsStyles={tagStyles}

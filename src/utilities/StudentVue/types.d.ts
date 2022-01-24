@@ -98,6 +98,10 @@ export interface StudentInfo {
   }[];
 }
 
+export interface MessageListingXML {
+  xml: string;
+}
+
 export interface Message {
   $: {
     BeginDate: string;
@@ -133,3 +137,66 @@ export interface PXPMessagesData {
     }[];
   };
 }
+
+export interface CalendarListing {
+  $: {
+    MonthBegDate: string;
+    MonthEndDate: string;
+    SchoolBegDate: string;
+    SchoolEndDate: string;
+    'xmlns:xsd': string;
+    'xmlns:xsi': string;
+  };
+  EventLists: {
+    EventList: CalendarEventLists[];
+  }[];
+}
+
+export interface Calendar {
+  meta: {
+    MonthBegDate: string;
+    MonthEndDate: string;
+    SchoolBegDate: string;
+    SchoolEndDate: string;
+  };
+  events: CalendarEvent[];
+}
+
+export type CalendarEvent =
+  | { Date: string; DayType: string; StartTime: string; Title: string }
+  | {
+      AGU: string;
+      AddLinkData: string;
+      DGU: string;
+      Date: string;
+      DayType: string;
+      Icon: string;
+      Link: string;
+      StartTime: string;
+      Title: string;
+      ViewType: string;
+    };
+
+export type CalendarEventLists =
+  | {
+      $: {
+        Date: string;
+        DayType: string;
+        StartTime: string;
+        Title: string;
+      };
+    }
+  | {
+      $: {
+        AGU: string;
+        AddLinkData: string;
+        DGU: string;
+        Date: string;
+        DayType: string;
+        Icon: string;
+        Link: string;
+        StartTime: string;
+        Title: string;
+        ViewType: string;
+      };
+    };

@@ -11,7 +11,7 @@ import React from 'react';
 const Header: React.FC<BottomTabHeaderProps> = (props) => {
   return (
     <BottomTabHeaderContainer>
-      <IconButton icon={<Icon bundle='AntDesign' name='bars' />} onPress={() => {}} />
+      <IconButton icon={<Icon bundle='Feather' name='menu' />} onPress={() => {}} />
       <Typography color='textPrimary' bold>
         {props.options.tabBarLabel}
       </Typography>
