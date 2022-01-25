@@ -4,18 +4,25 @@ import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import Typography from '@components/Typography/Typography';
 import React from 'react';
-import { EventActionsContainer, EventContainer, EventHeaderContainer } from './Event.base';
+import { EventActionsContainer, EventContainer, EventContentContainer, EventIconContainer } from './Event.base';
 import { EventProps } from './Events.types';
-import { format, isThisWeek, isToday, isTomorrow } from 'date-fns';
+import { format, isThisWeek, isToday, isTomorrow, formatDistance } from 'date-fns';
 import { AppColors, TypographyColors } from '@theme/core.types';
 import Space from '@components/Space/Space';
 import Chip from '@components/Chip/Chip';
 import { View } from 'react-native';
 import { useAppTheme } from '@theme/core';
+import { useRootNavigation } from '@navigators/Root/Root';
 
-const Event: React.FC<EventProps> = ({ item }) => {
+const Event: React.FC<EventProps> = ({ item, calendar }) => {
+  const navigation = useRootNavigation();
   const parsedDate = Date.parse(item.Date);
-  const title = format(parsedDate, 'EEEE, MMM do, yyyy');
+  const title = format(parsedDate, 'EEE, MMM do, yyyy');
+  const dateTitle: string = isToday(parsedDate)
+    ? 'Today'
+    : isTomorrow(parsedDate)
+    ? 'Tomorrow'
+    : formatDistance(parsedDate, new Date(new Date().toDateString()), { addSuffix: true });
   const titleColor: TypographyColors = isToday(parsedDate)
     ? 'error'
     : isTomorrow(parsedDate)
@@ -39,32 +46,37 @@ const Event: React.FC<EventProps> = ({ item }) => {
     }
   })();
 
+  function onPress() {
+    navigation.navigate('EventViewer', { event: item, parsedDate, title, calendar });
+  }
+
   return (
     <EventContainer>
-      <Space spacing={1.5} direction='vertical'>
-        <Space spacing={0.5} direction='vertical'>
-          <Space direction='horizontal' spacing={0.5} alignItems='center'>
-            <Chip title={item.DayType} color={chipColor} />
-            <Typography variant='caption' color='textSecondary'>
-              {item.StartTime}
+      <EventIconContainer>
+        {item.DayType === 'Assignment' ? (
+          <Icon bundle='Feather' name='clipboard' color='primary' />
+        ) : (
+          <Icon bundle='Feather' name='calendar' color='textSecondary' />
+        )}
+      </EventIconContainer>
+      <EventContentContainer>
+        <Typography bold>{title}</Typography>
+        <Space spacing={1} alignItems='center'>
+          <Typography color='textSecondary' variant='body2'>
+            {item.DayType}
+          </Typography>
+          <Space spacing={0.3} alignItems='center'>
+            <Icon bundle='Feather' name='clock' color={titleColor} size='small' />
+            <Typography variant='caption' color={titleColor}>
+              {dateTitle}
             </Typography>
           </Space>
-          <Typography color={titleColor} variant='body2'>
-            {title}
-          </Typography>
         </Space>
-      </Space>
-      {item.DayType == 'Assignment' ? (
+      </EventContentContainer>
+      {item.DayType === 'Assignment' && (
         <EventActionsContainer>
-          <Button
-            title='See Details'
-            icon={<Icon bundle='Feather' name='chevron-right' />}
-            iconPlacement='right'
-            onPress={() => console.log('Viewing Assignments')}
-          />
+          <IconButton icon={<Icon bundle='Feather' name='chevron-right' />} onPress={onPress} />
         </EventActionsContainer>
-      ) : (
-        <Typography bold>{item.Title}</Typography>
       )}
     </EventContainer>
   );

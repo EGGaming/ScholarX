@@ -11,6 +11,7 @@ import AppLoading from 'expo-app-loading';
 import Storage from '@utilities/Storage';
 import { useStorage } from '@utilities/Storage/context/StorageContext';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
+import EventViewer from '@screens/EventViewer/EventViewer';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -34,6 +35,16 @@ const Root: React.FC = () => {
       <RootStack.Screen
         name='NotificationViewer'
         component={NotificationViewer}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: '',
+          headerBackVisible: true,
+        }}
+      />
+      <RootStack.Screen
+        name='EventViewer'
+        component={EventViewer}
         options={{
           headerShown: true,
           header: (props) => <Header {...props} />,

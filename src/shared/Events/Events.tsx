@@ -11,6 +11,8 @@ import { FlatList } from 'react-native';
 import { EventsContainer, EventsListEmpty } from './Events.base';
 import { RenderEventItem } from './Events.util';
 import { isBefore, isToday } from 'date-fns';
+import Event from './Event/Event';
+import _ from 'lodash';
 
 const keyExtractor: KeyExtractor<CalendarEvent> = (item, index) => `${item.Title}: ${item.Date}`;
 
@@ -28,7 +30,6 @@ const Events: React.FC = () => {
   );
 
   async function fetchCalendarEvents() {
-    console.log('Fetching calendar events');
     const data = await client.calendar(Date.now());
     setCalendar(data);
   }
@@ -42,14 +43,10 @@ const Events: React.FC = () => {
         <Typography variant='h2'>Upcoming Events</Typography>
         <Button title='View All' size='small' onPress={() => {}} />
       </EventsContainer>
-      <FlatList
-        // ListHeaderComponent={EventsHeader}
-        data={upcomingEvents}
-        renderItem={RenderEventItem}
-        ListEmptyComponent={EventsListEmpty}
-        horizontal
-        keyExtractor={keyExtractor}
-      />
+      {calendar &&
+        _.uniqBy(calendar.events, 'Date').map((item) => (
+          <Event item={item} calendar={calendar.events} key={`${item.Title}: ${item.Date}`} />
+        ))}
     </>
   );
 };

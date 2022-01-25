@@ -4,26 +4,33 @@ import styled, { css } from 'styled-components/native';
 export const EventContainer = styled(Paper)`
   ${(props) => css`
     display: flex;
-    flex-direction: column;
-    padding: ${props.theme.spacing(4)};
-    margin: ${props.theme.spacing(2)};
+    flex-direction: row;
+    padding: ${props.theme.spacing(3)};
+    margin: ${props.theme.spacing(1, 2)};
     background-color: ${props.theme.palette.background.paper};
     border-radius: ${props.theme.borderRadius}px;
-    width: 250px;
   `}
 `;
 
-export const EventHeaderContainer = styled.View`
+export const EventContentContainer = styled.View`
   ${(props) => css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-grow: 1;
+    flex-direction: column;
+    padding: ${props.theme.spacing(0, 2)};
+  `}
+`;
+
+export const EventIconContainer = styled.View`
+  ${(props) => css`
+    flex-shrink: 1;
+    justify-content: center;
+    padding: ${props.theme.spacing(0, 0, 0, 1)};
   `}
 `;
 
 export const EventActionsContainer = styled.View`
   ${(props) => css`
-    display: flex;
-    justify-content: flex-end;
+    flex-shrink: 1;
+    justify-content: center;
   `}
 `;
