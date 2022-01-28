@@ -9,6 +9,7 @@ export type RootStackParamList = {
   Notifications: undefined;
   NotificationViewer: {
     message: Message;
+    parsedDate: number;
   };
   EventViewer: {
     event: CalendarEvent;

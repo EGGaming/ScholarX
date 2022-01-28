@@ -15,6 +15,10 @@ interface IProcessWebServiceRequest {
   paramStr: string;
 }
 
+interface IProcessWebServiceRequestMultiWeb extends IProcessWebServiceRequest {
+  webDBName: string;
+}
+
 function parseParam(input: Object | string): string {
   let paramStr = '<Parms>';
   switch (typeof input) {
@@ -80,36 +84,68 @@ export default class Client {
     password: string,
     serviceName: string,
     methodName: string,
-    params: Object | string
+    params: Object | string,
+    serviceRequest: 'ProcessWebServiceRequest' | 'ProcessWebServiceRequestMultiWeb' = 'ProcessWebServiceRequest'
   ): Promise<string> {
     return new Promise((res) => {
       const paramStr = parseParam(params);
-
-      const xml = builder.buildObject({
-        'soap:Envelope': {
-          $: {
-            'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-            'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
-            'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/',
-          },
-          'soap:Body': {
-            ProcessWebServiceRequest: {
-              $: {
-                xmlns: 'http://edupoint.com/webservices/',
+      const xml = (() => {
+        switch (serviceRequest) {
+          case 'ProcessWebServiceRequest':
+            return builder.buildObject({
+              'soap:Envelope': {
+                $: {
+                  'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                  'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
+                  'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/',
+                },
+                'soap:Body': {
+                  ProcessWebServiceRequest: {
+                    $: {
+                      xmlns: 'http://edupoint.com/webservices/',
+                    },
+                    ...({
+                      userID: username,
+                      password: password,
+                      skipLoginLog: 0,
+                      parent: 0,
+                      webServiceHandleName: serviceName,
+                      methodName,
+                      paramStr,
+                    } as IProcessWebServiceRequest),
+                  },
+                },
               },
-              ...({
-                userID: username,
-                password: password,
-                skipLoginLog: 0,
-                parent: 0,
-                webServiceHandleName: serviceName,
-                methodName,
-                paramStr,
-              } as IProcessWebServiceRequest),
-            },
-          },
-        },
-      });
+            });
+          case 'ProcessWebServiceRequestMultiWeb':
+            return builder.buildObject({
+              'soap:Envelope': {
+                $: {
+                  'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                  'xmlns:xsd': 'http://www.w3.org/2001/XMLSchema',
+                  'xmlns:soap': 'http://schemas.xmlsoap.org/soap/envelope/',
+                },
+                'soap:Body': {
+                  ProcessWebServiceRequestMultiWeb: {
+                    $: {
+                      xmlns: 'http://edupoint.com/webservices/',
+                    },
+                    ...({
+                      userID: username,
+                      password: password,
+                      skipLoginLog: 0,
+                      parent: 0,
+                      webServiceHandleName: serviceName,
+                      webDBName: '',
+                      methodName,
+                      paramStr,
+                    } as IProcessWebServiceRequestMultiWeb),
+                  },
+                },
+              },
+            });
+        }
+      })();
 
       axios
         .post(this.postUrl, xml, {

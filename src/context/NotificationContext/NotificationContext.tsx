@@ -25,6 +25,17 @@ const reducer: Reducer<NotificationContextState, NotificationContextActions> = (
         notifications: notificationsModified,
       };
     }
+    case 'MARK_ALL_READ': {
+      const modified = state.notifications;
+      for (const notification of modified) {
+        notification.$.Read = 'true';
+      }
+      return {
+        ...state,
+        notifications: modified,
+        unreadNotifications: [],
+      };
+    }
     case 'INITIALIZE':
       return action.state;
     default:

@@ -44,9 +44,9 @@ const Events: React.FC = () => {
         <Button title='View All' size='small' onPress={() => {}} />
       </EventsContainer>
       {calendar &&
-        _.uniqBy(calendar.events, 'Date').map((item) => (
-          <Event item={item} calendar={calendar.events} key={`${item.Title}: ${item.Date}`} />
-        ))}
+        _.uniqBy(upcomingEvents, 'Date')
+          .slice(0, 3)
+          .map((item) => <Event item={item} calendar={calendar.events} key={`${item.Title}: ${item.Date}`} />)}
     </>
   );
 };

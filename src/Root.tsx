@@ -12,9 +12,18 @@ import Storage from '@utilities/Storage';
 import { useStorage } from '@utilities/Storage/context/StorageContext';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import EventViewer from '@screens/EventViewer/EventViewer';
+import { useNotificationDispatch, useNotificationReducer } from '@context/NotificationContext/NotificationContext';
+import Icon from '@components/Icon/Icon';
+import { Status } from '@utilities/StudentVue';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
+  const [client] = useStudentVue();
+  const [notifications, dispatch] = useNotificationReducer();
+  const markAllRead = React.useCallback(async () => {
+    dispatch({ type: 'MARK_ALL_READ' });
+    await Promise.all(notifications.notifications.map((msg) => client.updateMessage(msg)));
+  }, [dispatch, notifications]);
 
   if (!ready) return <AppLoading />;
 
@@ -29,7 +38,7 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerBackVisible: true,
-          headerRight: () => <Button title='Mark all Read' onPress={() => {}} size='small' />,
+          headerRight: () => <Button title='Mark all Read' onPress={markAllRead} size='small' />,
         }}
       />
       <RootStack.Screen

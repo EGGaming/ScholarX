@@ -19,14 +19,14 @@ const Main: React.FC = () => {
       const messages = await client.messages();
       dispatch({ type: 'FETCH_NOTIFICATIONS', messages: messages });
     })();
-    const interval = setInterval(async () => {
-      const messages = await client.messages();
-      dispatch({ type: 'FETCH_NOTIFICATIONS', messages: messages });
-    }, 60 * 1000);
+    // const interval = setInterval(async () => {
+    //   const messages = await client.messages();
+    //   dispatch({ type: 'FETCH_NOTIFICATIONS', messages: messages });
+    // }, 60 * 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
+    // return () => {
+    //   clearInterval(interval);
+    // };
   }, []);
 
   return (

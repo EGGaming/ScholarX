@@ -10,11 +10,7 @@ const TabIcon =
     const { focused } = props;
     const theme = useAppTheme();
 
-    const hexColor = React.useMemo(
-      () => (focused ? theme.palette.primary.main : theme.palette.text.primary),
-      [focused, theme]
-    );
-    return <Icon bundle={bundle} name={name} color='inherit' hexColor={hexColor} size='medium' />;
+    return <Icon bundle={bundle} name={name} color={focused ? 'primary' : 'textPrimary'} size='medium' />;
   };
 
 export default TabIcon;

@@ -28,24 +28,6 @@ const Event: React.FC<EventProps> = ({ item, calendar }) => {
     : isTomorrow(parsedDate)
     ? 'warning'
     : 'textPrimary';
-  const teacherName = item.Title.match(/\w+, \w/)?.toString();
-  const className = teacherName ? (item.Title.match(/.*(?=( : ))/) ?? [''])[0].substring(teacherName.length + 2) : '';
-  const assignmentName =
-    className && teacherName
-      ? item.Title?.substring(
-          className.length + teacherName.length + 5,
-          (item.Title.match(/.*(?=(  -))/) ?? [''])[0].length
-        )
-      : '';
-  const chipColor: AppColors = (() => {
-    switch (item.DayType) {
-      case 'Holiday':
-        return 'success';
-      default:
-        return 'primary';
-    }
-  })();
-
   function onPress() {
     navigation.navigate('EventViewer', { event: item, parsedDate, title, calendar });
   }

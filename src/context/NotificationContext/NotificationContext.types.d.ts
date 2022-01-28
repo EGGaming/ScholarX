@@ -9,4 +9,5 @@ export interface NotificationContextState {
 export type NotificationContextActions =
   | { type: 'FETCH_NOTIFICATIONS'; messages: Message[] }
   | { type: 'MARK_AS_READ'; message: Message }
+  | { type: 'MARK_ALL_READ' }
   | Initializer<NotificationContextState>;

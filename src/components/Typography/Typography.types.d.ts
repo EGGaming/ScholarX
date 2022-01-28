@@ -5,4 +5,5 @@ export interface TypographyProps {
   italics?: boolean;
   variant?: TypographyComponent;
   hexColor?: string;
+  onPress?: () => void;
 }

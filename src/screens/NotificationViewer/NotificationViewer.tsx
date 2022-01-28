@@ -9,25 +9,25 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useAppTheme } from '@theme/core';
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
+import { format, isToday, isYesterday } from 'date-fns';
 import RenderHTML, { HTMLContentModel, HTMLElementModel, MixedStyleDeclaration } from 'react-native-render-html';
-import { Element } from 'react-native-render-html';
+import isThisWeek from 'date-fns/isThisWeek';
+import Icon from '@components/Icon/Icon';
+import Attachment from '@components/Attachment/Attachment';
+import Button from '@components/Button/Button';
 
 const customHTMLElementModels = {
   'o:p': HTMLElementModel.fromCustomModel({
     tagName: 'o:p',
     mixedUAStyles: {
-      fontSize: 18,
-      lineHeight: 27,
-      letterSpacing: 0.5,
+      fontSize: 15.75,
     },
     contentModel: HTMLContentModel.block,
   }),
   font: HTMLElementModel.fromCustomModel({
     tagName: 'font',
     mixedUAStyles: {
-      fontSize: 18,
-      lineHeight: 27,
-      letterSpacing: 0.5,
+      fontSize: 15.75,
     },
     contentModel: HTMLContentModel.block,
   }),
@@ -38,12 +38,17 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
   const {
     navigation,
     route: {
-      params: { message },
+      params: { message, parsedDate },
     },
   } = props;
   const theme = useAppTheme();
   const [client] = useStudentVue();
   const dispatch = useNotificationDispatch();
+  const timestamp = React.useMemo(() => {
+    if (isToday(parsedDate)) return `Today, ${format(parsedDate, 'do MMMM h:mm a')}`;
+    if (isYesterday(parsedDate)) return `Yesterday, ${format(parsedDate, 'do MMMM h:mm a')}`;
+    return format(parsedDate, 'do MMMM h:mm a');
+  }, [parsedDate]);
 
   const tagStyles = React.useMemo(
     (): Record<string, MixedStyleDeclaration> => ({
@@ -52,16 +57,16 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
       },
       p: {
         color: theme.palette.text.secondary,
-        fontSize: 18,
+        fontSize: 15.75,
       },
       li: {
         color: theme.palette.text.secondary,
-        fontSize: 18,
+        fontSize: 15.75,
         paddingLeft: 16,
       },
       span: {
         color: theme.palette.text.secondary,
-        fontSize: 18,
+        fontSize: 15.75,
       },
     }),
     [theme]
@@ -69,34 +74,37 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
 
   React.useEffect(() => {
     (async () => {
-      if (!JSON.parse(message.$.Read)) {
-        console.log(message.$.Read);
-        await client.updateMessage(message);
-        dispatch({ type: 'MARK_AS_READ', message });
-        console.log(message.$.Read);
-      }
+      console.log(message.$.SMMsgPersonGU);
+      await client.updateMessage(message);
+      dispatch({ type: 'MARK_AS_READ', message });
     })();
   }, []);
 
   return (
     <Container scrollable>
-      <Space spacing={2} direction='vertical'>
-        <Space spacing={1} direction='vertical'>
-          <Typography bold variant='h3'>
+      <Space spacing={1} direction='vertical'>
+        <Space spacing={0.5} direction='vertical'>
+          <Typography variant='body2' color='textSecondary'>
+            {timestamp}
+          </Typography>
+          <Typography variant='h2' bold>
             {message.$.SubjectNoHTML}
           </Typography>
           <Space spacing={1} alignItems='center'>
-            <Typography color='textSecondary'>
-              By <Typography>{message.$.From}</Typography>
-            </Typography>
-            <Typography variant='caption' color='textSecondary'>
-              {message.$.BeginDate}
-            </Typography>
+            <Icon bundle='FontAwesome5' name='user' />
+            <Typography>{message.$.From}</Typography>
           </Space>
-          <Divider />
         </Space>
+        {typeof message.AttachmentDatas[0] != 'string' &&
+          message.AttachmentDatas[0].AttachmentData.map((data) => (
+            <Attachment
+              key={data.$.SmAttachmentGU}
+              SmAttachmentGU={data.$.SmAttachmentGU}
+              AttachmentName={data.$.AttachmentName}
+            />
+          ))}
         <RenderHTML
-          // enableCSSInlineProcessing={false}
+          enableCSSInlineProcessing={false}
           ignoredDomTags={['meta']}
           contentWidth={width}
           source={{ html: message.$.Content }}

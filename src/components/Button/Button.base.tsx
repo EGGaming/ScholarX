@@ -3,27 +3,45 @@ import { RequireAll } from '@utilities/TypeUtilities';
 import Typography from '@components/Typography/Typography';
 import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
+import { AppColors } from '@theme/core.types';
 
-export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity).attrs<
-  RequireAll<ButtonProps>
->((props) => {
-  if (props.color === 'inherit')
-    return {
-      activeOpacity: 0.5,
-    };
-  switch (props.theme.mode) {
-    case 'dark':
+export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity).attrs<{
+  color?: AppColors;
+}>((props) => {
+  if (props.color == null) {
+    switch (props.theme.mode) {
+      case 'dark':
+        return {
+          background: TouchableNativeFeedback.Ripple(props.theme.palette.primary.dark, false),
+          activeOpacity: 0.5,
+        };
+      case 'light':
+        return {
+          background: TouchableNativeFeedback.Ripple(props.theme.palette.constants.GRAY['300'], false),
+          activeOpacity: 0.5,
+        };
+    }
+  } else {
+    if (props.color === 'inherit')
       return {
-        background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].dark, false),
         activeOpacity: 0.5,
       };
-    case 'light':
-      return {
-        background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].light, false),
-        activeOpacity: 0.5,
-      };
+    switch (props.theme.mode) {
+      case 'dark':
+        return {
+          background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].dark, false),
+          activeOpacity: 0.5,
+        };
+      case 'light':
+        return {
+          background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].light, false),
+          activeOpacity: 0.5,
+        };
+    }
   }
-})<RequireAll<ButtonProps>>``;
+})<{
+  color?: AppColors;
+}>``;
 
 export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
   ${(props) => css`

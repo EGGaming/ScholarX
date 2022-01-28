@@ -6,8 +6,7 @@ export const EventContainer = styled(Paper)`
     display: flex;
     flex-direction: row;
     padding: ${props.theme.spacing(3)};
-    margin: ${props.theme.spacing(1, 2)};
-    background-color: ${props.theme.palette.background.paper};
+    margin: ${props.theme.spacing(1, 3)};
     border-radius: ${props.theme.borderRadius}px;
   `}
 `;

@@ -120,9 +120,29 @@ export interface Message {
     Type: string;
   };
   AttachmentDatas: {
-    AttachmentName: string;
-    SmAttachmentGU: string;
+    AttachmentData: {
+      $: {
+        AttachmentName: string;
+        SmAttachmentGU: string;
+      };
+    }[];
   }[];
+}
+
+export interface AttachmentXML {
+  AttachmentXML: {
+    $: {
+      DocumentName: string;
+      'xmlns:xsd': string;
+      'xmlns:xsi': string;
+    };
+    Base64Code: string[];
+  };
+}
+
+export interface Attachment {
+  name: string;
+  base64: string;
 }
 
 export interface PXPMessagesData {

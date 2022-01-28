@@ -13,8 +13,6 @@ const BottomTab: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
 
-        const label = options.headerTitle;
-
         const isFocused = state.index == index;
         const Icon = options.tabBarIcon as React.FC<IconScreenProps>;
 

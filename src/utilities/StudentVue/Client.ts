@@ -1,7 +1,16 @@
 import xml2js from 'react-native-xml2js';
 import { Client as SoapClient } from '../soap/';
 import Status from './Status';
-import { Calendar, CalendarListing, Message, MessageListingXML, PXPMessagesData, StudentInfo } from './types';
+import {
+  Attachment,
+  AttachmentXML,
+  Calendar,
+  CalendarListing,
+  Message,
+  MessageListingXML,
+  PXPMessagesData,
+  StudentInfo,
+} from './types';
 import { format } from 'date-fns';
 
 enum Service {
@@ -69,7 +78,11 @@ class Client {
 
   public async updateMessage(messageListing: Message): Promise<Status> {
     return new Promise(async (res) => {
-      const MessageListing = SoapClient.parseXml('MessageListing', messageListing.$);
+      const MessageListing = SoapClient.parseXml('MessageListing', {
+        ID: messageListing.$.ID,
+        Type: messageListing.$.Type,
+        MarkAsRead: 'true',
+      });
 
       try {
         await this.client.processRequest(
@@ -110,6 +123,31 @@ class Client {
             SchoolEndDate: t.CalendarListing.$.SchoolEndDate,
           },
           events: t.CalendarListing.EventLists[0].EventList.map((event) => event.$),
+        });
+      } catch (e) {
+        throw Error(e as any);
+      }
+    });
+  }
+
+  public attachment(SmAttachmentGU: string): Promise<Attachment> {
+    return new Promise(async (res) => {
+      try {
+        const data = await this.client.processRequest(
+          this.username,
+          this.password,
+          Service.PXPWebServices,
+          'SynergyMailGetAttachment',
+          {
+            childIntID: 0,
+            SmAttachmentGU,
+          }
+        );
+
+        const t = await SoapClient.parseString<AttachmentXML>(data);
+        res({
+          name: t.AttachmentXML.$.DocumentName,
+          base64: t.AttachmentXML.Base64Code[0],
         });
       } catch (e) {
         throw Error(e as any);

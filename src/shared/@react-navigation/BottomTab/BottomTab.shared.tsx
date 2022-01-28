@@ -19,7 +19,7 @@ export const TabBarButtonBase = styled(Platform.OS === 'android' ? TouchableNati
     switch (props.theme.mode) {
       case 'dark':
         return {
-          background: TouchableNativeFeedback.Ripple(props.theme.palette.constants.GRAY['300'], true),
+          background: TouchableNativeFeedback.Ripple(props.theme.palette.primary.dark, true),
           activeOpacity: 0.5,
         };
       case 'light':
