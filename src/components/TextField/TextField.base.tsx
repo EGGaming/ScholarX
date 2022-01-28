@@ -1,17 +1,43 @@
-import { TextFieldAccessoryProps, TextFieldProps } from '@components/TextField/TextField.types';
+import { AdornmentProps, TextFieldAccessoryProps, TextFieldProps } from '@components/TextField/TextField.types';
 import styled, { css } from 'styled-components/native';
-import { TextInput } from 'react-native';
+import Animated from 'react-native-reanimated';
 
-export const TextFieldAdornmentEndContainer = styled.View`
-  position: absolute;
-  top: 18px;
-  right: 18px;
+export const TextFieldAdornmentEndContainer = styled.View<AdornmentProps>`
+  ${(props) => {
+    switch (props.size) {
+      case 'medium':
+        return css`
+          position: absolute;
+          top: 18px;
+          right: 18px;
+        `;
+      case 'small':
+        return css`
+          position: absolute;
+          top: 12px;
+          right: 12px;
+        `;
+    }
+  }}
 `;
 
-export const TextFieldAdornmentStartContainer = styled.View`
-  position: absolute;
-  top: 18px;
-  left: 18px;
+export const TextFieldAdornmentStartContainer = styled.View<AdornmentProps>`
+  ${(props) => {
+    switch (props.size) {
+      case 'medium':
+        return css`
+          position: absolute;
+          top: 18px;
+          left: 18px;
+        `;
+      case 'small':
+        return css`
+          position: absolute;
+          top: 12px;
+          left: 12px;
+        `;
+    }
+  }}
 `;
 
 export const TextFieldBaseContainer = styled.View<Required<TextFieldProps>>`
@@ -34,12 +60,27 @@ export const TextFieldBaseContainer = styled.View<Required<TextFieldProps>>`
 
 export const TextFieldBase = styled.TextInput<TextFieldAccessoryProps>`
   width: 100%;
-  ${(props) => css`
-    padding: ${props.theme.spacing(2, props.adornmentEnd ? 7 : 2, 2, props.adornmentStart ? 7 : 2)};
-    background-color: ${props.theme.palette.background.paper};
-    color: ${props.theme.palette.text.primary};
-    border-radius: 4px;
-    border: 1px solid ${props.theme.palette.divider};
-    ${props.theme.typography.body};
-  `}
+  flex-grow: 1;
+  ${(props) => {
+    switch (props.size!) {
+      case 'medium':
+        return css`
+          padding: ${props.theme.spacing(2, props.adornmentEnd ? 7 : 2, 2, props.adornmentStart ? 7 : 2)};
+          background-color: ${props.theme.palette.background.paper};
+          color: ${props.theme.palette.text.primary};
+          border-radius: 4px;
+          border: 1px solid ${props.theme.palette.divider};
+          ${props.theme.typography.body};
+        `;
+      case 'small':
+        return css`
+          padding: ${props.theme.spacing(1, props.adornmentEnd ? 5 : 1, 1, props.adornmentStart ? 5 : 1)};
+          background-color: ${props.theme.palette.background.paper};
+          color: ${props.theme.palette.text.primary};
+          border-radius: 4px;
+          border: 1px solid ${props.theme.palette.divider};
+          ${props.theme.typography.body2};
+        `;
+    }
+  }}
 `;

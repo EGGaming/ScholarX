@@ -5,6 +5,7 @@ import { useAppReducer } from '@context/AppContext/AppContext';
 import {
   FindMySchoolDistrictContainer,
   FindMySchoolDistrictKeyboardAvoidingContainer,
+  LocationImage,
 } from '@screens/Login/FindMySchoolDistrict/FindMySchoolDistrict.shared';
 import { FindMySchoolDistrictProps } from '@screens/Login/FindMySchoolDistrict/FindMySchoolDistrict.types';
 import SchoolDistricts from '@shared/SchoolDistricts/SchoolDistricts';
@@ -25,14 +26,15 @@ const FindMySchoolDistrict: React.FC<FindMySchoolDistrictProps> = ({ navigation 
   const [districts, setDistricts] = React.useState<DistrictInfo[]>([]);
 
   async function onZipCodeSubmit() {
-    if (zipCode.length === 0) return;
-    const d = await StudentVue.districts(zipCode);
-    setDistricts(d);
+    if (zipCode.length === 0 || !zipCode.match(/(^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$)/g)) return;
+
+    navigation.navigate('DistrictList', { districts });
   }
 
   return (
     <FindMySchoolDistrictKeyboardAvoidingContainer>
-      <SchoolDistricts districts={districts} />
+      {/* <SchoolDistricts districts={districts} /> */}
+      <LocationImage />
       <FindMySchoolDistrictContainer>
         <Space spacing={1} direction='vertical'>
           <React.Fragment>

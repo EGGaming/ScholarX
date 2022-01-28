@@ -15,17 +15,7 @@ const SchoolDistricts: React.FC<SchoolDistrictsProps> = ({ districts }) => {
     if (query.length === 0) return districts;
     return districts.filter((district) => district.Name.toLowerCase().match(query.toLowerCase()));
   }, [districts, query]);
-  return (
-    <FlatList
-      ListHeaderComponent={
-        districts.length !== 0 ? <SchoolDistrictsHeader query={query} setQuery={setQuery} /> : undefined
-      }
-      style={{ height: Dimensions.get('window').height * 0.6 }}
-      data={filtered}
-      keyExtractor={keyExtractor}
-      renderItem={RenderSchoolDistrictItem}
-    />
-  );
+  return <FlatList data={filtered} keyExtractor={keyExtractor} renderItem={RenderSchoolDistrictItem} />;
 };
 
 export default React.memo(SchoolDistricts);

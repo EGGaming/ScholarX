@@ -16,13 +16,19 @@ const NotificationHeader: React.FC<NativeStackHeaderProps> = (props) => {
     props.navigation.goBack();
   }
 
+  const HeaderTitle = headerTitle;
+
   return (
     <HeaderContainer>
       <Space spacing={1} alignItems='center' justifyContent='space-between'>
         {headerBackVisible && (
           <IconButton icon={<Icon bundle='AntDesign' name='back' />} onPress={onBackButtonPressed} />
         )}
-        <Typography bold>{headerTitle}</Typography>
+        {typeof headerTitle === 'string' ? (
+          <Typography bold>{headerTitle}</Typography>
+        ) : (
+          <HeaderTitle {...(props as any)} />
+        )}
       </Space>
       {options.headerRight && options.headerRight({ tintColor: options.headerTintColor })}
     </HeaderContainer>
