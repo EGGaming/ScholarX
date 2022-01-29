@@ -6,7 +6,7 @@ export type LoginStackParamList = {
   Welcome: undefined;
   FindMySchoolDistrict: undefined;
   DistrictList: {
-    districts: DistrictInfo[];
+    zipCode: string;
   };
   SignIn: undefined;
 };

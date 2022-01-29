@@ -1,38 +1,22 @@
-import { CardActionsContainer, CardContainer } from '@components/Card/Card.base';
-import { CardProps, CardState } from '@components/Card/Card.types';
-import Space from '@components/Space/Space';
-import Typography from '@components/Typography/Typography';
+import { CardBaseButtonContainer, CardButtonBase, CardContainer } from '@components/Card/Card.base';
+import { CardProps } from '@components/Card/Card.types';
 import React from 'react';
-import { View } from 'react-native';
 
-class Card extends React.Component<CardProps, CardState> {
-  constructor(props: CardProps) {
-    super(props);
-    this.state = {
-      isButton: props.button,
-      title: props.headerTitle,
-      actions: props.actions,
-    };
-  }
-  render() {
+const Card: React.FC<CardProps> = (props) => {
+  const { onPress } = props;
+  if (onPress)
     return (
-      <CardContainer>
-        <Space direction='vertical' spacing={1}>
-          {this.state.title && this.state.title}
-          {this.props.children}
-          {this.state.actions && (
-            <CardActionsContainer>
-              <Space spacing={2}>{this.state.actions}</Space>
-            </CardActionsContainer>
-          )}
-        </Space>
-      </CardContainer>
+      <CardBaseButtonContainer>
+        <CardButtonBase onPress={onPress}>
+          <CardContainer {...props} />
+        </CardButtonBase>
+      </CardBaseButtonContainer>
     );
-  }
-
-  public static Body: React.FC = ({ children }) => {
-    return <View>{children}</View>;
-  };
-}
+  return (
+    <CardBaseButtonContainer>
+      <CardContainer {...props} />
+    </CardBaseButtonContainer>
+  );
+};
 
 export default Card;

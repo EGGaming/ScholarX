@@ -15,6 +15,7 @@ import isThisWeek from 'date-fns/isThisWeek';
 import Icon from '@components/Icon/Icon';
 import Attachment from '@components/Attachment/Attachment';
 import Button from '@components/Button/Button';
+import { NotificationViewerContainer } from '@screens/NotificationViewer/NotificationViewer.base';
 
 const customHTMLElementModels = {
   'o:p': HTMLElementModel.fromCustomModel({
@@ -81,7 +82,7 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
   }, []);
 
   return (
-    <Container scrollable>
+    <NotificationViewerContainer>
       <Space spacing={1} direction='vertical'>
         <Space spacing={0.5} direction='vertical'>
           <Typography variant='body2' color='textSecondary'>
@@ -112,7 +113,7 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
           customHTMLElementModels={customHTMLElementModels}
         />
       </Space>
-    </Container>
+    </NotificationViewerContainer>
   );
 };
 

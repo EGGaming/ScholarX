@@ -1,4 +1,5 @@
 import { TypographyColors, TypographyComponent } from '@theme/core.types';
+import { TextStyle } from 'react-native';
 export interface TypographyProps {
   color?: TypographyColors;
   bold?: boolean;
@@ -6,4 +7,5 @@ export interface TypographyProps {
   variant?: TypographyComponent;
   hexColor?: string;
   onPress?: () => void;
+  align?: TextStyle['textAlign'];
 }

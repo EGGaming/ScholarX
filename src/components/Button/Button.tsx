@@ -48,15 +48,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
       case 'left':
       default:
         return (
-          <ButtonBase
-            size={size}
-            disabled={disabled}
-            hexColor={hexColor}
-            ref={ref as any}
-            color={color}
-            variant={variant}
-            textCentered={textCentered}
-            {...otherProps}>
+          <ButtonBase ref={ref as any} hexColor={hexColor} color={color} {...otherProps}>
             <ButtonBaseContainer
               size={size}
               disabled={disabled}
@@ -79,16 +71,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
         );
       case 'right':
         return (
-          <ButtonBase
-            size={size}
-            disabled={disabled}
-            ref={ref as any}
-            color={color}
-            variant={variant}
-            {...otherProps}
-            hexColor={hexColor}
-            textCentered={textCentered}
-            {...otherProps}>
+          <ButtonBase ref={ref as any} color={color} hexColor={hexColor} {...otherProps}>
             <ButtonBaseContainer
               size={size}
               disabled={disabled}
@@ -111,15 +94,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
         );
     }
   return (
-    <ButtonBase
-      size={size}
-      disabled={disabled}
-      ref={ref as any}
-      color={color}
-      variant={variant}
-      hexColor={hexColor}
-      textCentered={textCentered}
-      {...otherProps}>
+    <ButtonBase ref={ref as any} color={color} hexColor={hexColor} {...otherProps}>
       <ButtonBaseContainer
         size={size}
         disabled={disabled}

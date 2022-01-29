@@ -9,44 +9,48 @@ import useComponentMounted from '@utilities/useComponentMounted';
 import React from 'react';
 import { FlatList } from 'react-native';
 import { EventsContainer, EventsListEmpty } from './Events.base';
-import { RenderEventItem } from './Events.util';
-import { isBefore, isToday } from 'date-fns';
+import { isBefore, isToday, addMonths } from 'date-fns';
 import Event from './Event/Event';
 import _ from 'lodash';
-
-const keyExtractor: KeyExtractor<CalendarEvent> = (item, index) => `${item.Title}: ${item.Date}`;
+import { useRootNavigation } from '@navigators/Root/Root';
+import { useCalendar, useFutureEvents } from '@context/CalendarContext/CalendarContext';
 
 const Events: React.FC = () => {
-  const [calendar, setCalendar] = React.useState<Calendar>();
+  const navigation = useRootNavigation();
+  const [calendar, setCalendar] = useCalendar();
   const [client] = useStudentVue();
-  const upcomingEvents = React.useMemo(
-    () =>
-      calendar
-        ? calendar.events.filter((event) => {
-            return isBefore(Date.now(), Date.parse(event.Date)) || isToday(Date.parse(event.Date));
-          })
-        : [],
-    [calendar?.events]
-  );
+  const upcomingEvents = useFutureEvents();
 
   async function fetchCalendarEvents() {
-    const data = await client.calendar(Date.now());
-    setCalendar(data);
+    const [data1, data2] = await Promise.all([client.calendar(Date.now()), client.calendar(addMonths(Date.now(), 1))]);
+    setCalendar({
+      meta: {
+        ...data1.meta,
+        MonthBegDate: data1.meta.MonthBegDate,
+        MonthEndDate: data2.meta.MonthEndDate,
+      },
+      events: _.uniqBy([...data1.events, ...data2.events], 'Title'),
+    });
+  }
+
+  function onViewAll() {
+    navigation.navigate('Events');
   }
 
   React.useEffect(() => {
     fetchCalendarEvents();
   }, []);
+
   return (
     <>
       <EventsContainer>
         <Typography variant='h2'>Upcoming Events</Typography>
-        <Button title='View All' size='small' onPress={() => {}} />
+        <Button title='View All' size='small' onPress={onViewAll} />
       </EventsContainer>
       {calendar &&
         _.uniqBy(upcomingEvents, 'Date')
           .slice(0, 3)
-          .map((item) => <Event item={item} calendar={calendar.events} key={`${item.Title}: ${item.Date}`} />)}
+          .map((item) => <Event item={item} key={`${item.Title}: ${item.Date}`} />)}
     </>
   );
 };

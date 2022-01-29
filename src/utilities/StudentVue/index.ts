@@ -12,7 +12,7 @@ class StudentVue {
       const soap = new SoapClient(endpoint);
       const client = new Client(username, password, soap);
       try {
-        await client.messages();
+        await client.calendar(Date.now());
         res(client);
       } catch (e) {
         rej(new Error(e as any));

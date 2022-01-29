@@ -1,13 +1,10 @@
-import Paper from '@components/Paper/Paper';
+import Card from '@components/Card/Card';
 import styled, { css } from 'styled-components/native';
 
-export const EventContainer = styled(Paper)`
+export const EventContainer = styled(Card)`
   ${(props) => css`
     display: flex;
     flex-direction: row;
-    padding: ${props.theme.spacing(3)};
-    margin: ${props.theme.spacing(1, 3)};
-    border-radius: ${props.theme.borderRadius}px;
   `}
 `;
 

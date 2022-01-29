@@ -1,36 +1,25 @@
+import Loader from '@components/Loader/Loader';
 import Space from '@components/Space/Space';
 import TextField from '@components/TextField/TextField';
 import Typography from '@components/Typography/Typography';
 import { useAppReducer } from '@context/AppContext/AppContext';
-import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
+import { useSearch } from '@context/SearchDistrictContext/SearchDistrictContext';
 import {
   FindMySchoolDistrictContainer,
   FindMySchoolDistrictKeyboardAvoidingContainer,
   LocationImage,
 } from '@screens/Login/FindMySchoolDistrict/FindMySchoolDistrict.shared';
 import { FindMySchoolDistrictProps } from '@screens/Login/FindMySchoolDistrict/FindMySchoolDistrict.types';
-import SchoolDistricts from '@shared/SchoolDistricts/SchoolDistricts';
-import StudentVue from '@utilities/StudentVue';
-import { DistrictInfo } from '@utilities/StudentVue/types';
 import React from 'react';
-import { View } from 'react-native';
 
 const FindMySchoolDistrict: React.FC<FindMySchoolDistrictProps> = ({ navigation }) => {
   const [state] = useAppReducer();
 
-  React.useEffect(() => {
-    if (state.districtUrl.length !== 0) {
-      navigation.navigate('SignIn');
-    }
-  }, [state.districtUrl]);
   const [zipCode, setZipCode] = React.useState<string>('');
-  const [districts, setDistricts] = React.useState<DistrictInfo[]>([]);
 
   async function onZipCodeSubmit() {
     if (zipCode.length === 0 || !zipCode.match(/(^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$)/g)) return;
-    const foundDistricts = await StudentVue.districts(zipCode);
-    setDistricts(foundDistricts);
-    navigation.navigate('DistrictList', { districts });
+    navigation.navigate('DistrictList', { zipCode });
   }
 
   return (

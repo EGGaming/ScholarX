@@ -13,10 +13,9 @@ export type RootStackParamList = {
   };
   EventViewer: {
     event: CalendarEvent;
-    parsedDate: number;
     title: string;
-    calendar: CalendarEvent[];
   };
+  Events: undefined;
 };
 
 export type RootStackNavigationProps = NativeStackNavigationProp<RootStackParamList>;

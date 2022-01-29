@@ -9,6 +9,7 @@ export const TypographyBase = styled.Text<RequireAll<Omit<TypographyProps, 'onPr
       return props.theme.palette.toColorValue(props.color);
     }};
     font-weight: ${props.bold ? props.theme.typography.constants.bold : props.theme.typography.constants.regular};
+    text-align: ${props.align};
     ${props.theme.typography[props.variant]}
   `}
 `;

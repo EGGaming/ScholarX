@@ -9,14 +9,6 @@ export const TitleContainer = styled.View`
   `}
 `;
 
-export const AssignmentContainer = styled(Paper)`
-  ${(props) => css`
-    border-radius: ${props.theme.borderRadius}px;
-    margin: ${props.theme.spacing(1, 3)};
-    padding: ${props.theme.spacing(3)};
-  `}
-`;
-
 export const AssignmentHeaderContainer = styled.View`
   display: flex;
   flex-direction: row;

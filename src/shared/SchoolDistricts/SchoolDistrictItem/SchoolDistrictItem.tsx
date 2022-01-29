@@ -1,35 +1,55 @@
 import Button from '@components/Button/Button';
-import Card from '@components/Card/Card';
 import Icon from '@components/Icon/Icon';
+import IconButton from '@components/IconButton/IconButton';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { useAppDispatch } from '@context/AppContext/AppContext';
-import { SchoolDistrictItemContainer } from '@shared/SchoolDistricts/SchoolDistrictItem/SchoolDistrictItem.base';
+import { LoginStackParamList } from '@navigators/Login/Login.types';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+  SchoolDistrictItemContainer,
+  SchoolDistrictItemMetaContainer,
+  SchoolDistrictSelectContainer,
+} from '@shared/SchoolDistricts/SchoolDistrictItem/SchoolDistrictItem.base';
 import { SchoolDistrictItemProps } from '@shared/SchoolDistricts/SchoolDistrictItem/SchoolDistrictItem.types';
 import React from 'react';
+import Animated, { withSpring, useAnimatedStyle, useSharedValue, withTiming, Easing } from 'react-native-reanimated';
 
 const SchoolDistrictItem: React.FC<SchoolDistrictItemProps> = (props) => {
+  const navigation = useNavigation<NavigationProp<LoginStackParamList>>();
   const { item, index } = props;
   const dispatch = useAppDispatch();
+  const offset = useSharedValue(900);
+  const opacity = useSharedValue(0);
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ translateX: offset.value }],
+  }));
+
+  React.useEffect(() => {
+    offset.value = withTiming(0, { duration: 300, easing: Easing.elastic(0.33) });
+    opacity.value = withTiming(1, { duration: 600, easing: Easing.elastic(0.1) });
+  }, []);
 
   function handleOnPress() {
     dispatch({ type: 'SET_DISTRICT', district: item.Name, url: item.PvueURL });
+    navigation.navigate('SignIn');
   }
 
   return (
-    <SchoolDistrictItemContainer>
-      <Card
-        headerTitle={
-          <Typography bold variant='h3'>
-            {item.Name}
+    <Animated.View style={animatedStyles}>
+      <SchoolDistrictItemContainer>
+        <SchoolDistrictItemMetaContainer>
+          <Typography variant='body2' color='textSecondary'>
+            {item.Address}
           </Typography>
-        }
-        actions={[<Button title='Select District' onPress={handleOnPress} key='default' color='secondary' />]}>
-        <Card.Body>
-          <Typography color='textSecondary'>{item.Address}</Typography>
-        </Card.Body>
-      </Card>
-    </SchoolDistrictItemContainer>
+          <Typography bold>{item.Name}</Typography>
+        </SchoolDistrictItemMetaContainer>
+        <SchoolDistrictSelectContainer>
+          <Button title='Select' onPress={handleOnPress} variant='contained' />
+        </SchoolDistrictSelectContainer>
+      </SchoolDistrictItemContainer>
+    </Animated.View>
   );
 };
 export default React.memo(SchoolDistrictItem);

@@ -7,6 +7,7 @@ import { AppColors } from '@theme/core.types';
 
 export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity).attrs<{
   color?: AppColors;
+  hexColor?: string;
 }>((props) => {
   if (props.color == null) {
     switch (props.theme.mode) {
@@ -41,6 +42,7 @@ export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeed
   }
 })<{
   color?: AppColors;
+  hexColor?: string;
 }>``;
 
 export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`

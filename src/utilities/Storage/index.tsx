@@ -1,4 +1,4 @@
-import { AppStorageInterface } from './types';
+import { AppStorageInterface, useSyncEffectOptions } from './types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import useComponentMounted from '@utilities/useComponentMounted';
@@ -58,48 +58,48 @@ class Storage<T extends AppStorageInterface> {
     key: K,
     obj: T[K],
     initializer: React.Dispatch<Initializer<T[K]>>,
-    customDependency?: any[]
+    options: useSyncEffectOptions = {}
   ): void {
-    // const isMounted = useComponentMounted();
-    // const dispatch = useStorageDispatch();
-    // const dependencies = React.useMemo(() => {
-    //   if (customDependency) return customDependency;
-    //   return [obj];
-    // }, [obj, customDependency]);
-    // React.useEffect(() => {
-    //   dispatch({ type: 'INCREMENT' });
-    //   (async () => {
-    //     const stored = await this.get(key);
-    //     if (stored != null) initializer({ type: 'INITIALIZE', state: stored });
-    //     else console.error(`Key ${key} does not exist in storage`);
-    //   })();
-    // }, []);
-    // React.useEffect(() => {
-    //   if (isMounted) {
-    //     console.log(`Updated ${typeof obj} ${key}`);
-    //     this.set(key, obj);
-    //   }
-    // }, dependencies);
+    const { additionalConditions = () => true, customDependencies = [] } = options;
+    const isMounted = useComponentMounted();
+    const dispatch = useStorageDispatch();
+    const dependencies = React.useMemo(() => {
+      return [obj, ...customDependencies];
+    }, [obj, customDependencies]);
+    React.useEffect(() => {
+      dispatch({ type: 'INCREMENT' });
+      (async () => {
+        const stored = await this.get(key);
+        if (stored != null) initializer({ type: 'INITIALIZE', state: stored });
+        else console.error(`Key ${key} does not exist in storage`);
+      })();
+    }, []);
+    React.useEffect(() => {
+      if (isMounted && additionalConditions()) {
+        console.log(`Updating ${key}`);
+        this.set(key, obj);
+      }
+    }, dependencies);
   }
 
   initialize(): boolean {
-    const [ready, setReady] = React.useState(true);
-    // const [_] = useStudentVue();
-    // const [state] = useStorage();
-    // React.useEffect(() => {
-    //   const interval = setInterval(() => {
-    //     (async () => {
-    //       const numberOfKeys: number = await this.get('__storedKeysCount' as any);
-    //       if (numberOfKeys == state) {
-    //         setReady(true);
-    //         clearInterval(interval);
-    //       }
-    //     })();
-    //   }, 1);
-    //   return () => {
-    //     clearInterval(interval);
-    //   };
-    // }, [state]);
+    const [ready, setReady] = React.useState(false);
+    const [_] = useStudentVue();
+    const [state] = useStorage();
+    React.useEffect(() => {
+      const interval = setInterval(() => {
+        (async () => {
+          const numberOfKeys: number = await this.get('__storedKeysCount' as any);
+          if (numberOfKeys == state) {
+            setReady(true);
+            clearInterval(interval);
+          }
+        })();
+      }, 1);
+      return () => {
+        clearInterval(interval);
+      };
+    }, [state]);
 
     return ready;
   }

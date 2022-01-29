@@ -1,6 +1,8 @@
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import { useAppReducer } from '@context/AppContext/AppContext';
+import { useSearch } from '@context/SearchDistrictContext/SearchDistrictContext';
+import { useSearchFocused } from '@context/SearchDistrictFocusedContext/SearchDistrictFocusedContext';
 import { useSessionReducer } from '@context/SessionContext/SessionContext';
 import LoginStack from '@navigators/Login/Login';
 import { CardStyleInterpolators } from '@react-navigation/stack';
@@ -16,7 +18,8 @@ import DistrictList from './DistrictList/DistrictList';
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [session, dispatch] = useSessionReducer();
   const [app, dispatchApp] = useAppReducer();
-  const [focused, setFocused] = React.useState<boolean>(false);
+  const [focused, setFocused] = useSearchFocused();
+  const [search] = useSearch();
   const initialRoute = React.useMemo(() => {
     if (app.districtUrl && app.districtName) return 'SignIn';
     return 'Welcome';
@@ -42,9 +45,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         name='DistrictList'
         component={DistrictList}
         options={{
-          headerTitle: () => <Search focused={focused} setFocused={setFocused} />,
+          headerTitle: React.useCallback(() => <Search />, []),
           headerRight: () => (
-            <>{!focused && <IconButton icon={<Icon bundle='Feather' name='search' />} onPress={onPress} />}</>
+            <>
+              {!focused && !search && <IconButton icon={<Icon bundle='Feather' name='search' />} onPress={onPress} />}
+            </>
           ),
         }}
       />

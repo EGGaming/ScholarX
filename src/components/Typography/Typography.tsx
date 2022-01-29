@@ -13,6 +13,7 @@ const Typography: React.FC<TypographyProps & TextProps> = React.forwardRef((prop
     variant = 'body',
     hexColor = '',
     onPress,
+    align = 'left',
     ...otherProps
   } = props;
   if (onPress)
@@ -25,6 +26,7 @@ const Typography: React.FC<TypographyProps & TextProps> = React.forwardRef((prop
           italics={italics}
           variant={variant}
           hexColor={hexColor}
+          align={align}
           {...otherProps}>
           {children}
         </TypographyBase>
@@ -38,6 +40,7 @@ const Typography: React.FC<TypographyProps & TextProps> = React.forwardRef((prop
       italics={italics}
       variant={variant}
       hexColor={hexColor}
+      align={align}
       {...otherProps}>
       {children}
     </TypographyBase>

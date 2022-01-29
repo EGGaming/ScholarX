@@ -9,3 +9,8 @@ export interface AppStorageInterface {
   SessionContext: SessionContextState;
   '@client': Client;
 }
+
+export interface useSyncEffectOptions {
+  customDependencies?: any[];
+  additionalConditions?: () => boolean;
+}

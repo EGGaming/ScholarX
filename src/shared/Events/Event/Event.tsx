@@ -13,53 +13,64 @@ import Chip from '@components/Chip/Chip';
 import { View } from 'react-native';
 import { useAppTheme } from '@theme/core';
 import { useRootNavigation } from '@navigators/Root/Root';
+import { ButtonBase } from '@components/Button/Button.base';
+import { useCalendar, useFutureEvents } from '@context/CalendarContext/CalendarContext';
 
-const Event: React.FC<EventProps> = ({ item, calendar }) => {
+const Event: React.FC<EventProps> = ({ item }) => {
   const navigation = useRootNavigation();
   const parsedDate = Date.parse(item.Date);
   const title = format(parsedDate, 'EEE, MMM do, yyyy');
+  const upcomingEvents = useFutureEvents();
+
   const dateTitle: string = isToday(parsedDate)
     ? 'Today'
     : isTomorrow(parsedDate)
     ? 'Tomorrow'
     : formatDistance(parsedDate, new Date(new Date().toDateString()), { addSuffix: true });
-  const titleColor: TypographyColors = isToday(parsedDate)
-    ? 'error'
-    : isTomorrow(parsedDate)
-    ? 'warning'
-    : 'textPrimary';
+  const titleColor: TypographyColors = isToday(parsedDate) ? 'error' : isTomorrow(parsedDate) ? 'warning' : 'secondary';
   function onPress() {
-    navigation.navigate('EventViewer', { event: item, parsedDate, title, calendar });
+    navigation.navigate('EventViewer', { event: item, title });
   }
 
+  const icon = React.useMemo(() => {
+    switch (item.DayType) {
+      case 'Holiday':
+      case 'Regular':
+      default:
+        return <Icon bundle='MaterialCommunityIcons' name='bed-outline' color='secondary' />;
+      case 'Assignment':
+        return <Icon bundle='Feather' name='clock' color='primary' />;
+    }
+  }, [item.DayType]);
+
+  const secondaryText = React.useMemo(() => {
+    if (item.DayType === 'Assignment') {
+      const numOfAssignments = upcomingEvents.filter((e) => e.Date === item.Date).length;
+      if (numOfAssignments === 1) return `1 Assignment`;
+      return `${numOfAssignments} Assignments`;
+    }
+
+    return item.DayType;
+  }, [upcomingEvents, item.DayType]);
+
   return (
-    <EventContainer>
-      <EventIconContainer>
-        {item.DayType === 'Assignment' ? (
-          <Icon bundle='Feather' name='clipboard' color='primary' />
-        ) : (
-          <Icon bundle='Feather' name='calendar' color='textSecondary' />
-        )}
-      </EventIconContainer>
+    <EventContainer onPress={onPress}>
+      <EventIconContainer>{icon}</EventIconContainer>
       <EventContentContainer>
         <Typography bold>{title}</Typography>
         <Space spacing={1} alignItems='center'>
           <Typography color='textSecondary' variant='body2'>
-            {item.DayType}
+            {secondaryText}
           </Typography>
           <Space spacing={0.3} alignItems='center'>
             <Icon bundle='Feather' name='clock' color={titleColor} size='small' />
             <Typography variant='caption' color={titleColor}>
+              {item.DayType === 'Assignment' && 'Due '}
               {dateTitle}
             </Typography>
           </Space>
         </Space>
       </EventContentContainer>
-      {item.DayType === 'Assignment' && (
-        <EventActionsContainer>
-          <IconButton icon={<Icon bundle='Feather' name='chevron-right' />} onPress={onPress} />
-        </EventActionsContainer>
-      )}
     </EventContainer>
   );
 };

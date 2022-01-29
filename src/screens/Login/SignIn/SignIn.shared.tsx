@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components/native';
 import { Dimensions } from 'react-native';
-import Space from '@components/Space/Space';
 
 export const SignInContainer = styled.View`
   width: ${Dimensions.get('window').width}px;
@@ -8,8 +7,8 @@ export const SignInContainer = styled.View`
   display: flex;
   flex-direction: column;
   ${(props) => css`
-    padding: ${props.theme.spacing(4)};
-  `}
+    padding: ${props.theme.spacing(3)};
+  `};
 `;
 
 export const BackButtonContainer = styled.View`
@@ -27,8 +26,8 @@ export const StateContainer = styled.View`
   align-items: center;
 `;
 
-export const SignInWrapper = styled(Space)`
+export const SignInWrapper = styled.View`
   ${(props) => css`
-    padding: ${props.theme.spacing(2, 0)};
+    padding: ${props.theme.spacing(4, 0, 0, 0)};
   `}
 `;

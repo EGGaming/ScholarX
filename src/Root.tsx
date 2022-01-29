@@ -15,6 +15,8 @@ import EventViewer from '@screens/EventViewer/EventViewer';
 import { useNotificationDispatch, useNotificationReducer } from '@context/NotificationContext/NotificationContext';
 import Icon from '@components/Icon/Icon';
 import { Status } from '@utilities/StudentVue';
+import EventsScreen from '@screens/Events/Events';
+import Space from '@components/Space/Space';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -39,6 +41,21 @@ const Root: React.FC = () => {
           header: (props) => <Header {...props} />,
           headerBackVisible: true,
           headerRight: () => <Button title='Mark all Read' onPress={markAllRead} size='small' />,
+        }}
+      />
+      <RootStack.Screen
+        name='Events'
+        component={EventsScreen}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: 'Upcoming Events',
+          headerRight: () => (
+            <Space spacing={1}>
+              <IconButton icon={<Icon bundle='MaterialCommunityIcons' name='calendar-clock' />} onPress={() => {}} />
+              <IconButton icon={<Icon bundle='Feather' name='filter' />} onPress={() => {}} />
+            </Space>
+          ),
         }}
       />
       <RootStack.Screen
