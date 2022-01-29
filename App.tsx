@@ -13,6 +13,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { HoldMenuProvider } from 'react-native-hold-menu';
 import Icon from '@components/Icon/Icon';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import SearchDistrictProvider from '@context/SearchDistrictContext/SearchDistrictContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -22,18 +23,20 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
           <Storage.Provider>
-            <StudentVueClientProvider>
-              <NotificationContextProvider>
-                <SessionContextProvider>
-                  <AppContextProvider>
-                    <StatusBar />
-                    <NavigationContainer theme={navigationTheme}>
-                      <Root />
-                    </NavigationContainer>
-                  </AppContextProvider>
-                </SessionContextProvider>
-              </NotificationContextProvider>
-            </StudentVueClientProvider>
+            <SearchDistrictProvider>
+              <StudentVueClientProvider>
+                <NotificationContextProvider>
+                  <SessionContextProvider>
+                    <AppContextProvider>
+                      <StatusBar />
+                      <NavigationContainer theme={navigationTheme}>
+                        <Root />
+                      </NavigationContainer>
+                    </AppContextProvider>
+                  </SessionContextProvider>
+                </NotificationContextProvider>
+              </StudentVueClientProvider>
+            </SearchDistrictProvider>
           </Storage.Provider>
         </HoldMenuProvider>
       </GestureHandlerRootView>

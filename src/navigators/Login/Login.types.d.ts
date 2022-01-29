@@ -7,7 +7,6 @@ export type LoginStackParamList = {
   FindMySchoolDistrict: undefined;
   DistrictList: {
     districts: DistrictInfo[];
-    search: string;
   };
   SignIn: undefined;
 };

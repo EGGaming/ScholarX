@@ -6,10 +6,10 @@ import React from 'react';
 
 const DistrictList: React.FC<NativeStackScreenProps<LoginStackParamList, 'DistrictList'>> = ({
   route: {
-    params: { districts, search },
+    params: { districts },
   },
 }) => {
-  return <SchoolDistricts districts={districts} search={search} />;
+  return <SchoolDistricts districts={districts} />;
 };
 
 export default DistrictList;

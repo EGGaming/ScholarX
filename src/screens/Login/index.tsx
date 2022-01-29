@@ -16,7 +16,6 @@ import DistrictList from './DistrictList/DistrictList';
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [session, dispatch] = useSessionReducer();
   const [app, dispatchApp] = useAppReducer();
-  const [search, setSearch] = React.useState<string>('');
   const [focused, setFocused] = React.useState<boolean>(false);
   const initialRoute = React.useMemo(() => {
     if (app.districtUrl && app.districtName) return 'SignIn';
@@ -43,7 +42,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         name='DistrictList'
         component={DistrictList}
         options={{
-          headerTitle: () => <Search search={search} setSearch={setSearch} focused={focused} setFocused={setFocused} />,
+          headerTitle: () => <Search focused={focused} setFocused={setFocused} />,
           headerRight: () => (
             <>{!focused && <IconButton icon={<Icon bundle='Feather' name='search' />} onPress={onPress} />}</>
           ),

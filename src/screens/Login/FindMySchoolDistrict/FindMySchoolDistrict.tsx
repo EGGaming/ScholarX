@@ -2,6 +2,7 @@ import Space from '@components/Space/Space';
 import TextField from '@components/TextField/TextField';
 import Typography from '@components/Typography/Typography';
 import { useAppReducer } from '@context/AppContext/AppContext';
+import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import {
   FindMySchoolDistrictContainer,
   FindMySchoolDistrictKeyboardAvoidingContainer,
@@ -27,13 +28,13 @@ const FindMySchoolDistrict: React.FC<FindMySchoolDistrictProps> = ({ navigation 
 
   async function onZipCodeSubmit() {
     if (zipCode.length === 0 || !zipCode.match(/(^\d{5}$)|(^\d{9}$)|(^\d{5}-\d{4}$)/g)) return;
-
+    const foundDistricts = await StudentVue.districts(zipCode);
+    setDistricts(foundDistricts);
     navigation.navigate('DistrictList', { districts });
   }
 
   return (
     <FindMySchoolDistrictKeyboardAvoidingContainer>
-      {/* <SchoolDistricts districts={districts} /> */}
       <LocationImage />
       <FindMySchoolDistrictContainer>
         <Space spacing={1} direction='vertical'>

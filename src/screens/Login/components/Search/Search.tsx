@@ -7,9 +7,11 @@ import { SearchContainer, SearchField } from './Search.base';
 import { SearchProps } from './Search.types';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import useComponentMounted from '@utilities/useComponentMounted';
+import { useSearch } from '@context/SearchDistrictContext/SearchDistrictContext';
 
 const Search: React.FC<SearchProps> = (props) => {
-  const { search, setSearch, setFocused, focused } = props;
+  const { setFocused, focused } = props;
+  const [search, setSearch] = useSearch();
 
   function onBlur() {
     setFocused(false);
@@ -22,6 +24,7 @@ const Search: React.FC<SearchProps> = (props) => {
           onBlur={onBlur}
           autoFocus
           size='small'
+          onChangeText={setSearch}
           adornmentStart={<Icon bundle='Feather' name='search' />}
           width='90%'
           placeholder='School name'
