@@ -7,30 +7,45 @@ import { Calendar, CalendarEvent } from '@utilities/StudentVue/types';
 import { KeyExtractor } from '@utilities/TypeUtilities';
 import useComponentMounted from '@utilities/useComponentMounted';
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
 import { EventsContainer, EventsListEmpty } from './Events.base';
 import { isBefore, isToday, addMonths } from 'date-fns';
 import Event from './Event/Event';
 import _ from 'lodash';
 import { useRootNavigation } from '@navigators/Root/Root';
 import { useCalendar, useFutureEvents } from '@context/CalendarContext/CalendarContext';
+import Space from '@components/Space/Space';
+import Flex from '@components/Flex/Flex';
+import Skeleton from '@components/Skeleton/Skeleton';
 
 const Events: React.FC = () => {
   const navigation = useRootNavigation();
   const [calendar, setCalendar] = useCalendar();
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [client] = useStudentVue();
-  const upcomingEvents = useFutureEvents();
+  const upcoming = useFutureEvents();
+  const upcomingNonDuplicateEvents = React.useMemo(() => _.uniqBy(upcoming, 'Date'), [upcoming]);
 
   async function fetchCalendarEvents() {
-    const [data1, data2] = await Promise.all([client.calendar(Date.now()), client.calendar(addMonths(Date.now(), 1))]);
-    setCalendar({
-      meta: {
-        ...data1.meta,
-        MonthBegDate: data1.meta.MonthBegDate,
-        MonthEndDate: data2.meta.MonthEndDate,
-      },
-      events: _.uniqBy([...data1.events, ...data2.events], 'Title'),
-    });
+    setLoading(true);
+    try {
+      const [data1, data2] = await Promise.all([
+        client.calendar(Date.now()),
+        client.calendar(addMonths(Date.now(), 1)),
+      ]);
+      setCalendar({
+        meta: {
+          ...data1.meta,
+          MonthBegDate: data1.meta.MonthBegDate,
+          MonthEndDate: data2.meta.MonthEndDate,
+        },
+        events: _.uniqBy([...data1.events, ...data2.events], 'Title'),
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function onViewAll() {
@@ -42,16 +57,42 @@ const Events: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <Space spacing={1} direction='vertical'>
       <EventsContainer>
-        <Typography variant='h2'>Upcoming Events</Typography>
-        <Button title='View All' size='small' onPress={onViewAll} />
+        <Typography variant='h3' bold>
+          Upcoming events
+        </Typography>
+        {upcomingNonDuplicateEvents.length > 3 && (
+          <Button
+            title='See all'
+            size='small'
+            onPress={onViewAll}
+            icon={<Icon bundle='Feather' name='chevron-right' />}
+            iconPlacement='right'
+          />
+        )}
       </EventsContainer>
-      {calendar &&
-        _.uniqBy(upcomingEvents, 'Date')
-          .slice(0, 3)
-          .map((item) => <Event item={item} key={`${item.Title}: ${item.Date}`} />)}
-    </>
+      {loading ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {new Array(3).fill('').map((_, i) => (
+            <Event key={i} isSkeleton />
+          ))}
+        </ScrollView>
+      ) : upcomingNonDuplicateEvents.length > 0 ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
+            <Event item={item} key={`${item.Title}: ${item.Date}`} />
+          ))}
+        </ScrollView>
+      ) : (
+        <Card>
+          <Typography bold>You're caught up!</Typography>
+          <Typography color='textSecondary' variant='body2'>
+            There are no upcoming events.
+          </Typography>
+        </Card>
+      )}
+    </Space>
   );
 };
 

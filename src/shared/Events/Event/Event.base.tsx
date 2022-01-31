@@ -4,14 +4,12 @@ import styled, { css } from 'styled-components/native';
 export const EventContainer = styled(Card)`
   ${(props) => css`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
   `}
 `;
 
 export const EventContentContainer = styled.View`
   ${(props) => css`
-    flex-grow: 1;
-    flex-direction: column;
     padding: ${props.theme.spacing(0, 2)};
   `}
 `;

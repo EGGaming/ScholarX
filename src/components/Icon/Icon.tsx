@@ -22,6 +22,8 @@ function Icon<T extends IconPack>(props: IconProps<T>) {
 
   const numSize = React.useMemo(() => {
     switch (size) {
+      case 'card':
+        return 48;
       case 'large':
         return 32;
       default:

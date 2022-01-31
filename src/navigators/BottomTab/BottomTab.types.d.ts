@@ -10,7 +10,4 @@ export type BottomTabParamList = {
   Calendar: undefined;
 };
 
-export type MainBottomTabScreenProps = CompositeScreenProps<
-  RootStackNavigationProps,
-  BottomTabNavigationProp<BottomTabParamList>
->;
+export type MainBottomTabScreenProps = BottomTabNavigationProp<BottomTabParamList>;

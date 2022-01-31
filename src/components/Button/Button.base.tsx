@@ -8,17 +8,19 @@ import { AppColors } from '@theme/core.types';
 export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity).attrs<{
   color?: AppColors;
   hexColor?: string;
+  round?: boolean;
 }>((props) => {
+  const { round = false } = props;
   if (props.color == null) {
     switch (props.theme.mode) {
       case 'dark':
         return {
-          background: TouchableNativeFeedback.Ripple(props.theme.palette.primary.dark, false),
+          background: TouchableNativeFeedback.Ripple(props.theme.palette.primary.dark, round),
           activeOpacity: 0.5,
         };
       case 'light':
         return {
-          background: TouchableNativeFeedback.Ripple(props.theme.palette.constants.GRAY['300'], false),
+          background: TouchableNativeFeedback.Ripple(props.theme.palette.constants.GRAY['300'], round),
           activeOpacity: 0.5,
         };
     }
@@ -30,12 +32,12 @@ export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeed
     switch (props.theme.mode) {
       case 'dark':
         return {
-          background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].dark, false),
+          background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].dark, round),
           activeOpacity: 0.5,
         };
       case 'light':
         return {
-          background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].light, false),
+          background: TouchableNativeFeedback.Ripple(props.theme.palette[props.color].light, round),
           activeOpacity: 0.5,
         };
     }
@@ -43,6 +45,7 @@ export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeed
 })<{
   color?: AppColors;
   hexColor?: string;
+  round?: boolean;
 }>``;
 
 export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`

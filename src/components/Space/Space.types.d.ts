@@ -5,6 +5,9 @@ export interface SpaceProps {
   direction?: 'horizontal' | 'vertical';
   justifyContent?: FlexStyle['justifyContent'];
   alignItems?: FlexAlignType;
+  container?: boolean;
+  grow?: boolean;
+  shrink?: boolean;
 }
 
 export type SpaceBaseProps = Required<SpaceProps>;

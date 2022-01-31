@@ -25,7 +25,7 @@ export type IconProps<T extends IconPack> = {
     : '';
   color?: TypographyColors;
   hexColor?: string;
-  size?: 'small' | 'large' | 'medium';
+  size?: 'small' | 'large' | 'medium' | 'card';
 };
 
 export type IconBaseProps<

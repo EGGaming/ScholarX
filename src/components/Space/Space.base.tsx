@@ -22,12 +22,36 @@ export const SpaceBaseContainer = styled.View<SpaceBaseProps>`
     switch (props.direction) {
       case 'horizontal':
         return css`
-          display: flex;
+          ${() => {
+            if (props.grow)
+              return css`
+                flex-grow: 1;
+              `;
+            if (props.shrink)
+              return css`
+                flex-shrink: 1;
+              `;
+            return css`
+              display: flex;
+            `;
+          }}
           flex-direction: row;
         `;
       case 'vertical':
         return css`
-          display: flex;
+          ${() => {
+            if (props.grow)
+              return css`
+                flex-grow: 1;
+              `;
+            if (props.shrink)
+              return css`
+                flex-shrink: 1;
+              `;
+            return css`
+              display: flex;
+            `;
+          }}
           flex-direction: column;
         `;
     }
@@ -36,4 +60,10 @@ export const SpaceBaseContainer = styled.View<SpaceBaseProps>`
     justify-content: ${props.justifyContent};
     align-items: ${props.alignItems};
   `}
+  ${(props) => {
+    if (props.container)
+      return css`
+        padding: ${props.theme.spacing(3)};
+      `;
+  }}
 `;

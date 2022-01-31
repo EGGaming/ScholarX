@@ -15,7 +15,6 @@ import isThisWeek from 'date-fns/isThisWeek';
 import Icon from '@components/Icon/Icon';
 import Attachment from '@components/Attachment/Attachment';
 import Button from '@components/Button/Button';
-import { NotificationViewerContainer } from '@screens/NotificationViewer/NotificationViewer.base';
 
 const customHTMLElementModels = {
   'o:p': HTMLElementModel.fromCustomModel({
@@ -59,6 +58,8 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
       p: {
         color: theme.palette.text.secondary,
         fontSize: 15.75,
+        lineHeight: 24,
+        letterSpacing: 0.6,
       },
       li: {
         color: theme.palette.text.secondary,
@@ -68,6 +69,7 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
       span: {
         color: theme.palette.text.secondary,
         fontSize: 15.75,
+        letterSpacing: 0.6,
       },
     }),
     [theme]
@@ -75,14 +77,13 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
 
   React.useEffect(() => {
     (async () => {
-      console.log(message.$.SMMsgPersonGU);
       await client.updateMessage(message);
       dispatch({ type: 'MARK_AS_READ', message });
     })();
   }, []);
 
   return (
-    <NotificationViewerContainer>
+    <Container scrollable>
       <Space spacing={1} direction='vertical'>
         <Space spacing={0.5} direction='vertical'>
           <Typography variant='body2' color='textSecondary'>
@@ -105,7 +106,8 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
             />
           ))}
         <RenderHTML
-          enableCSSInlineProcessing={false}
+          baseStyle={{ padding: theme.spacing(0, 0, 16, 0) }}
+          // enableCSSInlineProcessing={false}
           ignoredDomTags={['meta']}
           contentWidth={width}
           source={{ html: message.$.Content }}
@@ -113,7 +115,7 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
           customHTMLElementModels={customHTMLElementModels}
         />
       </Space>
-    </NotificationViewerContainer>
+    </Container>
   );
 };
 

@@ -1,5 +1,6 @@
-import { BadgeBase, BadgeBaseContainer } from '@components/Badge/Badge.base';
+import { BadgeBase, BadgeBaseContainer, BadgeText } from '@components/Badge/Badge.base';
 import { BadgeProps } from '@components/Badge/Badge.types';
+import Typography from '@components/Typography/Typography';
 import React from 'react';
 
 const Badge: React.FC<BadgeProps> = (props) => {

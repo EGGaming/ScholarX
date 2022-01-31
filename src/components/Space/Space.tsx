@@ -3,10 +3,22 @@ import { SpaceProps } from '@components/Space/Space.types';
 import React from 'react';
 
 const Space: React.FC<SpaceProps> = (props) => {
-  const { spacing, children, direction = 'horizontal', justifyContent = 'flex-start', alignItems = 'stretch' } = props;
+  const {
+    spacing,
+    children,
+    direction = 'horizontal',
+    justifyContent = 'flex-start',
+    alignItems = 'stretch',
+    container = false,
+    grow = false,
+    shrink = false,
+  } = props;
 
   return (
     <SpaceBaseContainer
+      container={container}
+      grow={grow}
+      shrink={shrink}
       direction={direction}
       spacing={spacing}
       justifyContent={justifyContent}
@@ -19,6 +31,9 @@ const Space: React.FC<SpaceProps> = (props) => {
               <React.Fragment>
                 {child}
                 <SpaceBase
+                  grow={grow}
+                  shrink={shrink}
+                  container={container}
                   spacing={spacing}
                   direction={direction}
                   justifyContent={justifyContent}

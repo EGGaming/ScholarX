@@ -1,6 +1,8 @@
+import Avatar from '@components/Avatar/Avatar';
 import Badge from '@components/Badge/Badge';
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
+import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { BottomTabHeaderContainer } from '@shared/@react-navigation/Header/Header.shared';
@@ -11,11 +13,13 @@ import React from 'react';
 const Header: React.FC<BottomTabHeaderProps> = (props) => {
   return (
     <BottomTabHeaderContainer>
-      <IconButton icon={<Icon bundle='Feather' name='menu' />} onPress={() => {}} />
-      <Typography color='textPrimary' bold>
+      <Typography variant='h3' bold>
         {props.options.tabBarLabel}
       </Typography>
-      <NotificationBell />
+      <Space spacing={1} alignItems='center'>
+        <NotificationBell />
+        <Avatar />
+      </Space>
     </BottomTabHeaderContainer>
   );
 };

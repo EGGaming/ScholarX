@@ -55,9 +55,8 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   async function onSignIn() {
     try {
       setLoading(true);
-      const client = await StudentVue.login(state.districtUrl, state.username, state.password);
+      const [client, studentInfo] = await StudentVue.login(state.districtUrl, state.username, state.password);
       setClient(client);
-      const studentInfo = await client.studentInfo();
       dispatchSession({ type: 'LOGIN', user: studentInfo });
     } catch (e) {
       setError(`${e}`.substring(14));

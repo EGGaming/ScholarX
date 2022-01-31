@@ -98,6 +98,84 @@ export interface StudentInfo {
   }[];
 }
 
+export interface Schedule {
+  classes: ClassSchedule[];
+}
+
+export interface ClassSchedule {
+  name: string;
+  period: number;
+  room: string;
+  sectiongu: string;
+  teacher: {
+    name: string;
+    email: string;
+    staffgu: string;
+  };
+  terms: SchoolTerm[];
+}
+
+export interface SchoolTerm {
+  term: {
+    name: string;
+    index: number;
+    code: number;
+  };
+  schoolYearTermCodeGU: string;
+  beginDate: string;
+  endDate: string;
+}
+
+export interface StudentClassScheduleXMLObject {
+  StudentClassSchedule: {
+    $: {
+      ErrorMessage: string;
+      IncludeAdditionalStaffWhenEmailingTeachers: string;
+      TermIndex: string;
+      TermIndexName: string;
+      'xmlns:xsd': string;
+      'xmlns:xsi': string;
+    };
+    ClassLists: {
+      ClassListing: {
+        $: {
+          CourseTitle: string;
+          Period: string;
+          RoomName: string;
+          SectionGU: string;
+          Teacher: string;
+          TeacherEmail: string;
+          TeacherStaffGU: string;
+        };
+        AdditionalStaffInformationXMLs: string[];
+      }[];
+    }[];
+    TermLists: {
+      TermListing: {
+        $: {
+          BeginDate: string;
+          EndDate: string;
+          SchoolYearTrmCodeGU: string;
+          TermCode: string;
+          TermIndex: string;
+          TermName: string;
+        };
+        TermDefCodes: {
+          TermDefCode: {
+            $: {
+              TermDefName: string;
+            };
+          }[];
+        }[];
+      }[];
+    }[];
+    TodayScheduleInfoData: {
+      SchoolInfos: string[];
+    }[];
+    ConcurrentSchoolStudentClassSchedules: string[];
+  };
+}
+
 export interface MessageListingXML {
   xml: string;
 }

@@ -18,7 +18,7 @@ const TypographyDefaults: DefaultTheme['typography'] = {
   `,
   h1: css`
     font-size: 40px;
-    line-height: 78px;
+    line-height: 50px;
     letter-spacing: -1px;
   `,
   h2: css`
@@ -52,7 +52,6 @@ const TypographyDefaults: DefaultTheme['typography'] = {
     line-height: 20.25px;
     font-size: 12px;
     letter-spacing: 1px;
-    font-weight: 400;
   `,
   body2: css`
     font-size: 15.75px;

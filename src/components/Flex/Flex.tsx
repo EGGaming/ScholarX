@@ -9,9 +9,11 @@ const Flex: React.FC<FlexProps> = (props) => {
     direction = 'row',
     shrink = false,
     grow = false,
+    container = false,
   } = props;
   return (
     <FlexContainer
+      container={container}
       justifyContent={justifyContent}
       alignItems={alignItems}
       direction={direction}

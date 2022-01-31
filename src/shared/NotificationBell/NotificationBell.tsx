@@ -16,20 +16,11 @@ const NotificationBell: React.FC = () => {
   const navigation = useRootNavigation();
   function onPress() {
     navigation.navigate('Notifications');
-    console.log(notifications.unreadNotifications.length);
   }
 
   return (
-    <Badge badgeCount={notifications.unreadNotifications.length} color='error'>
-      <IconButton
-        icon={
-          <Icon
-            bundle='MaterialCommunityIcons'
-            name={notifications.unreadNotifications.length > 0 ? 'bell' : 'bell-outline'}
-          />
-        }
-        onPress={onPress}
-      />
+    <Badge badgeCount={notifications.unreadNotifications.length} color='secondary'>
+      <IconButton icon={<Icon bundle='Feather' name='mail' />} onPress={onPress} />
     </Badge>
   );
 };

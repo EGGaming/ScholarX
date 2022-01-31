@@ -52,7 +52,11 @@ const Main: React.FC = () => {
       <BottomTab.Screen
         name='Calendar'
         component={Calendar}
-        options={{ tabBarIcon: TabIcon('Feather', 'calendar'), tabBarLabel: 'School Calendar' }}
+        options={{
+          tabBarIcon: TabIcon('Feather', 'calendar'),
+
+          tabBarLabel: 'School Calendar',
+        }}
       />
       <BottomTab.Screen
         name='Profile'

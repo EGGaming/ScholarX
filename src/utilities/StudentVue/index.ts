@@ -1,19 +1,19 @@
 import Client from './Client';
 import xml2js from 'react-native-xml2js';
 import { Client as SoapClient } from '../soap';
-import { DistrictInfo, DistrictObject } from './types';
+import { DistrictInfo, DistrictObject, Message, StudentInfo } from './types';
 import url from 'url';
 
 class StudentVue {
-  public login(domain: string, username: string, password: string): Promise<Client> {
+  public login(domain: string, username: string, password: string): Promise<[Client, StudentInfo]> {
     return new Promise(async (res, rej) => {
       const host = url.parse(domain).host;
       const endpoint: string = `https://${host}/Service/PXPCommunication.asmx`;
       const soap = new SoapClient(endpoint);
       const client = new Client(username, password, soap);
       try {
-        await client.calendar(Date.now());
-        res(client);
+        const studentInfo = await client.studentInfo();
+        res([client, studentInfo]);
       } catch (e) {
         rej(new Error(e as any));
       }

@@ -7,7 +7,7 @@ export const EventsListEmpty: React.FC = React.memo(() => {
 
 export const EventsContainer = styled.View`
   ${(props) => css`
-    padding: ${props.theme.spacing(2, 3)};
+    padding: ${props.theme.spacing(0, 3)};
     display: flex;
     flex-direction: row;
     justify-content: space-between;

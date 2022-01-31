@@ -17,6 +17,12 @@ export const FlexContainer = styled.View<Required<FlexProps>>`
         display: flex;
       `;
     }}
+    ${() => {
+      if (props.container)
+        return css`
+          padding: ${props.theme.spacing(3)};
+        `;
+    }}
     flex-direction: ${props.direction};
     align-items: ${props.alignItems};
     justify-content: ${props.justifyContent};
