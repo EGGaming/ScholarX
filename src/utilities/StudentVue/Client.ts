@@ -9,6 +9,7 @@ import {
   Message,
   MessageListingXML,
   PXPMessagesData,
+  StudentClassScheduleXMLObject,
   StudentInfo,
 } from './types';
 import { format } from 'date-fns';
@@ -149,6 +150,28 @@ class Client {
           name: t.AttachmentXML.$.DocumentName,
           base64: t.AttachmentXML.Base64Code[0],
         });
+      } catch (e) {
+        throw Error(e as any);
+      }
+    });
+  }
+
+  public classSchedule(semester: number): Promise<any> {
+    return new Promise(async (res) => {
+      try {
+        const data = await this.client.processRequest(
+          this.username,
+          this.password,
+          Service.PXPWebServices,
+          'StudentClassList',
+          {
+            childIntID: 0,
+            TermIndex: semester - 1,
+          }
+        );
+
+        const t = await SoapClient.parseString<StudentClassScheduleXMLObject>(data);
+        res(t);
       } catch (e) {
         throw Error(e as any);
       }
