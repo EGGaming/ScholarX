@@ -35,6 +35,11 @@ export const SpaceBaseContainer = styled.View<SpaceBaseProps>`
               display: flex;
             `;
           }}
+          ${() =>
+            props.fullWidth &&
+            css`
+              width: 100%;
+            `}
           flex-direction: row;
         `;
       case 'vertical':
@@ -52,6 +57,11 @@ export const SpaceBaseContainer = styled.View<SpaceBaseProps>`
               display: flex;
             `;
           }}
+          ${() =>
+            props.fullWidth &&
+            css`
+              width: 100%;
+            `}
           flex-direction: column;
         `;
     }

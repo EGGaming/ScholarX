@@ -25,25 +25,26 @@ const Space: React.FC<SpaceProps> = (props) => {
       alignItems={alignItems}
       style={{ justifyContent }}>
       {React.Children.map(children, (child, index) => {
-        switch (index) {
-          default:
-            return (
-              <React.Fragment>
-                {child}
-                <SpaceBase
-                  grow={grow}
-                  shrink={shrink}
-                  container={container}
-                  spacing={spacing}
-                  direction={direction}
-                  justifyContent={justifyContent}
-                  alignItems={alignItems}
-                />
-              </React.Fragment>
-            );
-          case React.Children.count(children) - 1:
-            return <React.Fragment>{child}</React.Fragment>;
-        }
+        if (React.isValidElement(child))
+          switch (index) {
+            default:
+              return (
+                <React.Fragment>
+                  {child}
+                  <SpaceBase
+                    grow={grow}
+                    shrink={shrink}
+                    container={container}
+                    spacing={spacing}
+                    direction={direction}
+                    justifyContent={justifyContent}
+                    alignItems={alignItems}
+                  />
+                </React.Fragment>
+              );
+            case React.Children.count(children) - 1:
+              return <React.Fragment>{child}</React.Fragment>;
+          }
       })}
     </SpaceBaseContainer>
   );

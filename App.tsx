@@ -16,6 +16,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import SearchDistrictProvider from '@context/SearchDistrictContext/SearchDistrictContext';
 import SearchDistrictFocusedProvider from '@context/SearchDistrictFocusedContext/SearchDistrictFocusedContext';
 import CalendarProvider from '@context/CalendarContext/CalendarContext';
+import ClassScheduleProvider from '@context/ClassScheduleContext/ClassScheduleContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -26,22 +27,24 @@ export default function App() {
         <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
           <Storage.Provider>
             <CalendarProvider>
-              <SearchDistrictFocusedProvider>
-                <SearchDistrictProvider>
-                  <StudentVueClientProvider>
-                    <NotificationContextProvider>
-                      <SessionContextProvider>
-                        <AppContextProvider>
-                          <StatusBar />
-                          <NavigationContainer theme={navigationTheme}>
-                            <Root />
-                          </NavigationContainer>
-                        </AppContextProvider>
-                      </SessionContextProvider>
-                    </NotificationContextProvider>
-                  </StudentVueClientProvider>
-                </SearchDistrictProvider>
-              </SearchDistrictFocusedProvider>
+              <ClassScheduleProvider>
+                <SearchDistrictFocusedProvider>
+                  <SearchDistrictProvider>
+                    <StudentVueClientProvider>
+                      <NotificationContextProvider>
+                        <SessionContextProvider>
+                          <AppContextProvider>
+                            <StatusBar />
+                            <NavigationContainer theme={navigationTheme}>
+                              <Root />
+                            </NavigationContainer>
+                          </AppContextProvider>
+                        </SessionContextProvider>
+                      </NotificationContextProvider>
+                    </StudentVueClientProvider>
+                  </SearchDistrictProvider>
+                </SearchDistrictFocusedProvider>
+              </ClassScheduleProvider>
             </CalendarProvider>
           </Storage.Provider>
         </HoldMenuProvider>

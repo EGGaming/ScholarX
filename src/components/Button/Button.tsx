@@ -4,7 +4,13 @@ import React from 'react';
 import { useAppTheme } from '@theme/core';
 import { IconPack, IconProps } from '@components/Icon/Icon.types';
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
-import { ButtonBase, ButtonBaseContainer, ButtonIconContainer, ButtonText } from '@components/Button/Button.base';
+import {
+  BaseContainer,
+  ButtonBase,
+  ButtonBaseContainer,
+  ButtonIconContainer,
+  ButtonText,
+} from '@components/Button/Button.base';
 
 const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> = React.forwardRef((props, ref) => {
   const {
@@ -48,71 +54,81 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
       case 'left':
       default:
         return (
-          <ButtonBase ref={ref as any} hexColor={hexColor} color={color} {...otherProps}>
-            <ButtonBaseContainer
-              size={size}
-              disabled={disabled}
-              variant={variant}
-              color={color}
-              hexColor={hexColor}
-              textCentered={textCentered}>
-              <ButtonIconContainer placement={iconPlacement}>{React.cloneElement(icon, iconProps)}</ButtonIconContainer>
-              <ButtonText
+          <BaseContainer>
+            <ButtonBase ref={ref as any} hexColor={hexColor} color={color} {...otherProps}>
+              <ButtonBaseContainer
                 size={size}
                 disabled={disabled}
                 variant={variant}
                 color={color}
                 hexColor={hexColor}
                 textCentered={textCentered}>
-                {title}
-              </ButtonText>
-            </ButtonBaseContainer>
-          </ButtonBase>
+                <ButtonIconContainer placement={iconPlacement}>
+                  {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                </ButtonIconContainer>
+                <ButtonText
+                  size={size}
+                  disabled={disabled}
+                  variant={variant}
+                  color={color}
+                  hexColor={hexColor}
+                  textCentered={textCentered}>
+                  {title}
+                </ButtonText>
+              </ButtonBaseContainer>
+            </ButtonBase>
+          </BaseContainer>
         );
       case 'right':
         return (
-          <ButtonBase ref={ref as any} color={color} hexColor={hexColor} {...otherProps}>
-            <ButtonBaseContainer
-              size={size}
-              disabled={disabled}
-              variant={variant}
-              color={color}
-              hexColor={hexColor}
-              textCentered={textCentered}>
-              <ButtonText
+          <BaseContainer>
+            <ButtonBase ref={ref as any} color={color} hexColor={hexColor} {...otherProps}>
+              <ButtonBaseContainer
                 size={size}
                 disabled={disabled}
                 variant={variant}
                 color={color}
                 hexColor={hexColor}
                 textCentered={textCentered}>
-                {title}
-              </ButtonText>
-              <ButtonIconContainer placement={iconPlacement}>{React.cloneElement(icon, iconProps)}</ButtonIconContainer>
-            </ButtonBaseContainer>
-          </ButtonBase>
+                <ButtonText
+                  size={size}
+                  disabled={disabled}
+                  variant={variant}
+                  color={color}
+                  hexColor={hexColor}
+                  textCentered={textCentered}>
+                  {title}
+                </ButtonText>
+                <ButtonIconContainer placement={iconPlacement}>
+                  {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                </ButtonIconContainer>
+              </ButtonBaseContainer>
+            </ButtonBase>
+          </BaseContainer>
         );
     }
   return (
-    <ButtonBase ref={ref as any} color={color} hexColor={hexColor} {...otherProps}>
-      <ButtonBaseContainer
-        size={size}
-        disabled={disabled}
-        variant={variant}
-        color={color}
-        hexColor={hexColor}
-        textCentered={textCentered}>
-        <ButtonText
+    <BaseContainer>
+      <ButtonBase ref={ref as any} color={color} hexColor={hexColor} {...otherProps}>
+        <ButtonBaseContainer
           size={size}
           disabled={disabled}
           variant={variant}
           color={color}
           hexColor={hexColor}
           textCentered={textCentered}>
-          {title}
-        </ButtonText>
-      </ButtonBaseContainer>
-    </ButtonBase>
+          <ButtonText
+            size={size}
+            disabled={disabled}
+            variant={variant}
+            color={color}
+            hexColor={hexColor}
+            textCentered={textCentered}>
+            {title}
+          </ButtonText>
+        </ButtonBaseContainer>
+      </ButtonBase>
+    </BaseContainer>
   );
 });
 

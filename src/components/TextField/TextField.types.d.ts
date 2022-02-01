@@ -11,6 +11,7 @@ export type TextFieldAccessoryProps = {
   adornmentStart?: React.ReactElement<React.ComponentProps<typeof Icon>> | false;
   size?: 'medium' | 'small';
   clearButton?: boolean;
+  error?: string;
 };
 
 export type AdornmentProps = Required<Pick<TextFieldAccessoryProps, 'size'>>;

@@ -5,6 +5,13 @@ import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-nativ
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
 import { AppColors } from '@theme/core.types';
 
+export const BaseContainer = styled.View`
+  ${(props) => css`
+    border-radius: ${props.theme.borderRadius}px;
+    overflow: hidden;
+  `}
+`;
+
 export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity).attrs<{
   color?: AppColors;
   hexColor?: string;
@@ -74,7 +81,7 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
         justify-content: flex-start;
       `;
     }}
-    border-radius: 4px;
+    border-radius: ${props.theme.borderRadius}px;
     ${() => {
       if (props.color === 'inherit')
         return css`

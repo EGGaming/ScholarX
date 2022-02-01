@@ -100,6 +100,13 @@ export interface StudentInfo {
 
 export interface Schedule {
   classes: ClassSchedule[];
+  terms: SchoolTerm[];
+  error: string;
+  currentTerm: {
+    index: number;
+    name: string;
+    code: number;
+  };
 }
 
 export interface ClassSchedule {
@@ -112,7 +119,6 @@ export interface ClassSchedule {
     email: string;
     staffgu: string;
   };
-  terms: SchoolTerm[];
 }
 
 export interface SchoolTerm {
@@ -122,8 +128,8 @@ export interface SchoolTerm {
     code: number;
   };
   schoolYearTermCodeGU: string;
-  beginDate: string;
-  endDate: string;
+  beginDate: Date;
+  endDate: Date;
 }
 
 export interface StudentClassScheduleXMLObject {

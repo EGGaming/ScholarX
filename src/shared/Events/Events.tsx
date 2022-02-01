@@ -62,15 +62,13 @@ const Events: React.FC = () => {
         <Typography variant='h3' bold>
           Upcoming events
         </Typography>
-        {upcomingNonDuplicateEvents.length > 3 && (
-          <Button
-            title='See all'
-            size='small'
-            onPress={onViewAll}
-            icon={<Icon bundle='Feather' name='chevron-right' />}
-            iconPlacement='right'
-          />
-        )}
+        <Button
+          title='See all'
+          size='small'
+          onPress={onViewAll}
+          icon={<Icon bundle='Feather' name='chevron-right' />}
+          iconPlacement='right'
+        />
       </EventsContainer>
       {loading ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

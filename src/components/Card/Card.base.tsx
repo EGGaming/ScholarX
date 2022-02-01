@@ -2,6 +2,7 @@ import Paper from '@components/Paper/Paper';
 import { AppColors } from '@theme/core.types';
 import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 import styled, { css } from 'styled-components/native';
+import { CardProps } from './Card.types';
 
 export const CardContainer = styled.View`
   ${(props) => css`
@@ -11,11 +12,16 @@ export const CardContainer = styled.View`
   `}
 `;
 
-export const CardBaseButtonContainer = styled.View`
+export const CardBaseButtonContainer = styled.View<CardProps>`
   ${(props) => css`
     border-radius: ${props.theme.borderRadius}px;
     overflow: hidden;
-    margin: ${props.theme.spacing(1, 3)};
+    margin: ${props.theme.spacing(2, 3)};
+    ${() =>
+      props.width &&
+      css`
+        width: ${typeof props.width === 'number' ? `${props.width}px` : props.width};
+      `}
     ${() => {
       switch (Platform.OS) {
         case 'android':

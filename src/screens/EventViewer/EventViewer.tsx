@@ -57,42 +57,55 @@ const EventViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'EventVie
     <ScrollView>
       <TitleContainer>
         <Typography variant='h2'>{title}</Typography>
-        <Typography color='textSecondary'>{event.DayType}</Typography>
+        <Space spacing={1}>
+          <Typography color='textSecondary'>{event.DayType}</Typography>
+          {event.DayType !== 'Assignment' && (
+            <Typography variant='body2' color='textSecondary'>
+              {event.StartTime}
+            </Typography>
+          )}
+        </Space>
       </TitleContainer>
-      {assignments.map((t) => (
-        <Card key={t.assignmentName}>
-          <Space spacing={0.5} direction='vertical'>
-            <Flex direction='column'>
-              <AssignmentHeaderContainer>
-                <Flex shrink>
-                  <Typography variant='body2' bold numberOfLines={1}>
-                    {t.class}
-                  </Typography>
-                </Flex>
+      {event.DayType === 'Assignment' ? (
+        assignments.map((t) => (
+          <Card key={t.assignmentName}>
+            <Space spacing={0.5} direction='vertical'>
+              <Flex direction='column'>
+                <AssignmentHeaderContainer>
+                  <Flex shrink>
+                    <Typography variant='body2' bold numberOfLines={1}>
+                      {t.class}
+                    </Typography>
+                  </Flex>
 
-                <Typography variant='body2' color='textSecondary'>
-                  Period {t.period}
+                  <Typography variant='body2' color='textSecondary'>
+                    Period {t.period}
+                  </Typography>
+                </AssignmentHeaderContainer>
+                <Space spacing={1} alignItems='center'>
+                  <Icon bundle='FontAwesome5' name='user' color='textSecondary' size='small' />
+                  <Typography color='textSecondary' variant='caption'>
+                    {t.teacher}
+                  </Typography>
+                </Space>
+              </Flex>
+              <Typography>{t.assignmentName}</Typography>
+              <AssignmentFooterContainer>
+                <Typography>
+                  Score:{' '}
+                  <Typography bold color='primary'>
+                    {t.score}
+                  </Typography>
                 </Typography>
-              </AssignmentHeaderContainer>
-              <Space spacing={1} alignItems='center'>
-                <Icon bundle='FontAwesome5' name='user' color='textSecondary' size='small' />
-                <Typography color='textSecondary' variant='caption'>
-                  {t.teacher}
-                </Typography>
-              </Space>
-            </Flex>
-            <Typography>{t.assignmentName}</Typography>
-            <AssignmentFooterContainer>
-              <Typography>
-                Score:{' '}
-                <Typography bold color='primary'>
-                  {t.score}
-                </Typography>
-              </Typography>
-            </AssignmentFooterContainer>
-          </Space>
-        </Card>
-      ))}
+              </AssignmentFooterContainer>
+            </Space>
+          </Card>
+        ))
+      ) : (
+        <Container>
+          <Typography>{event.StartTime}</Typography>
+        </Container>
+      )}
     </ScrollView>
   );
 };

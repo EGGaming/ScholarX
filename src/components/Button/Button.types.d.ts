@@ -10,6 +10,6 @@ export interface ButtonProps {
   size?: 'small' | 'medium';
 }
 export interface ButtonAccessoryProps {
-  icon?: React.ReactElement<React.ComponentProps<typeof Icon>>;
+  icon?: React.ReactElement<React.ComponentProps<typeof Icon>> | boolean;
   iconPlacement?: 'left' | 'right';
 }

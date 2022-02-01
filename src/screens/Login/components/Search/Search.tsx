@@ -31,9 +31,9 @@ const Search: React.FC = () => {
           onFocus={onFocus}
           size='small'
           value={search}
+          width='100%'
           onChangeText={setSearch}
           adornmentStart={<Icon bundle='Feather' name='search' />}
-          width='90%'
           placeholder='School district name'
           clearButton
         />

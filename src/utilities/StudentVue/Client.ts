@@ -9,6 +9,7 @@ import {
   Message,
   MessageListingXML,
   PXPMessagesData,
+  Schedule,
   StudentClassScheduleXMLObject,
   StudentInfo,
 } from './types';
@@ -156,7 +157,7 @@ class Client {
     });
   }
 
-  public classSchedule(semester: number): Promise<any> {
+  public classSchedule(semester: number): Promise<Schedule> {
     return new Promise(async (res) => {
       try {
         const data = await this.client.processRequest(
@@ -170,8 +171,36 @@ class Client {
           }
         );
 
-        const t = await SoapClient.parseString<StudentClassScheduleXMLObject>(data);
-        res(t);
+        const { StudentClassSchedule } = await SoapClient.parseString<StudentClassScheduleXMLObject>(data);
+        res({
+          currentTerm: {
+            name: StudentClassSchedule.$.TermIndexName,
+            index: Number(StudentClassSchedule.$.TermIndex),
+            code: Number(StudentClassSchedule.$.TermIndex) + 1,
+          },
+          classes: StudentClassSchedule.ClassLists[0].ClassListing.map((obj) => ({
+            name: obj.$.CourseTitle,
+            period: Number(obj.$.Period),
+            room: obj.$.RoomName,
+            sectiongu: obj.$.SectionGU,
+            teacher: {
+              name: obj.$.Teacher,
+              email: obj.$.TeacherEmail,
+              staffgu: obj.$.TeacherStaffGU,
+            },
+          })),
+          terms: StudentClassSchedule.TermLists[0].TermListing.map((obj) => ({
+            term: {
+              name: obj.$.TermName,
+              code: Number(obj.$.TermCode),
+              index: Number(obj.$.TermIndex),
+            },
+            schoolYearTermCodeGU: obj.$.SchoolYearTrmCodeGU,
+            beginDate: new Date(obj.$.BeginDate),
+            endDate: new Date(obj.$.EndDate),
+          })),
+          error: StudentClassSchedule.$.ErrorMessage,
+        });
       } catch (e) {
         throw Error(e as any);
       }

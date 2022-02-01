@@ -15,12 +15,15 @@ import { SignInProps } from '@screens/Login/SignIn/SignIn.types';
 import StudentVue from '@utilities/StudentVue';
 import React from 'react';
 import * as LocalAuthentication from 'expo-local-authentication';
+import Flex from '@components/Flex/Flex';
 
 const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const [state, dispatch] = useAppReducer();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [session, dispatchSession] = useSessionReducer();
   const [error, setError] = React.useState<string>('');
+  const [passwordError, setPasswordError] = React.useState<string>('');
+  const [usernameError, setUsernameError] = React.useState<string>('');
   const [client, setClient] = useStudentVue();
   function onTextUsernameChange(e: string) {
     dispatch({ type: 'SETTER', key: 'username', payload: e });
@@ -32,6 +35,9 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   React.useEffect(() => {
     if (state.staySignedIn) biometricSignIn();
     return () => {
+      setPasswordError('');
+      setUsernameError('');
+      setError('');
       if (client == null) dispatch({ type: 'CLEAR_DISTRICT' });
     };
   }, []);
@@ -53,6 +59,13 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     dispatch({ type: 'TOGGLE_STAY_SIGNED_IN' });
   }
   async function onSignIn() {
+    if (state.username.length === 0) {
+      setUsernameError('This field is required');
+    }
+    if (state.password.length === 0) {
+      setPasswordError('This field is required');
+    }
+    if (passwordError && usernameError) return;
     try {
       setLoading(true);
       const [client, studentInfo] = await StudentVue.login(state.districtUrl, state.username, state.password);
@@ -69,7 +82,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       dispatchSession({ type: 'LOGOUT' });
-    }, [])
+    }, [dispatchSession])
   );
 
   return (
@@ -84,11 +97,18 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
           </Typography>
           <Space direction='vertical' spacing={0.5}>
             <Typography>Username</Typography>
-            <TextField width='100%' value={state.username} placeholder='Username' onChangeText={onTextUsernameChange} />
+            <TextField
+              error={usernameError}
+              width='100%'
+              value={state.username}
+              placeholder='Username'
+              onChangeText={onTextUsernameChange}
+            />
           </Space>
           <Space direction='vertical' spacing={0.5}>
             <Typography>Password</Typography>
             <TextField
+              error={passwordError}
               width='100%'
               value={state.password}
               secureTextEntry
@@ -106,13 +126,12 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
             variant='contained'
             textCentered
             disabled={loading}
-            icon={loading ? <Loading /> : undefined}
+            icon={loading && <Loading />}
           />
-          {error.length !== 0 && (
-            <Typography color='error'>
-              <Icon bundle='Feather' name='alert-circle' color='error' />
-              {error}
-            </Typography>
+          {error && (
+            <Flex grow justifyContent='center'>
+              <Typography color='error'>{error}</Typography>
+            </Flex>
           )}
         </Space>
       </SignInWrapper>

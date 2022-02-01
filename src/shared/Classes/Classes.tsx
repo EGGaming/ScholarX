@@ -1,6 +1,8 @@
 import Card from '@components/Card/Card';
+import Skeleton from '@components/Skeleton/Skeleton';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
+import { useClassSchedule } from '@context/ClassScheduleContext/ClassScheduleContext';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import { EventsContainer } from '@shared/Events/Events.base';
 import React from 'react';
@@ -8,12 +10,13 @@ import { ScrollView } from 'react-native';
 
 const Classes: React.FC = () => {
   const [client] = useStudentVue();
+  const [schedule, setSchedule] = useClassSchedule();
   React.useEffect(() => {
     fetchScheduleFromAPI();
   }, []);
   async function fetchScheduleFromAPI() {
-    const t = await client.classSchedule(2);
-    console.log(t);
+    const schedule = await client.classSchedule(2);
+    setSchedule(schedule);
   }
   return (
     <Space spacing={1} direction='vertical'>
@@ -23,9 +26,20 @@ const Classes: React.FC = () => {
         </Typography>
       </EventsContainer>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <Card>
-          <Typography>AP United States History</Typography>
-        </Card>
+        {schedule
+          ? schedule.classes.map((classSchedule) => (
+              <Card width={300}>
+                <Typography bold>{classSchedule.name}</Typography>
+                <Typography variant='body2' color='textSecondary'>
+                  {classSchedule.teacher.name}
+                </Typography>
+              </Card>
+            ))
+          : new Array(6).fill('').map((_, i) => (
+              <Card key={i}>
+                <Skeleton.Typography variant='h3' width={300} />
+              </Card>
+            ))}
       </ScrollView>
     </Space>
   );

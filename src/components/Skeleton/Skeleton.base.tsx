@@ -49,7 +49,9 @@ export const SkeletonTypographyBase = styled(Animated.View)<Required<SkeletonTyp
   ${(props) => css`
     border-radius: ${props.theme.borderRadius}px;
     width: ${typeof props.width === 'number' ? `${props.width}px` : props.width};
-    background-color: ${props.theme.palette.primary.dark};
+    background-color: ${props.theme.mode === 'dark'
+      ? props.theme.palette.primary.dark
+      : props.theme.palette.constants.GRAY[400]};
   `}
 `;
 
@@ -94,6 +96,8 @@ export const SkeletonCircleBase = styled(Animated.View)<SkeletonCircleProps>`
     }
   }}
   ${(props) => css`
-    background-color: ${props.theme.palette.primary.dark};
+    background-color: ${props.theme.mode === 'dark'
+      ? props.theme.palette.primary.dark
+      : props.theme.palette.constants.GRAY[400]};
   `}
 `;

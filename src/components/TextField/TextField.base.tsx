@@ -52,7 +52,6 @@ export const TextFieldBaseContainer = styled.View<Required<TextFieldProps>>`
           return props.width;
       }
     }};
-    display: flex;
     flex-direction: row;
     justify-content: flex-start;
   `}
@@ -68,8 +67,8 @@ export const TextFieldBase = styled.TextInput<TextFieldAccessoryProps>`
           padding: ${props.theme.spacing(2, props.adornmentEnd ? 7 : 2, 2, props.adornmentStart ? 7 : 2)};
           background-color: ${props.theme.palette.background.paper};
           color: ${props.theme.palette.text.primary};
-          border-radius: 4px;
-          border: 1px solid ${props.theme.palette.divider};
+          border-radius: ${props.theme.borderRadius}px;
+          border: 1px solid ${props.error ? props.theme.palette.error.main : props.theme.palette.divider};
           ${props.theme.typography.body};
         `;
       case 'small':
@@ -77,8 +76,8 @@ export const TextFieldBase = styled.TextInput<TextFieldAccessoryProps>`
           padding: ${props.theme.spacing(1, props.adornmentEnd ? 5 : 1, 1, props.adornmentStart ? 5 : 1)};
           background-color: ${props.theme.palette.background.paper};
           color: ${props.theme.palette.text.primary};
-          border-radius: 4px;
-          border: 1px solid ${props.theme.palette.divider};
+          border-radius: ${props.theme.borderRadius}px;
+          border: 1px solid ${props.error ? props.theme.palette.error.main : props.theme.palette.divider};
           ${props.theme.typography.body2};
         `;
     }
