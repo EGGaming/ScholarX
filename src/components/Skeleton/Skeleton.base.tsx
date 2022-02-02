@@ -1,4 +1,4 @@
-import { SkeletonCircleProps, SkeletonTypographyProps } from '@components/Skeleton/Skeleton.types';
+import { SkeletonBoxProps, SkeletonCircleProps, SkeletonTypographyProps } from '@components/Skeleton/Skeleton.types';
 import styled, { css } from 'styled-components/native';
 import Animated from 'react-native-reanimated';
 
@@ -27,7 +27,7 @@ export const SkeletonTypographyBase = styled(Animated.View)<Required<SkeletonTyp
       case 'caption':
         return css`
           height: 12px;
-          margin-vertical: ${lineHeight(20.25, 12)};
+          margin-vertical: ${lineHeight(12, 20.25)};
         `;
       case 'h1':
         return css`
@@ -55,6 +55,41 @@ export const SkeletonTypographyBase = styled(Animated.View)<Required<SkeletonTyp
   `}
 `;
 
+export const SkeletonBoxBase = styled(Animated.View)<SkeletonBoxProps>`
+  ${(props) => css`
+    display: flex;
+    border-radius: ${props.rounded ? props.theme.borderRadius : 0}px;
+    background-color: ${props.theme.mode === 'dark'
+      ? props.theme.palette.primary.dark
+      : props.theme.palette.constants.GRAY[400]};
+  `}
+  ${(props) => {
+    if ('width' in props) {
+      return css`
+        width: ${typeof props.width === 'number' ? `${props.width}px` : props.width};
+      `;
+    }
+    if ('preset' in props) {
+      switch (props.preset) {
+        case 'button':
+          switch (props.size) {
+            default:
+            case 'medium':
+              return css`
+                border-radius: ${props.theme.borderRadius}px;
+                padding: ${props.theme.spacing(3, 2)};
+              `;
+            case 'small':
+              return css`
+                border-radius: ${props.theme.borderRadius}px;
+                padding: ${props.theme.spacing(0.8, 1.5)};
+              `;
+          }
+      }
+    }
+  }}
+`;
+
 export const SkeletonCircleBase = styled(Animated.View)<SkeletonCircleProps>`
   ${(props) => {
     if ('width' in props) {
@@ -70,25 +105,25 @@ export const SkeletonCircleBase = styled(Animated.View)<SkeletonCircleProps>`
             case 'medium':
               return css`
                 border-radius: 10px;
-                width: 43px;
-                height: 43px;
+                width: 36px;
+                height: 36px;
               `;
             case 'large':
               return css`
-                width: 55px;
-                height: 55px;
+                width: 49px;
+                height: 49px;
                 border-radius: 16px;
               `;
             case 'card':
               return css`
-                width: 71px;
-                height: 71px;
+                width: 65px;
+                height: 65px;
                 border-radius: 24px;
               `;
             case 'small':
               return css`
-                width: 37px;
-                height: 37px;
+                width: 31px;
+                height: 31px;
                 border-radius: 7px;
               `;
           }

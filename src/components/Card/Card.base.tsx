@@ -22,6 +22,11 @@ export const CardBaseButtonContainer = styled.View<CardProps>`
       css`
         width: ${typeof props.width === 'number' ? `${props.width}px` : props.width};
       `}
+    ${() =>
+      props.height &&
+      css`
+        height: ${typeof props.height === 'number' ? `${props.height}px` : props.height};
+      `}
     ${() => {
       switch (Platform.OS) {
         case 'android':

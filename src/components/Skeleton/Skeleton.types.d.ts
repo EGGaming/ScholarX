@@ -14,3 +14,13 @@ export type SkeletonCircleProps =
       size?: 'small' | 'medium' | 'large' | 'card';
     }
   | SkeletonProps;
+
+export type SkeletonBoxProps = {
+  rounded?: boolean;
+} & (
+  | {
+      preset: 'button';
+      size?: 'small' | 'medium';
+    }
+  | SkeletonProps
+);

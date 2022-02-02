@@ -58,7 +58,6 @@ export const TextFieldBaseContainer = styled.View<Required<TextFieldProps>>`
 `;
 
 export const TextFieldBase = styled.TextInput<TextFieldAccessoryProps>`
-  width: 100%;
   flex-grow: 1;
   ${(props) => {
     switch (props.size!) {

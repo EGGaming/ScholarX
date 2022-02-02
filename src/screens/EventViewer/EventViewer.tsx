@@ -57,14 +57,7 @@ const EventViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'EventVie
     <ScrollView>
       <TitleContainer>
         <Typography variant='h2'>{title}</Typography>
-        <Space spacing={1}>
-          <Typography color='textSecondary'>{event.DayType}</Typography>
-          {event.DayType !== 'Assignment' && (
-            <Typography variant='body2' color='textSecondary'>
-              {event.StartTime}
-            </Typography>
-          )}
-        </Space>
+        <Typography color='textSecondary'>{event.DayType}</Typography>
       </TitleContainer>
       {event.DayType === 'Assignment' ? (
         assignments.map((t) => (

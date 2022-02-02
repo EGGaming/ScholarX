@@ -1,5 +1,10 @@
-import { SkeletonCircleBase, SkeletonTypographyBase } from '@components/Skeleton/Skeleton.base';
-import { SkeletonCircleProps, SkeletonProps, SkeletonTypographyProps } from '@components/Skeleton/Skeleton.types';
+import { SkeletonBoxBase, SkeletonCircleBase, SkeletonTypographyBase } from '@components/Skeleton/Skeleton.base';
+import {
+  SkeletonBoxProps,
+  SkeletonCircleProps,
+  SkeletonProps,
+  SkeletonTypographyProps,
+} from '@components/Skeleton/Skeleton.types';
 import React from 'react';
 import { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
@@ -28,6 +33,18 @@ class Skeleton {
     );
 
     return <SkeletonCircleBase style={style} {...props} />;
+  };
+  public static Box: React.FC<SkeletonBoxProps> = (props) => {
+    const opacity = useSharedValue(0.2);
+    opacity.value = withRepeat(withTiming(0.4, { duration: 1000, easing: Easing.exp }), -1, true);
+
+    const style = useAnimatedStyle(
+      () => ({
+        opacity: opacity.value,
+      }),
+      []
+    );
+    return <SkeletonBoxBase style={style} {...props} />;
   };
 }
 

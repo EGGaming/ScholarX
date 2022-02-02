@@ -21,6 +21,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const [state, dispatch] = useAppReducer();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [session, dispatchSession] = useSessionReducer();
+  const [hidePassword, toggleHidePassword] = React.useReducer((s) => !s, true);
   const [error, setError] = React.useState<string>('');
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [usernameError, setUsernameError] = React.useState<string>('');
@@ -58,26 +59,47 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   function toggleSignIn() {
     dispatch({ type: 'TOGGLE_STAY_SIGNED_IN' });
   }
+
+  const validateForm = React.useCallback(
+    (): Promise<void> =>
+      new Promise((resolve, reject) => {
+        setPasswordError('');
+        setUsernameError('');
+        if (state.password.length === 0) {
+          setPasswordError('This field is required');
+          reject('Password field must be set');
+        }
+        if (state.username.length === 0) {
+          setUsernameError('This field is required');
+          reject('Username field must be set');
+        }
+
+        resolve();
+      }),
+    [state.password, state.username, setPasswordError, setUsernameError]
+  );
+
   async function onSignIn() {
-    if (state.username.length === 0) {
-      setUsernameError('This field is required');
-    }
-    if (state.password.length === 0) {
-      setPasswordError('This field is required');
-    }
-    if (passwordError && usernameError) return;
     try {
-      setLoading(true);
-      const [client, studentInfo] = await StudentVue.login(state.districtUrl, state.username, state.password);
-      setClient(client);
-      dispatchSession({ type: 'LOGIN', user: studentInfo });
-    } catch (e) {
-      setError(`${e}`.substring(14));
-    } finally {
-      setLoading(false);
-      if (!state.staySignedIn) dispatch({ type: 'CLEAR_CREDENTIALS' });
-    }
+      await validateForm();
+      try {
+        setLoading(true);
+        const [client, studentInfo] = await StudentVue.login(state.districtUrl, state.username, state.password);
+        setClient(client);
+        dispatchSession({ type: 'LOGIN', user: studentInfo });
+      } catch (e) {
+        setError(`${e}`.substring(14));
+      } finally {
+        setLoading(false);
+      }
+    } catch (e) {}
   }
+
+  React.useEffect(() => {
+    if (!loading && !state.staySignedIn && !error) {
+      dispatch({ type: 'CLEAR_CREDENTIALS' });
+    }
+  }, [loading]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -111,7 +133,13 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
               error={passwordError}
               width='100%'
               value={state.password}
-              secureTextEntry
+              secureTextEntry={hidePassword}
+              adornmentEnd={
+                <IconButton
+                  icon={<Icon bundle='Feather' name={hidePassword ? 'eye-off' : 'eye'} />}
+                  onPress={toggleHidePassword}
+                />
+              }
               placeholder='Password'
               onChangeText={onTextPasswordChange}
             />

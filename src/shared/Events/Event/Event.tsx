@@ -25,6 +25,7 @@ const Event: React.FC<EventProps> = (props) => {
     const parsedDate = Date.parse(item.Date);
     const title = format(parsedDate, 'EEEE, MMM do, yyyy');
     const upcomingEvents = useFutureEvents();
+    const theme = useAppTheme();
 
     const dateTitle: string = isToday(parsedDate)
       ? 'Today'
@@ -45,9 +46,9 @@ const Event: React.FC<EventProps> = (props) => {
         case 'Holiday':
         case 'Regular':
         default:
-          return <Icon bundle='MaterialCommunityIcons' name='bed-outline' color='secondary' size='card' />;
+          return <Icon bundle='MaterialCommunityIcons' name='bed-outline' color='primary' size='large' />;
         case 'Assignment':
-          return <Icon bundle='Feather' name='clock' color='primary' size='card' />;
+          return <Icon bundle='Feather' name='clock' color='primary' size='large' />;
       }
     }, [item.DayType]);
 
@@ -62,22 +63,31 @@ const Event: React.FC<EventProps> = (props) => {
     }, [upcomingEvents, item.DayType]);
 
     return (
-      <Card onPress={onPress}>
+      <Card>
         <Space spacing={1} direction='vertical'>
-          <Flex justifyContent='space-between'>
-            <EventIconContainer>{icon}</EventIconContainer>
-            <Typography variant='caption' color={titleColor} bold>
-              {dateTitle}
-            </Typography>
-          </Flex>
-          <EventContentContainer>
-            <Typography bold variant='h3'>
-              {title}
-            </Typography>
-            <Typography color='textSecondary' variant='body2'>
-              {secondaryText}
-            </Typography>
-          </EventContentContainer>
+          <Space spacing={0.5} alignItems='center'>
+            {icon}
+            <EventContentContainer>
+              <Typography variant='caption' color={titleColor} bold>
+                {dateTitle}
+              </Typography>
+              <Typography bold variant='h3'>
+                {title}
+              </Typography>
+              <Typography color='textSecondary' variant='body2'>
+                {secondaryText}
+              </Typography>
+            </EventContentContainer>
+          </Space>
+          <Button
+            title='More Details'
+            iconPlacement='right'
+            textCentered
+            color={theme.mode === 'dark' ? 'secondary' : 'primary'}
+            variant='contained'
+            icon={<Icon bundle='Feather' name='arrow-right' />}
+            onPress={onPress}
+          />
         </Space>
       </Card>
     );
@@ -87,18 +97,17 @@ const Event: React.FC<EventProps> = (props) => {
     if (isSkeleton)
       return (
         <Card>
-          <Space spacing={1} direction='vertical'>
-            <Flex justifyContent='space-between'>
-              <EventIconContainer>
-                <Skeleton.Circle preset='icon' size='large' />
-              </EventIconContainer>
-              <Skeleton.Typography width={80} variant='caption' />
-            </Flex>
-            <EventContentContainer>
-              <Skeleton.Typography width={257} variant='h3' />
+          <Space spacing={1.75} direction='vertical'>
+            <Space spacing={0.5} alignItems='center'>
+              <Skeleton.Circle size='large' preset='icon' />
+              <EventContentContainer>
+                <Skeleton.Typography width={80} variant='caption' />
+                <Skeleton.Typography width={190} variant='h3' />
 
-              <Skeleton.Typography width='50%' variant='body2' />
-            </EventContentContainer>
+                <Skeleton.Typography width={130} variant='body2' />
+              </EventContentContainer>
+            </Space>
+            <Skeleton.Box preset='button' />
           </Space>
         </Card>
       );

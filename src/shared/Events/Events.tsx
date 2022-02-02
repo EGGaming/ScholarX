@@ -70,6 +70,14 @@ const Events: React.FC = () => {
           iconPlacement='right'
         />
       </EventsContainer>
+      {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {new Array(3).fill('').map((_, i) => (
+          <Event key={i} isSkeleton />
+        ))}
+        {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
+          <Event item={item} key={`${item.Title}: ${item.Date}`} />
+        ))}
+      </ScrollView> */}
       {loading ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {new Array(3).fill('').map((_, i) => (

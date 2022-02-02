@@ -247,7 +247,7 @@ const getAppliedTheme = (): DefaultTheme => {
 
   switch (colorScheme) {
     case 'dark':
-    // return darkTheme;
+      return darkTheme;
     default:
     case 'light':
       return lightTheme;

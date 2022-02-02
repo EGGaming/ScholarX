@@ -35,20 +35,9 @@ const TextField = React.forwardRef((props: TextFieldProps & TextInputProps & Tex
           </Typography>
         )}
       </Space>
-      {adornmentEnd && (
-        <TextFieldAdornmentEndContainer size={size}>
-          {adornmentEnd &&
-            React.cloneElement(adornmentEnd, {
-              color: 'disabled',
-            })}
-        </TextFieldAdornmentEndContainer>
-      )}
+      {adornmentEnd && <TextFieldAdornmentEndContainer size={size}>{adornmentEnd}</TextFieldAdornmentEndContainer>}
       {adornmentStart && (
-        <TextFieldAdornmentStartContainer size={size}>
-          {React.cloneElement(adornmentStart, {
-            color: 'disabled',
-          })}
-        </TextFieldAdornmentStartContainer>
+        <TextFieldAdornmentStartContainer size={size}>{adornmentStart}</TextFieldAdornmentStartContainer>
       )}
     </TextFieldBaseContainer>
   );
