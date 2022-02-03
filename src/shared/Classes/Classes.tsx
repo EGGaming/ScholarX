@@ -3,6 +3,7 @@ import Card from '@components/Card/Card';
 import Chip from '@components/Chip/Chip';
 import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
+import IconButton from '@components/IconButton/IconButton';
 import Skeleton from '@components/Skeleton/Skeleton';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
@@ -13,17 +14,19 @@ import { EventsContainer } from '@shared/Events/Events.base';
 import { useAppTheme } from '@theme/core';
 import React from 'react';
 import { ScrollView } from 'react-native';
+import Class from './Class/Class';
 
 const Classes: React.FC = () => {
   const [client] = useStudentVue();
   const [schedule, setSchedule] = useClassSchedule();
-  const theme = useAppTheme();
   React.useEffect(() => {
     fetchScheduleFromAPI();
   }, []);
   async function fetchScheduleFromAPI() {
-    const schedule = await client.classSchedule(2);
-    setSchedule(schedule);
+    // const schedule = await client.classSchedule(2);
+    // setSchedule(schedule);
+    const gradebook = await client.gradebook();
+    console.log(gradebook.classes[0].assignments[0]['Assignment'].length);
   }
   return (
     <Space spacing={1} direction='vertical'>
@@ -41,29 +44,7 @@ const Classes: React.FC = () => {
       </ClassesHeaderContainer>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {schedule
-          ? schedule.classes.map((classSchedule) => (
-              <Card width={300} key={classSchedule.name}>
-                <Space spacing={1} direction='vertical'>
-                  <>
-                    <Typography variant='body2' color='textSecondary'>
-                      {classSchedule.teacher.name}
-                    </Typography>
-                    <Typography bold numberOfLines={1}>
-                      {classSchedule.name}
-                    </Typography>
-                  </>
-                  <Button
-                    title='Assignments'
-                    icon={<Icon bundle='Feather' name='arrow-right' />}
-                    color={theme.mode === 'dark' ? 'secondary' : 'primary'}
-                    iconPlacement='right'
-                    onPress={() => {}}
-                    textCentered
-                    variant='contained'
-                  />
-                </Space>
-              </Card>
-            ))
+          ? schedule.classes.map((classSchedule) => <Class key={classSchedule.name} class={classSchedule} />)
           : new Array(6).fill('').map((_, i) => (
               <Card key={i}>
                 <Skeleton.Typography variant='h3' width={300} />

@@ -132,6 +132,114 @@ export interface SchoolTerm {
   endDate: Date;
 }
 
+export interface Gradebook {
+  error: string;
+  classes: StudentClass[];
+}
+
+export interface StudentClass {
+  period: number;
+  room: string;
+  name: string;
+  staff: {
+    name: string;
+    staffgu: string;
+    email: string;
+  };
+  grade: {
+    raw: string;
+    symbol: string;
+  };
+  assignments: StudentClassAssignment[];
+}
+
+export interface StudentClassAssignment {
+  date: {
+    date: Date;
+    dropbox: {
+      start: Date;
+      end: Date;
+    };
+    dueDate: Date;
+  };
+  gradebookId: string;
+  hasDropBox: boolean;
+  name: string;
+  description: string;
+  notes: string;
+  points: string;
+  score: {
+    type: string;
+    value: string;
+  };
+  studentId: string;
+  teacherId: string;
+  type: string;
+}
+
+export interface GradebookXMLObject {
+  Gradebook: {
+    $: {
+      DisplayStandardsData: string;
+      Error: string;
+      GBStandardsTabDefault: string;
+      HideMarksColumnElementary: string;
+      HidePercentSecondary: string;
+      HidePointsColumnElementary: string;
+      HideStandardGraphInd: string;
+      Type: string;
+      'xmlns:xsd': string;
+      'xmlns:xsi': string;
+    };
+    Courses: {
+      Course: {
+        $: {
+          HighlightPercentageCutOffForProgressBar: string;
+          Period: string;
+          Room: string;
+          Staff: string;
+          StaffEmail: string;
+          StaffGU: string;
+          Title: string;
+          UsesRichContent: string;
+        };
+        Marks: {
+          Mark: {
+            $: {
+              CalculatedScoreRaw: string;
+              CalculatedScoreString: string;
+              MarkName: string;
+            };
+            Assignments: {
+              Assignment: {
+                $: {
+                  Date: string;
+                  DropEndDate: string;
+                  DropStartDate: string;
+                  DueDate: string;
+                  GradebookID: string;
+                  HasDropBox: string;
+                  Measure: string;
+                  MeasureDescription: string;
+                  Notes: string;
+                  Points: string;
+                  Score: string;
+                  ScoreType: string;
+                  StudentID: string;
+                  TeacherID: string;
+                  Type: string;
+                };
+                Resources: string[];
+                Standards: string[];
+              }[];
+            }[];
+          }[];
+        }[];
+      }[];
+    }[];
+  };
+}
+
 export interface StudentClassScheduleXMLObject {
   StudentClassSchedule: {
     $: {

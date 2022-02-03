@@ -80,12 +80,11 @@ const Event: React.FC<EventProps> = (props) => {
             </EventContentContainer>
           </Space>
           <Button
-            title='More Details'
+            title='Details'
             iconPlacement='right'
             textCentered
             color={theme.mode === 'dark' ? 'secondary' : 'primary'}
             variant='contained'
-            icon={<Icon bundle='Feather' name='arrow-right' />}
             onPress={onPress}
           />
         </Space>

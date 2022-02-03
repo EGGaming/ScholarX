@@ -6,10 +6,13 @@ import {
   AttachmentXML,
   Calendar,
   CalendarListing,
+  Gradebook,
+  GradebookXMLObject,
   Message,
   MessageListingXML,
   PXPMessagesData,
   Schedule,
+  StudentClassAssignment,
   StudentClassScheduleXMLObject,
   StudentInfo,
 } from './types';
@@ -150,6 +153,66 @@ class Client {
         res({
           name: t.AttachmentXML.$.DocumentName,
           base64: t.AttachmentXML.Base64Code[0],
+        });
+      } catch (e) {
+        throw Error(e as any);
+      }
+    });
+  }
+
+  public gradebook(): Promise<any> {
+    return new Promise(async (res) => {
+      try {
+        const data = await this.client.processRequest(
+          this.username,
+          this.password,
+          Service.PXPWebServices,
+          'Gradebook',
+          {
+            childIntID: 0,
+          }
+        );
+
+        const t = await SoapClient.parseString<GradebookXMLObject>(data);
+        res({
+          error: t.Gradebook.$.Error,
+          classes: t.Gradebook.Courses.map((course, i) => {
+            const meta = course.Course[i];
+            return {
+              staff: {
+                staffgu: meta.$.StaffGU,
+                name: meta.$.Staff,
+                email: meta.$.StaffEmail,
+              },
+              room: meta.$.Room,
+              grade: {
+                raw: meta.Marks[0].Mark[0].$.CalculatedScoreRaw,
+                symbol: meta.Marks[0].Mark[0].$.CalculatedScoreString,
+              },
+              period: Number(meta.$.Period),
+              name: meta.$.Title,
+              assignments: meta.Marks[0].Mark[0].Assignments[0]['Assignment'].map((assignment) => ({
+                date: {
+                  date: new Date(assignment.$.Date),
+                  dueDate: new Date(assignment.$.DueDate),
+                  dropbox: {
+                    start: new Date(assignment.$.DropStartDate),
+                    end: new Date(assignment.$.DropEndDate),
+                  },
+                },
+                description: assignment.$.MeasureDescription,
+                name: assignment.$.Measure,
+                hasDropBox: Boolean(assignment.$.HasDropBox),
+                notes: assignment.$.Notes,
+                points: assignment.$.Points,
+                score: assignment.$.Score,
+                type: assignment.$.ScoreType,
+                gradebookId: assignment.$.GradebookID,
+                studentId: assignment.$.StudentID,
+                teacherId: assignment.$.TeacherID,
+              })),
+            };
+          }),
         });
       } catch (e) {
         throw Error(e as any);
