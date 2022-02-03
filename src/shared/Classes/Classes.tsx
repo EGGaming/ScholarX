@@ -56,7 +56,7 @@ const Classes: React.FC = () => {
           onPress={getGradebook}
         />
       </ClassesHeaderContainer>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <Flex direction='column'>
         {schedule && gradebook
           ? schedule.classes.map((classSchedule, i) => (
               <Class key={classSchedule.name} class={classSchedule} classInfo={gradebook.classes[i]} />
@@ -66,7 +66,7 @@ const Classes: React.FC = () => {
                 <Skeleton.Typography variant='h3' width={300} />
               </Card>
             ))}
-      </ScrollView>
+      </Flex>
     </Space>
   );
 };
