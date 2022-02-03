@@ -160,7 +160,7 @@ class Client {
     });
   }
 
-  public gradebook(): Promise<any> {
+  public gradebook(): Promise<Gradebook> {
     return new Promise(async (res) => {
       try {
         const data = await this.client.processRequest(
@@ -176,22 +176,21 @@ class Client {
         const t = await SoapClient.parseString<GradebookXMLObject>(data);
         res({
           error: t.Gradebook.$.Error,
-          classes: t.Gradebook.Courses.map((course, i) => {
-            const meta = course.Course[i];
+          classes: t.Gradebook.Courses[0].Course.map((course, i) => {
             return {
               staff: {
-                staffgu: meta.$.StaffGU,
-                name: meta.$.Staff,
-                email: meta.$.StaffEmail,
+                staffgu: course.$.StaffGU,
+                name: course.$.Staff,
+                email: course.$.StaffEMail,
               },
-              room: meta.$.Room,
+              room: course.$.Room,
               grade: {
-                raw: meta.Marks[0].Mark[0].$.CalculatedScoreRaw,
-                symbol: meta.Marks[0].Mark[0].$.CalculatedScoreString,
+                raw: course.Marks[0].Mark[0].$.CalculatedScoreRaw,
+                symbol: course.Marks[0].Mark[0].$.CalculatedScoreString,
               },
-              period: Number(meta.$.Period),
-              name: meta.$.Title,
-              assignments: meta.Marks[0].Mark[0].Assignments[0]['Assignment'].map((assignment) => ({
+              period: Number(course.$.Period),
+              name: course.$.Title,
+              assignments: course.Marks[0].Mark[0].Assignments[0]['Assignment'].map((assignment) => ({
                 date: {
                   date: new Date(assignment.$.Date),
                   dueDate: new Date(assignment.$.DueDate),
@@ -202,11 +201,14 @@ class Client {
                 },
                 description: assignment.$.MeasureDescription,
                 name: assignment.$.Measure,
-                hasDropBox: Boolean(assignment.$.HasDropBox),
+                hasDropBox: JSON.parse(assignment.$.HasDropBox),
                 notes: assignment.$.Notes,
+                type: assignment.$.Type,
                 points: assignment.$.Points,
-                score: assignment.$.Score,
-                type: assignment.$.ScoreType,
+                score: {
+                  type: assignment.$.ScoreType,
+                  value: assignment.$.Score,
+                },
                 gradebookId: assignment.$.GradebookID,
                 studentId: assignment.$.StudentID,
                 teacherId: assignment.$.TeacherID,

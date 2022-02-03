@@ -10,6 +10,7 @@ import { useNotificationDispatch, useNotificationReducer } from '@context/Notifi
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import BottomTabComponent from '@shared/@react-navigation/BottomTab/BottomTab';
 import Calendar from './Calendar/Calendar';
+import { useGradebook } from '@context/GradebookContext/GradebookContext';
 
 const Main: React.FC = () => {
   const dispatch = useNotificationDispatch();
@@ -19,14 +20,6 @@ const Main: React.FC = () => {
       const messages = await client.messages();
       dispatch({ type: 'FETCH_NOTIFICATIONS', messages: messages });
     })();
-    // const interval = setInterval(async () => {
-    //   const messages = await client.messages();
-    //   dispatch({ type: 'FETCH_NOTIFICATIONS', messages: messages });
-    // }, 60 * 1000);
-
-    // return () => {
-    //   clearInterval(interval);
-    // };
   }, []);
 
   return (

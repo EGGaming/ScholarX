@@ -21,13 +21,11 @@ import Skeleton from '@components/Skeleton/Skeleton';
 const Events: React.FC = () => {
   const navigation = useRootNavigation();
   const [calendar, setCalendar] = useCalendar();
-  const [loading, setLoading] = React.useState<boolean>(true);
   const [client] = useStudentVue();
   const upcoming = useFutureEvents();
   const upcomingNonDuplicateEvents = React.useMemo(() => _.uniqBy(upcoming, 'Date'), [upcoming]);
 
   async function fetchCalendarEvents() {
-    setLoading(true);
     try {
       const [data1, data2] = await Promise.all([
         client.calendar(Date.now()),
@@ -43,8 +41,6 @@ const Events: React.FC = () => {
       });
     } catch (e) {
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -78,13 +74,13 @@ const Events: React.FC = () => {
           <Event item={item} key={`${item.Title}: ${item.Date}`} />
         ))}
       </ScrollView> */}
-      {loading ? (
+      {calendar == null || upcoming == null ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {new Array(3).fill('').map((_, i) => (
             <Event key={i} isSkeleton />
           ))}
         </ScrollView>
-      ) : upcomingNonDuplicateEvents.length > 0 ? (
+      ) : calendar.events.length > 0 ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
             <Event item={item} key={`${item.Title}: ${item.Date}`} />

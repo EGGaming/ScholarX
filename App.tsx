@@ -17,38 +17,41 @@ import SearchDistrictProvider from '@context/SearchDistrictContext/SearchDistric
 import SearchDistrictFocusedProvider from '@context/SearchDistrictFocusedContext/SearchDistrictFocusedContext';
 import CalendarProvider from '@context/CalendarContext/CalendarContext';
 import ClassScheduleProvider from '@context/ClassScheduleContext/ClassScheduleContext';
+import GradebookProvider from '@context/GradebookContext/GradebookContext';
 
 export default function App() {
   const theme = useAppTheme();
   const navigationTheme = useNavigationTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-          <Storage.Provider>
-            <CalendarProvider>
-              <ClassScheduleProvider>
-                <SearchDistrictFocusedProvider>
-                  <SearchDistrictProvider>
-                    <StudentVueClientProvider>
-                      <NotificationContextProvider>
-                        <SessionContextProvider>
-                          <AppContextProvider>
-                            <StatusBar />
-                            <NavigationContainer theme={navigationTheme}>
-                              <Root />
-                            </NavigationContainer>
-                          </AppContextProvider>
-                        </SessionContextProvider>
-                      </NotificationContextProvider>
-                    </StudentVueClientProvider>
-                  </SearchDistrictProvider>
-                </SearchDistrictFocusedProvider>
-              </ClassScheduleProvider>
-            </CalendarProvider>
-          </Storage.Provider>
-        </HoldMenuProvider>
-      </GestureHandlerRootView>
-    </ThemeProvider>
+    <StudentVueClientProvider>
+      <ThemeProvider theme={theme}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
+            <Storage.Provider>
+              <CalendarProvider>
+                <ClassScheduleProvider>
+                  <GradebookProvider>
+                    <SearchDistrictFocusedProvider>
+                      <SearchDistrictProvider>
+                        <NotificationContextProvider>
+                          <SessionContextProvider>
+                            <AppContextProvider>
+                              <StatusBar />
+                              <NavigationContainer theme={navigationTheme}>
+                                <Root />
+                              </NavigationContainer>
+                            </AppContextProvider>
+                          </SessionContextProvider>
+                        </NotificationContextProvider>
+                      </SearchDistrictProvider>
+                    </SearchDistrictFocusedProvider>
+                  </GradebookProvider>
+                </ClassScheduleProvider>
+              </CalendarProvider>
+            </Storage.Provider>
+          </HoldMenuProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </StudentVueClientProvider>
   );
 }

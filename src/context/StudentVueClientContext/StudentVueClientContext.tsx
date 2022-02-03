@@ -3,7 +3,7 @@ import Storage from '@utilities/Storage';
 import { Client } from '@utilities/StudentVue';
 import React from 'react';
 
-const StudentVueClientContext = React.createContext<UseState<Client>>({} as any);
+const StudentVueClientContext = React.createContext<UseState<Client>>(null as any);
 
 export const useStudentVue = () => React.useContext(StudentVueClientContext);
 

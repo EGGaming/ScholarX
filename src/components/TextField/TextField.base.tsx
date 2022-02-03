@@ -58,7 +58,7 @@ export const TextFieldBaseContainer = styled.View<Required<TextFieldProps>>`
 `;
 
 export const TextFieldBase = styled.TextInput<TextFieldAccessoryProps>`
-  flex-grow: 1;
+  overflow: hidden;
   ${(props) => {
     switch (props.size!) {
       case 'medium':

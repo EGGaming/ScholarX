@@ -198,7 +198,7 @@ export interface GradebookXMLObject {
           Period: string;
           Room: string;
           Staff: string;
-          StaffEmail: string;
+          StaffEMail: string;
           StaffGU: string;
           Title: string;
           UsesRichContent: string;
