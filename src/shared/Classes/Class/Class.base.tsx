@@ -13,8 +13,5 @@ export const GradeSymbolContainer = styled.View`
 `;
 
 export const ClassInfoContainer = styled.View`
-  ${(props) => css`
-    margin: ${props.theme.spacing(0, 3, 0, 0)};
-    flex-shrink: 1;
-  `}
+  width: 66%;
 `;
