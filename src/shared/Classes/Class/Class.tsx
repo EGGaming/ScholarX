@@ -8,7 +8,7 @@ import Icon from '@components/Icon/Icon';
 import Button from '@components/Button/Button';
 import { ClassProps } from './Class.types';
 import { useAppTheme } from '@theme/core';
-import { Linking } from 'react-native';
+import { Linking, ToastAndroid } from 'react-native';
 import Divider from '@components/Divider/Divider';
 import { AppColors } from '@theme/core.types';
 import { ClassInfoContainer, GradeSymbolContainer } from './Class.base';
@@ -25,6 +25,7 @@ const Class: React.FC<ClassProps> = (props) => {
   }
   function handleCopyToClipboard() {
     Clipboard.setString(classInfo.staff.email);
+    ToastAndroid.showWithGravity(`Copied to clipboard.`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
   }
 
   const gradeColor: AppColors = React.useMemo((): AppColors => {
@@ -52,7 +53,7 @@ const Class: React.FC<ClassProps> = (props) => {
       { text: `Email ${classInfo.staff.name}`, icon: 'mail', onPress: handleEmail },
       { text: `Copy`, icon: 'copy', onPress: handleCopyToClipboard },
     ],
-    [classInfo.staff.name, classInfo.staff.email]
+    [classInfo.staff.name, handleEmail, handleCopyToClipboard]
   );
 
   return (
