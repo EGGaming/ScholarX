@@ -191,6 +191,16 @@ export interface GradebookXMLObject {
       'xmlns:xsd': string;
       'xmlns:xsi': string;
     };
+    ReportingPeriods: {
+      ReportingPeriod: {
+        $: {
+          EndDate: string;
+          GradePeriod: string;
+          Index: string;
+          StartDate: string;
+        };
+      }[];
+    }[];
     Courses: {
       Course: {
         $: {
