@@ -16,9 +16,12 @@ import { ButtonBase } from '@components/Button/Button.base';
 import { HoldItem } from 'react-native-hold-menu';
 import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
 import * as Clipboard from 'expo-clipboard';
+import { useRootNavigation } from '@navigators/Root/Root';
+import useGradeColor from '@utilities/useGradeColor';
 
 const Class: React.FC<ClassProps> = (props) => {
   const theme = useAppTheme();
+  const navigation = useRootNavigation();
   const { class: classSchedule, classInfo } = props;
   function handleEmail() {
     Linking.openURL(`mailto:${classSchedule.teacher.email}`);
@@ -28,26 +31,7 @@ const Class: React.FC<ClassProps> = (props) => {
     ToastAndroid.showWithGravity(`Copied to clipboard.`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
   }
 
-  const gradeColor: TypographyColors = React.useMemo((): TypographyColors => {
-    switch (classInfo.grade.symbol) {
-      case 'A':
-      case '4':
-        return 'success';
-      case 'B':
-      case '3':
-      default:
-        return 'primary';
-      case 'C':
-      case '2':
-        return 'warning';
-      case 'D':
-      case 'F':
-      case '1':
-        return 'error';
-      case 'N/A':
-        return 'textSecondary';
-    }
-  }, [classInfo.grade.symbol]);
+  const gradeColor = useGradeColor(classInfo.grade.symbol);
 
   const menuItems: MenuItemProps[] = React.useMemo(
     () => [
@@ -58,8 +42,12 @@ const Class: React.FC<ClassProps> = (props) => {
     [classInfo.staff.name, handleEmail, handleCopyToClipboard]
   );
 
+  function moreInfo() {
+    navigation.navigate('ClassViewer', { class: classInfo, schedule: classSchedule });
+  }
+
   return (
-    <ButtonBase onPress={() => {}}>
+    <ButtonBase onPress={moreInfo}>
       <ClassContainer>
         <Space spacing={1}>
           <GradeSymbolContainer>
@@ -83,7 +71,7 @@ const Class: React.FC<ClassProps> = (props) => {
                 {classSchedule.teacher.name}
               </Typography>
               <HoldItem items={menuItems}>
-                <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
+                <IconButton icon={<Icon bundle='Feather' name='mail' />} onPress={handleEmail} />
               </HoldItem>
             </Space>
           </ClassInfoContainer>
