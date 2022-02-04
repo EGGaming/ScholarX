@@ -12,63 +12,82 @@ import {
   ButtonText,
 } from '@components/Button/Button.base';
 
-const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> = React.forwardRef((props, ref) => {
-  const {
-    variant = 'text',
-    color = 'primary',
-    title,
-    icon,
-    iconPlacement = 'left',
-    hexColor = '',
-    textCentered = false,
-    disabled = false,
-    size = 'medium',
-    onPress = () => void 0,
-    ...otherProps
-  } = props;
+const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & ButtonAccessoryProps> = React.forwardRef(
+  (props, ref) => {
+    const {
+      variant = 'text',
+      color = 'primary',
+      title,
+      icon,
+      iconPlacement = 'left',
+      hexColor = '',
+      textCentered = false,
+      disabled = false,
+      size = 'medium',
+      onPress = () => void 0,
+      ...otherProps
+    } = props;
 
-  const theme = useAppTheme();
+    const theme = useAppTheme();
 
-  const iconProps: (Partial<IconProps<IconPack>> & React.Attributes) | undefined = React.useMemo(() => {
-    if (color === 'inherit')
-      return {
-        color: 'inherit',
-        hexColor,
-      };
-    switch (variant) {
-      default:
-      case 'text':
-      case 'outlined':
-        return {
-          color,
-        };
-      case 'contained':
+    const iconProps: (Partial<IconProps<IconPack>> & React.Attributes) | undefined = React.useMemo(() => {
+      if (color === 'inherit')
         return {
           color: 'inherit',
-          hexColor: theme.palette.getContrastText(theme.palette.toColorValue(color)),
+          hexColor,
         };
-    }
-  }, [color, hexColor, theme, variant]);
+      switch (variant) {
+        default:
+        case 'text':
+        case 'outlined':
+          return {
+            color,
+          };
+        case 'contained':
+          return {
+            color: 'inherit',
+            hexColor: theme.palette.getContrastText(theme.palette.toColorValue(color)),
+          };
+      }
+    }, [color, hexColor, theme, variant]);
 
-  if (icon)
-    switch (iconPlacement) {
-      case 'left':
-      default:
-        return (
-          <BaseContainer>
-            <ButtonBase ref={ref as any} hexColor={hexColor} color={color} disabled={disabled} {...otherProps}>
-              <ButtonBaseContainer
-                size={size}
-                disabled={disabled}
-                variant={variant}
-                color={color}
-                hexColor={hexColor}
-                onPress={onPress}
-                textCentered={textCentered}>
-                <ButtonIconContainer placement={iconPlacement}>
-                  {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
-                </ButtonIconContainer>
-                <ButtonText
+    if (icon)
+      switch (iconPlacement) {
+        case 'left':
+        default:
+          return (
+            <BaseContainer>
+              <ButtonBase ref={ref as any} hexColor={hexColor} color={color} disabled={disabled} {...otherProps}>
+                <ButtonBaseContainer
+                  size={size}
+                  disabled={disabled}
+                  variant={variant}
+                  color={color}
+                  hexColor={hexColor}
+                  onPress={onPress}
+                  textCentered={textCentered}>
+                  <ButtonIconContainer placement={iconPlacement}>
+                    {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                  </ButtonIconContainer>
+                  <ButtonText
+                    size={size}
+                    disabled={disabled}
+                    variant={variant}
+                    onPress={onPress}
+                    color={color}
+                    hexColor={hexColor}
+                    textCentered={textCentered}>
+                    {title}
+                  </ButtonText>
+                </ButtonBaseContainer>
+              </ButtonBase>
+            </BaseContainer>
+          );
+        case 'right':
+          return (
+            <BaseContainer>
+              <ButtonBase ref={ref as any} color={color} hexColor={hexColor} disabled={disabled} {...otherProps}>
+                <ButtonBaseContainer
                   size={size}
                   disabled={disabled}
                   variant={variant}
@@ -76,54 +95,28 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
                   color={color}
                   hexColor={hexColor}
                   textCentered={textCentered}>
-                  {title}
-                </ButtonText>
-              </ButtonBaseContainer>
-            </ButtonBase>
-          </BaseContainer>
-        );
-      case 'right':
-        return (
-          <BaseContainer>
-            <ButtonBase ref={ref as any} color={color} hexColor={hexColor} disabled={disabled} {...otherProps}>
-              <ButtonBaseContainer
-                size={size}
-                disabled={disabled}
-                variant={variant}
-                onPress={onPress}
-                color={color}
-                hexColor={hexColor}
-                textCentered={textCentered}>
-                <ButtonText
-                  size={size}
-                  disabled={disabled}
-                  variant={variant}
-                  onPress={onPress}
-                  color={color}
-                  hexColor={hexColor}
-                  textCentered={textCentered}>
-                  {title}
-                </ButtonText>
-                <ButtonIconContainer placement={iconPlacement}>
-                  {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
-                </ButtonIconContainer>
-              </ButtonBaseContainer>
-            </ButtonBase>
-          </BaseContainer>
-        );
-    }
-  return (
-    <BaseContainer>
-      <ButtonBase ref={ref as any} color={color} hexColor={hexColor} disabled={disabled} {...otherProps}>
-        <ButtonBaseContainer
-          size={size}
-          disabled={disabled}
-          variant={variant}
-          onPress={onPress}
-          color={color}
-          hexColor={hexColor}
-          textCentered={textCentered}>
-          <ButtonText
+                  <ButtonText
+                    size={size}
+                    disabled={disabled}
+                    variant={variant}
+                    onPress={onPress}
+                    color={color}
+                    hexColor={hexColor}
+                    textCentered={textCentered}>
+                    {title}
+                  </ButtonText>
+                  <ButtonIconContainer placement={iconPlacement}>
+                    {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                  </ButtonIconContainer>
+                </ButtonBaseContainer>
+              </ButtonBase>
+            </BaseContainer>
+          );
+      }
+    return (
+      <BaseContainer>
+        <ButtonBase ref={ref as any} color={color} hexColor={hexColor} disabled={disabled} {...otherProps}>
+          <ButtonBaseContainer
             size={size}
             disabled={disabled}
             variant={variant}
@@ -131,12 +124,21 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
             color={color}
             hexColor={hexColor}
             textCentered={textCentered}>
-            {title}
-          </ButtonText>
-        </ButtonBaseContainer>
-      </ButtonBase>
-    </BaseContainer>
-  );
-});
+            <ButtonText
+              size={size}
+              disabled={disabled}
+              variant={variant}
+              onPress={onPress}
+              color={color}
+              hexColor={hexColor}
+              textCentered={textCentered}>
+              {title}
+            </ButtonText>
+          </ButtonBaseContainer>
+        </ButtonBase>
+      </BaseContainer>
+    );
+  }
+);
 
 export default Button;
