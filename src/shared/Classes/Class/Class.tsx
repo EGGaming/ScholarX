@@ -11,13 +11,20 @@ import { useAppTheme } from '@theme/core';
 import { Linking } from 'react-native';
 import Divider from '@components/Divider/Divider';
 import { AppColors } from '@theme/core.types';
-import { GradeSymbolContainer } from './Class.base';
+import { ClassInfoContainer, GradeSymbolContainer } from './Class.base';
+import { ButtonBase } from '@components/Button/Button.base';
+import { HoldItem } from 'react-native-hold-menu';
+import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
+import * as Clipboard from 'expo-clipboard';
 
 const Class: React.FC<ClassProps> = (props) => {
   const theme = useAppTheme();
   const { class: classSchedule, classInfo } = props;
   function handleEmail() {
     Linking.openURL(`mailto:${classSchedule.teacher.email}`);
+  }
+  function handleCopyToClipboard() {
+    Clipboard.setString(classInfo.staff.email);
   }
 
   const gradeColor: AppColors = React.useMemo((): AppColors => {
@@ -39,29 +46,42 @@ const Class: React.FC<ClassProps> = (props) => {
     }
   }, [classInfo.grade.symbol]);
 
-  return (
-    <Space spacing={1}>
-      <GradeSymbolContainer>
-        <Typography variant='h1' bold color={gradeColor}>
-          {classInfo.grade.symbol}
-        </Typography>
-        <Typography variant='body2' bold color='textSecondary'>
-          ({classInfo.grade.raw}%)
-        </Typography>
-      </GradeSymbolContainer>
-      <Flex direction='column' shrink>
-        <Typography bold numberOfLines={1}>
-          {classSchedule.name}
-        </Typography>
+  const menuItems: MenuItemProps[] = React.useMemo(
+    () => [
+      { text: 'Actions', isTitle: true, withSeparator: true },
+      { text: `Email ${classInfo.staff.name}`, icon: 'mail', onPress: handleEmail },
+      { text: `Copy`, icon: 'copy', onPress: handleCopyToClipboard },
+    ],
+    [classInfo.staff.name, classInfo.staff.email]
+  );
 
-        <Space spacing={0.5} alignItems='center'>
-          <Typography variant='body2' color='textSecondary'>
-            {classSchedule.teacher.name}
+  return (
+    <ButtonBase onPress={() => {}}>
+      <Space spacing={1}>
+        <GradeSymbolContainer>
+          <Typography variant='h1' bold color={gradeColor}>
+            {classInfo.grade.symbol}
           </Typography>
-          <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
-        </Space>
-      </Flex>
-    </Space>
+          <Typography variant='body2' bold color='textSecondary'>
+            ({classInfo.grade.raw}%)
+          </Typography>
+        </GradeSymbolContainer>
+        <ClassInfoContainer>
+          <Typography bold numberOfLines={1}>
+            {classInfo.name}
+          </Typography>
+
+          <Space spacing={0.5} alignItems='center'>
+            <Typography variant='body2' color='textSecondary'>
+              {classSchedule.teacher.name}
+            </Typography>
+            <HoldItem items={menuItems}>
+              <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
+            </HoldItem>
+          </Space>
+        </ClassInfoContainer>
+      </Space>
+    </ButtonBase>
   );
 
   return (
