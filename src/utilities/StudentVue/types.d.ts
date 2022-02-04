@@ -128,8 +128,8 @@ export interface SchoolTerm {
     code: number;
   };
   schoolYearTermCodeGU: string;
-  beginDate: Date;
-  endDate: Date;
+  beginDate: string;
+  endDate: string;
 }
 
 export interface Gradebook {
@@ -143,8 +143,8 @@ export interface GradebookPeriod {
   index: number;
   name: string;
   date: {
-    start: Date;
-    end: Date;
+    start: string;
+    end: string;
   };
 }
 
@@ -166,12 +166,12 @@ export interface StudentClass {
 
 export interface StudentClassAssignment {
   date: {
-    date: Date;
+    date: string;
     dropbox: {
-      start: Date;
-      end: Date;
+      start: string;
+      end: string;
     };
-    dueDate: Date;
+    dueDate: string;
   };
   gradebookId: string;
   hasDropBox: boolean;

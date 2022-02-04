@@ -180,16 +180,16 @@ class Client {
           currentPeriod: {
             name: t.Gradebook.ReportingPeriod[0].$.GradePeriod,
             date: {
-              start: new Date(t.Gradebook.ReportingPeriod[0].$.StartDate),
-              end: new Date(t.Gradebook.ReportingPeriod[0].$.EndDate),
+              start: new Date(t.Gradebook.ReportingPeriod[0].$.StartDate).toISOString(),
+              end: new Date(t.Gradebook.ReportingPeriod[0].$.EndDate).toISOString(),
             },
           },
           periods: t.Gradebook.ReportingPeriods[0].ReportPeriod.map(({ $ }) => ({
             name: $.GradePeriod,
             index: Number($.Index),
             date: {
-              start: new Date($.StartDate),
-              end: new Date($.EndDate),
+              start: new Date($.StartDate).toISOString(),
+              end: new Date($.EndDate).toISOString(),
             },
           })),
           classes: t.Gradebook.Courses[0].Course.map((course, i) => {
@@ -209,11 +209,11 @@ class Client {
               assignments:
                 course.Marks[0].Mark[0].Assignments[0].Assignment?.map((assignment) => ({
                   date: {
-                    date: new Date(assignment.$.Date),
-                    dueDate: new Date(assignment.$.DueDate),
+                    date: new Date(assignment.$.Date).toISOString(),
+                    dueDate: new Date(assignment.$.DueDate).toISOString(),
                     dropbox: {
-                      start: new Date(assignment.$.DropStartDate),
-                      end: new Date(assignment.$.DropEndDate),
+                      start: new Date(assignment.$.DropStartDate).toISOString(),
+                      end: new Date(assignment.$.DropEndDate).toISOString(),
                     },
                   },
                   description: assignment.$.MeasureDescription,
@@ -278,8 +278,8 @@ class Client {
               index: Number(obj.$.TermIndex),
             },
             schoolYearTermCodeGU: obj.$.SchoolYearTrmCodeGU,
-            beginDate: new Date(obj.$.BeginDate),
-            endDate: new Date(obj.$.EndDate),
+            beginDate: new Date(obj.$.BeginDate).toISOString(),
+            endDate: new Date(obj.$.EndDate).toISOString(),
           })),
           error: StudentClassSchedule.$.ErrorMessage,
         });
