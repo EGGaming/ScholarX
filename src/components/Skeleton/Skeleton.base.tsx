@@ -122,8 +122,8 @@ export const SkeletonCircleBase = styled(Animated.View)<SkeletonCircleProps>`
               `;
             case 'small':
               return css`
-                width: 31px;
-                height: 31px;
+                width: 18px;
+                height: 18px;
                 border-radius: 7px;
               `;
           }
