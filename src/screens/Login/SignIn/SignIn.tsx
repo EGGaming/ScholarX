@@ -46,7 +46,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   async function biometricSignIn() {
     const canUseBiometrics =
       (await LocalAuthentication.isEnrolledAsync()) && (await LocalAuthentication.hasHardwareAsync());
-    if (canUseBiometrics) {
+    if (canUseBiometrics && state.username.length > 0 && state.password.length > 0) {
       const { success } = await LocalAuthentication.authenticateAsync({ promptMessage: 'Use biometrics to sign in' });
       if (success) onSignIn();
       else dispatch({ type: 'CLEAR_CREDENTIALS' });
@@ -149,10 +149,10 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
             <Switch checked={state.staySignedIn} onChange={toggleSignIn} color='secondary' />
           </Space>
           <Button
-            title='Log in'
+            title={loading ? 'Logging in...' : 'Sign in'}
             onPress={onSignIn}
-            variant='contained'
             textCentered
+            variant='contained'
             disabled={loading}
             icon={loading && <Loading />}
           />
