@@ -135,6 +135,17 @@ export interface SchoolTerm {
 export interface Gradebook {
   error: string;
   classes: StudentClass[];
+  periods: GradebookPeriod[];
+  currentPeriod: Omit<GradebookPeriod, 'index'>;
+}
+
+export interface GradebookPeriod {
+  index: number;
+  name: string;
+  date: {
+    start: Date;
+    end: Date;
+  };
 }
 
 export interface StudentClass {
@@ -192,7 +203,7 @@ export interface GradebookXMLObject {
       'xmlns:xsi': string;
     };
     ReportingPeriods: {
-      ReportingPeriod: {
+      ReportPeriod: {
         $: {
           EndDate: string;
           GradePeriod: string;
@@ -200,6 +211,13 @@ export interface GradebookXMLObject {
           StartDate: string;
         };
       }[];
+    }[];
+    ReportingPeriod: {
+      $: {
+        GradePeriod: string;
+        StartDate: string;
+        EndDate: string;
+      };
     }[];
     Courses: {
       Course: {

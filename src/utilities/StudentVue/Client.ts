@@ -170,13 +170,28 @@ class Client {
           'Gradebook',
           {
             childIntID: 0,
-            ...(reportingPeriodIndex && { ReportPeriod: reportingPeriodIndex }),
+            ...(reportingPeriodIndex != null && { ReportPeriod: reportingPeriodIndex }),
           }
         );
 
         const t = await SoapClient.parseString<GradebookXMLObject>(data);
         res({
           error: t.Gradebook.$.Error,
+          currentPeriod: {
+            name: t.Gradebook.ReportingPeriod[0].$.GradePeriod,
+            date: {
+              start: new Date(t.Gradebook.ReportingPeriod[0].$.StartDate),
+              end: new Date(t.Gradebook.ReportingPeriod[0].$.EndDate),
+            },
+          },
+          periods: t.Gradebook.ReportingPeriods[0].ReportPeriod.map(({ $ }) => ({
+            name: $.GradePeriod,
+            index: Number($.Index),
+            date: {
+              start: new Date($.StartDate),
+              end: new Date($.EndDate),
+            },
+          })),
           classes: t.Gradebook.Courses[0].Course.map((course, i) => {
             return {
               staff: {
@@ -191,29 +206,30 @@ class Client {
               },
               period: Number(course.$.Period),
               name: course.$.Title,
-              assignments: course.Marks[0].Mark[0].Assignments[0]['Assignment'].map((assignment) => ({
-                date: {
-                  date: new Date(assignment.$.Date),
-                  dueDate: new Date(assignment.$.DueDate),
-                  dropbox: {
-                    start: new Date(assignment.$.DropStartDate),
-                    end: new Date(assignment.$.DropEndDate),
+              assignments:
+                course.Marks[0].Mark[0].Assignments[0].Assignment?.map((assignment) => ({
+                  date: {
+                    date: new Date(assignment.$.Date),
+                    dueDate: new Date(assignment.$.DueDate),
+                    dropbox: {
+                      start: new Date(assignment.$.DropStartDate),
+                      end: new Date(assignment.$.DropEndDate),
+                    },
                   },
-                },
-                description: assignment.$.MeasureDescription,
-                name: assignment.$.Measure,
-                hasDropBox: JSON.parse(assignment.$.HasDropBox),
-                notes: assignment.$.Notes,
-                type: assignment.$.Type,
-                points: assignment.$.Points,
-                score: {
-                  type: assignment.$.ScoreType,
-                  value: assignment.$.Score,
-                },
-                gradebookId: assignment.$.GradebookID,
-                studentId: assignment.$.StudentID,
-                teacherId: assignment.$.TeacherID,
-              })),
+                  description: assignment.$.MeasureDescription,
+                  name: assignment.$.Measure,
+                  hasDropBox: JSON.parse(assignment.$.HasDropBox),
+                  notes: assignment.$.Notes,
+                  type: assignment.$.Type,
+                  points: assignment.$.Points,
+                  score: {
+                    type: assignment.$.ScoreType,
+                    value: assignment.$.Score,
+                  },
+                  gradebookId: assignment.$.GradebookID,
+                  studentId: assignment.$.StudentID,
+                  teacherId: assignment.$.TeacherID,
+                })) ?? [],
             };
           }),
         });
