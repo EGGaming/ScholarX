@@ -54,8 +54,9 @@ const Classes: React.FC = () => {
           <Button
             title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
             size='small'
-            icon={gradebook ? <Icon bundle='Feather' name='calendar' /> : <Loader />}
+            icon={gradebook ? <Icon bundle='Feather' name='chevron-down' /> : <Loader />}
             disabled={!gradebook}
+            iconPlacement='right'
             variant='outlined'
           />
         </HoldItem>
