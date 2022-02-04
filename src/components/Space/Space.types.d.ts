@@ -8,6 +8,7 @@ export interface SpaceProps {
   container?: boolean;
   grow?: boolean;
   shrink?: boolean;
+  divider?: boolean;
 }
 
 export type SpaceBaseProps = Required<SpaceProps>;

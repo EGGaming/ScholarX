@@ -12,6 +12,7 @@ const Space: React.FC<SpaceProps> = (props) => {
     container = false,
     grow = false,
     shrink = false,
+    divider = false,
   } = props;
 
   return (
@@ -23,7 +24,7 @@ const Space: React.FC<SpaceProps> = (props) => {
       spacing={spacing}
       justifyContent={justifyContent}
       alignItems={alignItems}
-      style={{ justifyContent }}>
+      divider={divider}>
       {React.Children.map(children, (child, index) => {
         if (React.isValidElement(child))
           switch (index) {
@@ -39,6 +40,7 @@ const Space: React.FC<SpaceProps> = (props) => {
                     direction={direction}
                     justifyContent={justifyContent}
                     alignItems={alignItems}
+                    divider={divider}
                   />
                 </React.Fragment>
               );

@@ -7,14 +7,20 @@ export const SpaceBase = styled.View<SpaceBaseProps>`
     switch (props.direction) {
       case 'horizontal':
         return css`
-          padding: ${props.theme.spacing(0, props.spacing)};
+          margin: ${props.theme.spacing(0, props.spacing)};
         `;
       case 'vertical':
         return css`
-          padding: ${props.theme.spacing(props.spacing, 0)};
+          margin: ${props.theme.spacing(props.spacing, 0)};
         `;
     }
   }}
+  ${(props) =>
+    props.divider &&
+    css`
+      border-bottom-width: 1px;
+      border-bottom-color: ${props.theme.palette.divider};
+    `}
 `;
 
 export const SpaceBaseContainer = styled.View<SpaceBaseProps>`
