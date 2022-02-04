@@ -38,10 +38,6 @@ const Classes: React.FC = () => {
   useStateInitializer(() => client.classSchedule(currentSemester()), setSchedule);
   useStateInitializer(() => client.gradebook(), setGradebook);
 
-  async function getGradebook() {
-    await client.gradebook();
-  }
-
   return (
     <Space spacing={1} direction='vertical'>
       <ClassesHeaderContainer>
@@ -49,11 +45,11 @@ const Classes: React.FC = () => {
           My Classes
         </Typography>
         <Button
-          title='Details'
+          onPress={() => {}}
+          title='Classes'
           size='small'
           icon={<Icon bundle='Feather' name='chevron-right' />}
           iconPlacement='right'
-          onPress={getGradebook}
         />
       </ClassesHeaderContainer>
       <Flex direction='column'>
