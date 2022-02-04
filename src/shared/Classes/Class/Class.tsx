@@ -8,10 +8,10 @@ import Icon from '@components/Icon/Icon';
 import Button from '@components/Button/Button';
 import { ClassProps } from './Class.types';
 import { useAppTheme } from '@theme/core';
-import { Linking, ToastAndroid } from 'react-native';
+import { Linking, ToastAndroid, TouchableNativeFeedback } from 'react-native';
 import Divider from '@components/Divider/Divider';
 import { TypographyColors } from '@theme/core.types';
-import { ClassInfoContainer, GradeSymbolContainer } from './Class.base';
+import { ClassContainer, ClassInfoContainer, GradeSymbolContainer } from './Class.base';
 import { ButtonBase } from '@components/Button/Button.base';
 import { HoldItem } from 'react-native-hold-menu';
 import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
@@ -52,7 +52,7 @@ const Class: React.FC<ClassProps> = (props) => {
   const menuItems: MenuItemProps[] = React.useMemo(
     () => [
       { text: 'Actions', isTitle: true, withSeparator: true },
-      { text: `Email ${classInfo.staff.name}`, icon: 'mail', onPress: handleEmail },
+      { text: `Email`, icon: 'mail', onPress: handleEmail },
       { text: `Copy`, icon: 'copy', onPress: handleCopyToClipboard },
     ],
     [classInfo.staff.name, handleEmail, handleCopyToClipboard]
@@ -60,33 +60,35 @@ const Class: React.FC<ClassProps> = (props) => {
 
   return (
     <ButtonBase onPress={() => {}}>
-      <Space spacing={1}>
-        <GradeSymbolContainer>
-          <Typography
-            variant={classInfo.grade.symbol !== 'N/A' ? 'h1' : 'h2'}
-            bold={classInfo.grade.symbol !== 'N/A'}
-            color={gradeColor}>
-            {classInfo.grade.symbol}
-          </Typography>
-          <Typography variant='body2' bold color='textSecondary'>
-            ({classInfo.grade.raw}%)
-          </Typography>
-        </GradeSymbolContainer>
-        <ClassInfoContainer>
-          <Typography bold numberOfLines={1}>
-            {classInfo.name}
-          </Typography>
-
-          <Space spacing={0.5} alignItems='center'>
-            <Typography variant='body2' color='textSecondary'>
-              {classSchedule.teacher.name}
+      <ClassContainer>
+        <Space spacing={1}>
+          <GradeSymbolContainer>
+            <Typography
+              variant={classInfo.grade.symbol !== 'N/A' ? 'h1' : 'h2'}
+              bold={classInfo.grade.symbol !== 'N/A'}
+              color={gradeColor}>
+              {classInfo.grade.symbol}
             </Typography>
-            <HoldItem items={menuItems}>
-              <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
-            </HoldItem>
-          </Space>
-        </ClassInfoContainer>
-      </Space>
+            <Typography variant='body2' bold color='textSecondary'>
+              ({classInfo.grade.raw}%)
+            </Typography>
+          </GradeSymbolContainer>
+          <ClassInfoContainer>
+            <Typography bold numberOfLines={1}>
+              {classSchedule.name}
+            </Typography>
+
+            <Space spacing={0.5} alignItems='center'>
+              <Typography variant='body2' color='textSecondary'>
+                {classSchedule.teacher.name}
+              </Typography>
+              <HoldItem items={menuItems}>
+                <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
+              </HoldItem>
+            </Space>
+          </ClassInfoContainer>
+        </Space>
+      </ClassContainer>
     </ButtonBase>
   );
 
