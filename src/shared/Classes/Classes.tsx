@@ -46,9 +46,9 @@ const Classes: React.FC = () => {
         </Typography>
         <Button
           onPress={() => {}}
-          title='Classes'
+          title='S2'
           size='small'
-          icon={<Icon bundle='Feather' name='chevron-right' />}
+          icon={<Icon bundle='Feather' name='calendar' />}
           iconPlacement='right'
         />
       </ClassesHeaderContainer>

@@ -23,6 +23,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
     textCentered = false,
     disabled = false,
     size = 'medium',
+    onPress = () => void 0,
     ...otherProps
   } = props;
 
@@ -62,6 +63,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
                 variant={variant}
                 color={color}
                 hexColor={hexColor}
+                onPress={onPress}
                 textCentered={textCentered}>
                 <ButtonIconContainer placement={iconPlacement}>
                   {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
@@ -70,6 +72,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
                   size={size}
                   disabled={disabled}
                   variant={variant}
+                  onPress={onPress}
                   color={color}
                   hexColor={hexColor}
                   textCentered={textCentered}>
@@ -87,6 +90,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
                 size={size}
                 disabled={disabled}
                 variant={variant}
+                onPress={onPress}
                 color={color}
                 hexColor={hexColor}
                 textCentered={textCentered}>
@@ -94,6 +98,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
                   size={size}
                   disabled={disabled}
                   variant={variant}
+                  onPress={onPress}
                   color={color}
                   hexColor={hexColor}
                   textCentered={textCentered}>
@@ -114,6 +119,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
           size={size}
           disabled={disabled}
           variant={variant}
+          onPress={onPress}
           color={color}
           hexColor={hexColor}
           textCentered={textCentered}>
@@ -121,6 +127,7 @@ const Button: React.FC<ButtonProps & DefaultButtonProps & ButtonAccessoryProps> 
             size={size}
             disabled={disabled}
             variant={variant}
+            onPress={onPress}
             color={color}
             hexColor={hexColor}
             textCentered={textCentered}>
