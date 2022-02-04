@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components/native';
 import { RequireAll } from '@utilities/TypeUtilities';
 import Typography from '@components/Typography/Typography';
-import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { Platform, TouchableOpacity } from 'react-native';
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
 import { AppColors } from '@theme/core.types';
 
@@ -60,27 +61,6 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    ${() => {
-      switch (props.size) {
-        case 'small':
-          return css`
-            padding: ${props.theme.spacing(0.8, 1.5)};
-          `;
-        case 'medium':
-          return css`
-            padding: ${props.theme.spacing(1.2, 2)};
-          `;
-      }
-    }}
-    ${() => {
-      if (props.textCentered)
-        return css`
-          justify-content: center;
-        `;
-      return css`
-        justify-content: flex-start;
-      `;
-    }}
     border-radius: ${props.theme.borderRadius}px;
     ${() => {
       if (props.color === 'inherit')
@@ -135,6 +115,25 @@ export const ButtonText = styled.Text<RequireAll<ButtonProps>>`
           return props.theme.typography['small-button'];
         case 'medium':
           return props.theme.typography.button;
+      }
+    }}
+    ${() => {
+      if (props.textCentered)
+        return css`
+          text-align: center;
+        `;
+    }}
+    flex-grow: 1;
+    ${() => {
+      switch (props.size) {
+        case 'small':
+          return css`
+            padding: ${props.theme.spacing(0.8, 1.5)};
+          `;
+        case 'medium':
+          return css`
+            padding: ${props.theme.spacing(1.2, 2)};
+          `;
       }
     }}
     ${() => {

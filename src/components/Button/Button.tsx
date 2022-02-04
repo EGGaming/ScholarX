@@ -1,4 +1,4 @@
-import { ButtonProps as DefaultButtonProps } from 'react-native';
+import { ButtonProps as DefaultButtonProps, Text, View } from 'react-native';
 import React from 'react';
 
 import { useAppTheme } from '@theme/core';
