@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { RequireAll } from '@utilities/TypeUtilities';
 import Typography from '@components/Typography/Typography';
-import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { Platform, TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
 import { AppColors } from '@theme/core.types';
 
@@ -58,10 +57,9 @@ export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeed
 
 export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
   ${(props) => css`
-    display: flex;
+    border-radius: ${props.theme.borderRadius}px;
     flex-direction: row;
     align-items: center;
-    border-radius: ${props.theme.borderRadius}px;
     ${() => {
       if (props.color === 'inherit')
         return css`
@@ -91,8 +89,6 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
           background-color: ${props.hexColor};
         `;
       switch (props.variant) {
-        case 'text':
-          return css``;
         case 'contained':
           return css`
             background-color: ${props.disabled
@@ -107,8 +103,38 @@ export const ButtonBaseContainer = styled.View<RequireAll<ButtonProps>>`
   `}
 `;
 
+export const ButtonTextContainer = styled.View<RequireAll<ButtonProps>>`
+  ${(props) => css`
+    ${() => {
+      switch (props.size) {
+        case 'small':
+          return css`
+            padding: ${props.theme.spacing(0.8, 1.5)};
+          `;
+        case 'medium':
+          return css`
+            padding: ${props.theme.spacing(1.2, 2)};
+          `;
+      }
+    }}
+  `}
+`;
+
 export const ButtonText = styled.Text<RequireAll<ButtonProps>>`
   ${(props) => css`
+    flex-grow: 1;
+    ${() => {
+      switch (props.size) {
+        case 'small':
+          return css`
+            padding: ${props.theme.spacing(0.8, 1.5)};
+          `;
+        case 'medium':
+          return css`
+            padding: ${props.theme.spacing(1.2, 2)};
+          `;
+      }
+    }}
     ${() => {
       switch (props.size) {
         case 'small':
@@ -123,19 +149,7 @@ export const ButtonText = styled.Text<RequireAll<ButtonProps>>`
           text-align: center;
         `;
     }}
-    flex-grow: 1;
-    ${() => {
-      switch (props.size) {
-        case 'small':
-          return css`
-            padding: ${props.theme.spacing(0.8, 1.5)};
-          `;
-        case 'medium':
-          return css`
-            padding: ${props.theme.spacing(1.2, 2)};
-          `;
-      }
-    }}
+
     ${() => {
       if (props.color === 'inherit')
         return css`
@@ -169,13 +183,14 @@ export const ButtonText = styled.Text<RequireAll<ButtonProps>>`
 export const ButtonIconContainer = styled.View<Required<{ placement?: ButtonAccessoryProps['iconPlacement'] }>>`
   ${(props) => {
     switch (props.placement) {
+      default:
       case 'left':
         return css`
-          padding: ${props.theme.spacing(0, 2, 0, 0)};
+          padding: ${props.theme.spacing(0, 0, 0, 2)};
         `;
       case 'right':
         return css`
-          padding: ${props.theme.spacing(0, 0, 0, 2)};
+          padding: ${props.theme.spacing(0, 2, 0, 0)};
         `;
     }
   }}

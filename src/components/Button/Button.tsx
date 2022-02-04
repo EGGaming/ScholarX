@@ -10,7 +10,10 @@ import {
   ButtonBaseContainer,
   ButtonIconContainer,
   ButtonText,
+  ButtonTextContainer,
 } from '@components/Button/Button.base';
+import Typography from '@components/Typography/Typography';
+import Space from '@components/Space/Space';
 
 const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & ButtonAccessoryProps> = React.forwardRef(
   (props, ref) => {
@@ -57,7 +60,13 @@ const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & Butto
         default:
           return (
             <BaseContainer>
-              <ButtonBase ref={ref as any} hexColor={hexColor} color={color} disabled={disabled} {...otherProps}>
+              <ButtonBase
+                ref={ref as any}
+                hexColor={hexColor}
+                color={color}
+                disabled={disabled}
+                onPress={onPress}
+                {...otherProps}>
                 <ButtonBaseContainer
                   size={size}
                   disabled={disabled}
@@ -86,7 +95,13 @@ const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & Butto
         case 'right':
           return (
             <BaseContainer>
-              <ButtonBase ref={ref as any} color={color} hexColor={hexColor} disabled={disabled} {...otherProps}>
+              <ButtonBase
+                ref={ref as any}
+                color={color}
+                hexColor={hexColor}
+                disabled={disabled}
+                onPress={onPress}
+                {...otherProps}>
                 <ButtonBaseContainer
                   size={size}
                   disabled={disabled}
@@ -115,7 +130,13 @@ const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & Butto
       }
     return (
       <BaseContainer>
-        <ButtonBase ref={ref as any} color={color} hexColor={hexColor} disabled={disabled} {...otherProps}>
+        <ButtonBase
+          ref={ref as any}
+          color={color}
+          hexColor={hexColor}
+          disabled={disabled}
+          onPress={onPress}
+          {...otherProps}>
           <ButtonBaseContainer
             size={size}
             disabled={disabled}
