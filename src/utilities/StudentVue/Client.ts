@@ -222,7 +222,7 @@ class Client {
     });
   }
 
-  public classSchedule(semester: number): Promise<Schedule> {
+  public classSchedule(semester?: number): Promise<Schedule> {
     return new Promise(async (res) => {
       try {
         const data = await this.client.processRequest(
@@ -232,7 +232,7 @@ class Client {
           'StudentClassList',
           {
             childIntID: 0,
-            TermIndex: semester - 1,
+            ...(semester && { TermIndex: semester - 1 }),
           }
         );
 
