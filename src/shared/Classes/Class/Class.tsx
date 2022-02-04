@@ -10,7 +10,7 @@ import { ClassProps } from './Class.types';
 import { useAppTheme } from '@theme/core';
 import { Linking, ToastAndroid } from 'react-native';
 import Divider from '@components/Divider/Divider';
-import { AppColors } from '@theme/core.types';
+import { TypographyColors } from '@theme/core.types';
 import { ClassInfoContainer, GradeSymbolContainer } from './Class.base';
 import { ButtonBase } from '@components/Button/Button.base';
 import { HoldItem } from 'react-native-hold-menu';
@@ -28,7 +28,7 @@ const Class: React.FC<ClassProps> = (props) => {
     ToastAndroid.showWithGravity(`Copied to clipboard.`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
   }
 
-  const gradeColor: AppColors = React.useMemo((): AppColors => {
+  const gradeColor: TypographyColors = React.useMemo((): TypographyColors => {
     switch (classInfo.grade.symbol) {
       case 'A':
       case '4':
@@ -44,6 +44,8 @@ const Class: React.FC<ClassProps> = (props) => {
       case 'F':
       case '1':
         return 'error';
+      case 'N/A':
+        return 'textSecondary';
     }
   }, [classInfo.grade.symbol]);
 
@@ -60,7 +62,10 @@ const Class: React.FC<ClassProps> = (props) => {
     <ButtonBase onPress={() => {}}>
       <Space spacing={1}>
         <GradeSymbolContainer>
-          <Typography variant='h1' bold color={gradeColor}>
+          <Typography
+            variant={classInfo.grade.symbol !== 'N/A' ? 'h1' : 'h2'}
+            bold={classInfo.grade.symbol !== 'N/A'}
+            color={gradeColor}>
             {classInfo.grade.symbol}
           </Typography>
           <Typography variant='body2' bold color='textSecondary'>
