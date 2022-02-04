@@ -26,30 +26,30 @@ export default function App() {
     <StudentVueClientProvider>
       <ThemeProvider theme={theme}>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-            <Storage.Provider>
-              <CalendarProvider>
-                <ClassScheduleProvider>
-                  <GradebookProvider>
-                    <SearchDistrictFocusedProvider>
-                      <SearchDistrictProvider>
-                        <NotificationContextProvider>
-                          <SessionContextProvider>
-                            <AppContextProvider>
-                              <StatusBar />
-                              <NavigationContainer theme={navigationTheme}>
+          <Storage.Provider>
+            <CalendarProvider>
+              <ClassScheduleProvider>
+                <GradebookProvider>
+                  <SearchDistrictFocusedProvider>
+                    <SearchDistrictProvider>
+                      <NotificationContextProvider>
+                        <SessionContextProvider>
+                          <AppContextProvider>
+                            <StatusBar />
+                            <NavigationContainer theme={navigationTheme}>
+                              <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
                                 <Root />
-                              </NavigationContainer>
-                            </AppContextProvider>
-                          </SessionContextProvider>
-                        </NotificationContextProvider>
-                      </SearchDistrictProvider>
-                    </SearchDistrictFocusedProvider>
-                  </GradebookProvider>
-                </ClassScheduleProvider>
-              </CalendarProvider>
-            </Storage.Provider>
-          </HoldMenuProvider>
+                              </HoldMenuProvider>
+                            </NavigationContainer>
+                          </AppContextProvider>
+                        </SessionContextProvider>
+                      </NotificationContextProvider>
+                    </SearchDistrictProvider>
+                  </SearchDistrictFocusedProvider>
+                </GradebookProvider>
+              </ClassScheduleProvider>
+            </CalendarProvider>
+          </Storage.Provider>
         </GestureHandlerRootView>
       </ThemeProvider>
     </StudentVueClientProvider>
