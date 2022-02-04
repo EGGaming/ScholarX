@@ -17,6 +17,7 @@ import Icon from '@components/Icon/Icon';
 import { Status } from '@utilities/StudentVue';
 import EventsScreen from '@screens/Events/Events';
 import Space from '@components/Space/Space';
+import ClassViewer from '@screens/ClassViewer/ClassViewer';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -71,6 +72,16 @@ const Root: React.FC = () => {
       <RootStack.Screen
         name='EventViewer'
         component={EventViewer}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: '',
+          headerBackVisible: true,
+        }}
+      />
+      <RootStack.Screen
+        name='ClassViewer'
+        component={ClassViewer}
         options={{
           headerShown: true,
           header: (props) => <Header {...props} />,
