@@ -160,7 +160,7 @@ class Client {
     });
   }
 
-  public gradebook(): Promise<Gradebook> {
+  public gradebook(reportingPeriodIndex?: number): Promise<Gradebook> {
     return new Promise(async (res) => {
       try {
         const data = await this.client.processRequest(
@@ -170,6 +170,7 @@ class Client {
           'Gradebook',
           {
             childIntID: 0,
+            ...(reportingPeriodIndex && { ReportPeriod: reportingPeriodIndex }),
           }
         );
 
