@@ -5,13 +5,13 @@ import {
   SkeletonProps,
   SkeletonTypographyProps,
 } from '@components/Skeleton/Skeleton.types';
+import { useSkeletonSharedValue } from '@context/SkeletonSharedValueContext/SkeletonSharedValueContext';
 import React from 'react';
 import { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 class Skeleton {
-  public static Typography: React.FC<SkeletonTypographyProps> = ({ width, variant = 'body' }) => {
-    const opacity = useSharedValue(0.2);
-    opacity.value = withRepeat(withTiming(0.4, { duration: 1000, easing: Easing.exp }), -1, true);
+  public static Typography: React.FC<SkeletonTypographyProps> = ({ width, variant = 'body', align = 'left' }) => {
+    const opacity = useSkeletonSharedValue();
 
     const style = useAnimatedStyle(
       () => ({
@@ -19,11 +19,10 @@ class Skeleton {
       }),
       []
     );
-    return <SkeletonTypographyBase width={width} style={style} variant={variant} />;
+    return <SkeletonTypographyBase width={width} style={style} variant={variant} align={align} />;
   };
   public static Circle: React.FC<SkeletonCircleProps> = (props) => {
-    const opacity = useSharedValue(0.2);
-    opacity.value = withRepeat(withTiming(0.4, { duration: 1000, easing: Easing.exp }), -1, true);
+    const opacity = useSkeletonSharedValue();
 
     const style = useAnimatedStyle(
       () => ({
@@ -35,8 +34,7 @@ class Skeleton {
     return <SkeletonCircleBase style={style} {...props} />;
   };
   public static Box: React.FC<SkeletonBoxProps> = (props) => {
-    const opacity = useSharedValue(0.2);
-    opacity.value = withRepeat(withTiming(0.4, { duration: 1000, easing: Easing.exp }), -1, true);
+    const opacity = useSkeletonSharedValue();
 
     const style = useAnimatedStyle(
       () => ({

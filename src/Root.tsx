@@ -50,7 +50,7 @@ const Root: React.FC = () => {
         options={{
           headerShown: true,
           header: (props) => <Header {...props} />,
-          headerTitle: 'Upcoming Events',
+          headerTitle: '',
           headerRight: () => (
             <Space spacing={1}>
               <IconButton icon={<Icon bundle='MaterialCommunityIcons' name='calendar-clock' />} onPress={() => {}} />

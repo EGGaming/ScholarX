@@ -1,37 +1,117 @@
+import Container from '@components/Container/Container';
 import Divider from '@components/Divider/Divider';
+import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { useCalendar } from '@context/CalendarContext/CalendarContext';
 import { RootStackParamList } from '@navigators/Root/Root.types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RenderEventItem } from '@screens/Events/Events.util';
-import { CalendarEvent } from '@utilities/StudentVue/types';
-import { KeyExtractor } from '@utilities/TypeUtilities';
-import { isBefore, isToday } from 'date-fns';
+import { sub, format, getDate, add, isThisMonth, isSameDay, isSameMonth, isSameYear } from 'date-fns';
 import _ from 'lodash';
 import React from 'react';
-import { FlatList } from 'react-native';
-
-const keyExtractor: KeyExtractor<CalendarEvent> = (item) => `${item.Date}: ${item.Title}`;
+import { Dimensions, ScrollView } from 'react-native';
+import { getDaysInMonth, addDays } from 'date-fns';
+import Day from '@screens/Events/Day/Day';
+import Flex from '@components/Flex/Flex';
+import Skeleton from '@components/Skeleton/Skeleton';
+import IconButton from '@components/IconButton/IconButton';
+import Icon from '@components/Icon/Icon';
+import EventItem from '@screens/Events/EventItem/EventItem';
+import { BlankSpacer, EventListContainer } from '@screens/Events/Events.base';
 
 const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'>> = () => {
   const [calendar] = useCalendar();
-  const upcomingEvents = React.useMemo(
-    () =>
-      calendar
-        ? calendar.events.filter((event) => {
-            return isBefore(Date.now(), Date.parse(event.Date)) || isToday(Date.parse(event.Date));
-          })
-        : [],
-    [calendar?.events]
+  const [daysInMonth, setDaysInMonth] = React.useState<number>(getDaysInMonth(Date.now()));
+  const [selectedIndex, setSelectedIndex] = React.useState<number>(getDate(Date.now()));
+  const [selectedMonth, setSelectedMonth] = React.useState<Date>(new Date());
+  const scrollRef = React.useRef<ScrollView>(null);
+  const currentSelectedDate = React.useMemo(
+    () => new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), selectedIndex + 1),
+    [selectedMonth, selectedIndex]
+  );
+  const numOfEventsForSelectedMonth = React.useMemo(
+    () => (calendar ? calendar.events.filter((event) => isSameMonth(Date.parse(event.Date), selectedMonth)).length : 0),
+    [selectedMonth]
   );
 
+  const getEventsOnDate = React.useCallback(
+    (selectedDate: Date) =>
+      calendar
+        ? calendar.events.filter((event) => {
+            const parsed = Date.parse(event.Date);
+            return (
+              isSameDay(parsed, selectedDate) && isSameMonth(parsed, selectedDate) && isSameYear(parsed, selectedDate)
+            );
+          })
+        : [],
+    [calendar]
+  );
+
+  const eventsOnSelectedDate = React.useMemo(
+    () => getEventsOnDate(currentSelectedDate),
+    [getEventsOnDate, currentSelectedDate]
+  );
+
+  React.useEffect(() => {
+    scrollRef.current?.scrollTo({ x: 90 * selectedIndex - Dimensions.get('window').width / 2.55 + 160, y: 0 });
+  }, [selectedIndex]);
+
+  React.useEffect(() => {
+    setDaysInMonth(getDaysInMonth(selectedMonth));
+    if (isThisMonth(selectedMonth)) setSelectedIndex(getDate(Date.now()));
+    else setSelectedIndex(-1);
+  }, [selectedMonth]);
+
+  const previousMonth = React.useCallback(() => {
+    setSelectedMonth((current) => sub(current, { months: 1 }));
+  }, [setSelectedMonth]);
+
+  const nextMonth = React.useCallback(() => {
+    setSelectedMonth((current) => add(current, { months: 1 }));
+  }, [setSelectedMonth]);
+
   return (
-    <FlatList
-      data={_.uniqBy(upcomingEvents, 'Date')}
-      renderItem={RenderEventItem}
-      keyExtractor={keyExtractor}
-      ItemSeparatorComponent={Divider}
-    />
+    <ScrollView>
+      <Flex direction='column'>
+        <Container>
+          <Space spacing={1} justifyContent='center'>
+            <IconButton icon={<Icon bundle='Feather' name='chevron-left' />} onPress={previousMonth} />
+            <Typography variant='h2' bold align='center'>
+              {format(selectedMonth, 'MMMM')}
+            </Typography>
+            <IconButton icon={<Icon bundle='Feather' name='chevron-right' />} onPress={nextMonth} />
+          </Space>
+          {calendar ? (
+            <Typography variant='body2' align='center' color='textSecondary'>
+              {numOfEventsForSelectedMonth} events
+            </Typography>
+          ) : (
+            <Skeleton.Typography variant='body2' width={75} align='center' />
+          )}
+        </Container>
+        <EventListContainer ref={scrollRef} fadingEdgeLength={100}>
+          <BlankSpacer />
+          <BlankSpacer />
+          {new Array(daysInMonth).fill('').map((_, i) => {
+            const date = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth(), i + 1);
+            return (
+              <Day
+                date={date}
+                key={i}
+                onIndexChange={setSelectedIndex}
+                selectedIndex={selectedIndex}
+                index={i}
+                events={getEventsOnDate(date)}
+              />
+            );
+          })}
+          <BlankSpacer />
+          <BlankSpacer />
+        </EventListContainer>
+        {eventsOnSelectedDate.map((event) => (
+          <EventItem event={event} />
+        ))}
+      </Flex>
+    </ScrollView>
   );
 };
 

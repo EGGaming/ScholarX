@@ -52,6 +52,7 @@ export const SkeletonTypographyBase = styled(Animated.View)<Required<SkeletonTyp
     background-color: ${props.theme.mode === 'dark'
       ? props.theme.palette.primary.dark
       : props.theme.palette.constants.GRAY[400]};
+    align-self: ${props.align};
   `}
 `;
 

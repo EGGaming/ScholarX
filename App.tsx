@@ -18,6 +18,7 @@ import SearchDistrictFocusedProvider from '@context/SearchDistrictFocusedContext
 import CalendarProvider from '@context/CalendarContext/CalendarContext';
 import ClassScheduleProvider from '@context/ClassScheduleContext/ClassScheduleContext';
 import GradebookProvider from '@context/GradebookContext/GradebookContext';
+import SkeletonSharedValueProvider from '@context/SkeletonSharedValueContext/SkeletonSharedValueContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -34,14 +35,16 @@ export default function App() {
                     <SearchDistrictProvider>
                       <NotificationContextProvider>
                         <SessionContextProvider>
-                          <AppContextProvider>
-                            <StatusBar />
-                            <NavigationContainer theme={navigationTheme}>
-                              <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-                                <Root />
-                              </HoldMenuProvider>
-                            </NavigationContainer>
-                          </AppContextProvider>
+                          <SkeletonSharedValueProvider>
+                            <AppContextProvider>
+                              <StatusBar />
+                              <NavigationContainer theme={navigationTheme}>
+                                <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
+                                  <Root />
+                                </HoldMenuProvider>
+                              </NavigationContainer>
+                            </AppContextProvider>
+                          </SkeletonSharedValueProvider>
                         </SessionContextProvider>
                       </NotificationContextProvider>
                     </SearchDistrictProvider>

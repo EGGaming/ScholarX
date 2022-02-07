@@ -1,3 +1,5 @@
+import Card from '@components/Card/Card';
+import Divider from '@components/Divider/Divider';
 import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import ListItem from '@components/List/ListItem';
@@ -6,6 +8,8 @@ import Typography from '@components/Typography/Typography';
 import { useCalendar, useFutureEvents } from '@context/CalendarContext/CalendarContext';
 import { useRootNavigation } from '@navigators/Root/Root';
 import { EventItemProps } from '@screens/Events/EventItem/EventItem.types';
+import { Assignment } from '@screens/EventViewer/EventViewer.types';
+import { useAppTheme } from '@theme/core';
 import { TypographyColors } from '@theme/core.types';
 import { format, formatDistance, isFuture, isPast, isToday, isTomorrow } from 'date-fns';
 import React from 'react';
@@ -14,63 +18,57 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
   const navigation = useRootNavigation();
   const parsedDate = Date.parse(event.Date);
   const title = format(parsedDate, 'EEE, MMM do, yyyy');
-  const upcomingEvents = useFutureEvents();
-
   function onPress() {
     navigation.navigate('EventViewer', { event, title });
   }
 
-  const dateTitle: string = isToday(parsedDate)
-    ? 'Today'
-    : isTomorrow(parsedDate)
-    ? 'Tomorrow'
-    : formatDistance(parsedDate, new Date(new Date().toDateString()), { addSuffix: true });
-  const titleColor: TypographyColors = isToday(parsedDate) ? 'error' : isTomorrow(parsedDate) ? 'warning' : 'secondary';
-  const headerColor: TypographyColors = isFuture(parsedDate) || isToday(parsedDate) ? 'textPrimary' : 'textSecondary';
+  const theme = useAppTheme();
 
-  const icon = React.useMemo(() => {
-    switch (event.DayType) {
-      case 'Holiday':
-      case 'Regular':
-      default:
-        return <Icon bundle='MaterialCommunityIcons' name='bed-outline' color='secondary' />;
-      case 'Assignment':
-        return <Icon bundle='Feather' name='clock' color='primary' />;
-    }
-  }, [event.DayType]);
-
-  const secondaryText = React.useMemo(() => {
-    if (event.DayType === 'Assignment') {
-      const numOfAssignments = upcomingEvents.filter((e) => e.Date === event.Date).length;
-      if (numOfAssignments === 1) return `1 Assignment`;
-      return `${numOfAssignments} Assignments`;
-    }
-
-    return event.DayType;
-  }, [upcomingEvents, event.DayType]);
+  const assignment: Assignment = React.useMemo(() => {
+    const teacherName = (event.Title.match(/\w+, \w/) ?? [''])[0];
+    const className = (event.Title.match(/\s\s.*(?= : )/) ?? [''])[0].substring(2);
+    const period = Number((event.Title.match(/\(\d\)/) ?? [''])[0].replace(/\(|\)/g, ''));
+    const assignmentName = event.Title.substring(teacherName.length + className.length + 5);
+    const score = (assignmentName.match(/\s\-\sScore.*/) ?? [''])[0];
+    return {
+      teacher: teacherName,
+      assignmentName: assignmentName.substring(0, assignmentName.length - score.length - 1),
+      class: className.substring(0, className.length - 3),
+      score: (() => {
+        const temp = score.replace(/\s-\sScore:\s/, '');
+        switch (temp) {
+          case '':
+          case '-':
+            return '-';
+          default:
+            return `${temp}%`;
+        }
+      })(),
+      period,
+    };
+  }, [event]);
 
   return (
-    <ListItem onPress={onPress}>
-      <Space spacing={1} alignItems='center'>
-        <Flex shrink>{icon}</Flex>
-        <Flex direction='column'>
-          <Typography color={headerColor}>{secondaryText}</Typography>
-          <Space spacing={0.3} alignItems='center'>
-            <Icon bundle='Feather' name='clock' color={titleColor} size='small' />
-            <Typography variant='caption' color={titleColor}>
-              {event.DayType === 'Assignment' && 'Due '}
-              {dateTitle}
+    <Card>
+      <Space spacing={1} direction='vertical'>
+        <>
+          <Typography variant='caption' color='textSecondary' numberOfLines={1}>
+            {assignment.class}
+          </Typography>
+          <Typography variant='body' bold>
+            {assignment.assignmentName}
+          </Typography>
+        </>
+        <>
+          <Typography variant='body2'>
+            Score:{' '}
+            <Typography variant='body2' color={theme.mode === 'dark' ? 'secondary' : 'primary'}>
+              {assignment.score}
             </Typography>
-          </Space>
-        </Flex>
+          </Typography>
+        </>
       </Space>
-      <Flex grow justifyContent='flex-end' alignItems='center'>
-        <Flex direction='column' alignItems='center'>
-          <Icon bundle='AntDesign' name='calendar' color='primary' size='large' />
-          <Typography bold>{format(parsedDate, 'MMM dd')}</Typography>
-        </Flex>
-      </Flex>
-    </ListItem>
+    </Card>
   );
 };
 

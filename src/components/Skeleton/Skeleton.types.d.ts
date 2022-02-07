@@ -1,3 +1,4 @@
+import { TypographyProps } from '@components/Typography/Typography.types';
 import { TypographyComponent } from '@theme/core.types';
 
 export interface SkeletonProps {
@@ -6,6 +7,7 @@ export interface SkeletonProps {
 
 export interface SkeletonTypographyProps extends SkeletonProps {
   variant?: TypographyComponent;
+  align?: TypographyProps['align'];
 }
 
 export type SkeletonCircleProps =
