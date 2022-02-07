@@ -53,7 +53,7 @@ const Event: React.FC<EventProps> = (props) => {
     }, [item.DayType]);
 
     const secondaryText = React.useMemo(() => {
-      if (item.DayType === 'Assignment') {
+      if (item.DayType === 'Assignment' && upcomingEvents) {
         const numOfAssignments = upcomingEvents.filter((e) => e.Date === item.Date).length;
         if (numOfAssignments === 1) return `1 Assignment`;
         return `${numOfAssignments} Assignments`;

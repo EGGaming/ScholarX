@@ -61,6 +61,7 @@ const Classes: React.FC = () => {
           />
         </HoldItem>
       </ClassesHeaderContainer>
+
       <Flex direction='column'>
         {schedule && gradebook
           ? schedule.classes.map((classSchedule, i) => (
