@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components/native';
 import { RequireAll } from '@utilities/TypeUtilities';
 import Typography from '@components/Typography/Typography';
-import { Platform, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
+import { Platform, TouchableOpacity } from 'react-native';
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
 import { AppColors } from '@theme/core.types';
 

@@ -127,7 +127,7 @@ class Client {
             SchoolBegDate: t.CalendarListing.$.SchoolBegDate,
             SchoolEndDate: t.CalendarListing.$.SchoolEndDate,
           },
-          events: t.CalendarListing.EventLists[0].EventList.map((event) => event.$),
+          events: t.CalendarListing.EventLists[0]?.EventList?.map((event) => event.$) ?? [],
         });
       } catch (e) {
         throw Error(e as any);

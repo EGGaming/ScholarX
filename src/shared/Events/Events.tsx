@@ -9,7 +9,7 @@ import useComponentMounted from '@utilities/useComponentMounted';
 import React from 'react';
 import { FlatList, ScrollView } from 'react-native';
 import { EventsContainer, EventsListEmpty } from './Events.base';
-import { isBefore, isToday, addMonths } from 'date-fns';
+import { isBefore, isToday, addMonths, sub } from 'date-fns';
 import Event from './Event/Event';
 import _ from 'lodash';
 import { useRootNavigation } from '@navigators/Root/Root';
@@ -27,17 +27,59 @@ const Events: React.FC = () => {
 
   async function fetchCalendarEvents() {
     try {
-      const [data1, data2] = await Promise.all([
+      const [
+        data1prev,
+        data2prev,
+        data3prev,
+        data4prev,
+        data5prev,
+        data6prev,
+        dataNow,
+        data1next,
+        data2next,
+        data3next,
+        data4next,
+        data5next,
+        data6next,
+      ] = await Promise.all([
+        client.calendar(sub(Date.now(), { months: 6 })),
+        client.calendar(sub(Date.now(), { months: 5 })),
+        client.calendar(sub(Date.now(), { months: 4 })),
+        client.calendar(sub(Date.now(), { months: 3 })),
+        client.calendar(sub(Date.now(), { months: 2 })),
+        client.calendar(sub(Date.now(), { months: 1 })),
         client.calendar(Date.now()),
         client.calendar(addMonths(Date.now(), 1)),
+        client.calendar(addMonths(Date.now(), 2)),
+        client.calendar(addMonths(Date.now(), 3)),
+        client.calendar(addMonths(Date.now(), 4)),
+        client.calendar(addMonths(Date.now(), 5)),
+        client.calendar(addMonths(Date.now(), 6)),
       ]);
       setCalendar({
         meta: {
-          ...data1.meta,
-          MonthBegDate: data1.meta.MonthBegDate,
-          MonthEndDate: data2.meta.MonthEndDate,
+          ...dataNow.meta,
+          MonthBegDate: data6prev.meta.MonthBegDate,
+          MonthEndDate: data6next.meta.MonthEndDate,
         },
-        events: _.uniqBy([...data1.events, ...data2.events], 'Title'),
+        events: _.uniqBy(
+          [
+            ...data6prev.events,
+            ...data5prev.events,
+            ...data4prev.events,
+            ...data3prev.events,
+            ...data2prev.events,
+            ...data1prev.events,
+            ...dataNow.events,
+            ...data1next.events,
+            ...data2next.events,
+            ...data3next.events,
+            ...data4next.events,
+            ...data5next.events,
+            ...data6next.events,
+          ],
+          'Title'
+        ),
       });
     } catch (e) {
       console.error(e);

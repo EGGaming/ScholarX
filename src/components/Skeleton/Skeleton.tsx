@@ -10,7 +10,7 @@ import React from 'react';
 import { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
 class Skeleton {
-  public static Typography: React.FC<SkeletonTypographyProps> = ({ width, variant = 'body', align = 'left' }) => {
+  public static Typography: React.FC<SkeletonTypographyProps> = ({ width, variant = 'body', align = 'flex-start' }) => {
     const opacity = useSkeletonSharedValue();
 
     const style = useAnimatedStyle(

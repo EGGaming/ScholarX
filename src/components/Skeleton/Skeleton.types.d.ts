@@ -1,5 +1,6 @@
 import { TypographyProps } from '@components/Typography/Typography.types';
 import { TypographyComponent } from '@theme/core.types';
+import { FlexStyle } from 'react-native';
 
 export interface SkeletonProps {
   width: number | string;
@@ -7,7 +8,7 @@ export interface SkeletonProps {
 
 export interface SkeletonTypographyProps extends SkeletonProps {
   variant?: TypographyComponent;
-  align?: TypographyProps['align'];
+  align?: FlexStyle['alignSelf'];
 }
 
 export type SkeletonCircleProps =

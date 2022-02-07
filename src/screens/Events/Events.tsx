@@ -2,7 +2,7 @@ import Container from '@components/Container/Container';
 import Divider from '@components/Divider/Divider';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
-import { useCalendar } from '@context/CalendarContext/CalendarContext';
+import { useCalendar, useMonthAssignments } from '@context/CalendarContext/CalendarContext';
 import { RootStackParamList } from '@navigators/Root/Root.types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { sub, format, getDate, add, isThisMonth, isSameDay, isSameMonth, isSameYear } from 'date-fns';
@@ -17,9 +17,11 @@ import IconButton from '@components/IconButton/IconButton';
 import Icon from '@components/Icon/Icon';
 import EventItem from '@screens/Events/EventItem/EventItem';
 import { BlankSpacer, EventListContainer } from '@screens/Events/Events.base';
+import { Month } from '@utilities/HumanTime';
 
 const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'>> = () => {
   const [calendar] = useCalendar();
+  const monthAssignment = useMonthAssignments();
   const [daysInMonth, setDaysInMonth] = React.useState<number>(getDaysInMonth(Date.now()));
   const [selectedIndex, setSelectedIndex] = React.useState<number>(getDate(Date.now()));
   const [selectedMonth, setSelectedMonth] = React.useState<Date>(new Date());
@@ -29,21 +31,16 @@ const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'
     [selectedMonth, selectedIndex]
   );
   const numOfEventsForSelectedMonth = React.useMemo(
-    () => (calendar ? calendar.events.filter((event) => isSameMonth(Date.parse(event.Date), selectedMonth)).length : 0),
-    [selectedMonth]
+    () => monthAssignment.get(selectedMonth.getMonth() as Month)?.length ?? 0,
+    [monthAssignment, selectedMonth]
   );
 
   const getEventsOnDate = React.useCallback(
     (selectedDate: Date) =>
-      calendar
-        ? calendar.events.filter((event) => {
-            const parsed = Date.parse(event.Date);
-            return (
-              isSameDay(parsed, selectedDate) && isSameMonth(parsed, selectedDate) && isSameYear(parsed, selectedDate)
-            );
-          })
-        : [],
-    [calendar]
+      monthAssignment
+        .get(selectedDate.getMonth() as Month)
+        ?.filter((event) => isSameDay(Date.parse(event.Date), selectedDate)) ?? [],
+    [monthAssignment]
   );
 
   const eventsOnSelectedDate = React.useMemo(
@@ -82,10 +79,10 @@ const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'
           </Space>
           {calendar ? (
             <Typography variant='body2' align='center' color='textSecondary'>
-              {numOfEventsForSelectedMonth} events
+              {numOfEventsForSelectedMonth} events this month
             </Typography>
           ) : (
-            <Skeleton.Typography variant='body2' width={75} align='center' />
+            <Skeleton.Typography variant='body2' width={155} align='center' />
           )}
         </Container>
         <EventListContainer ref={scrollRef} fadingEdgeLength={100}>
@@ -108,7 +105,7 @@ const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'
           <BlankSpacer />
         </EventListContainer>
         {eventsOnSelectedDate.map((event) => (
-          <EventItem event={event} />
+          <EventItem event={event} key={event.Title} />
         ))}
       </Flex>
     </ScrollView>
