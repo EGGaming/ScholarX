@@ -58,7 +58,7 @@ const Class: React.FC<ClassProps> = (props) => {
               {classInfo.grade.symbol}
             </Typography>
             <Typography variant='body2' bold color='textSecondary'>
-              ({classInfo.grade.raw}%)
+              ({classInfo.grade.raw})
             </Typography>
           </GradeSymbolContainer>
           <ClassInfoContainer>
