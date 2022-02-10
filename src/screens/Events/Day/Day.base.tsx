@@ -7,6 +7,7 @@ export const DayButtonContainer = styled(Animated.View)<{ selected: boolean }>`
     overflow: hidden;
     margin: ${props.theme.spacing(1, 0)};
     width: 90px;
+    height: 134px;
     ${() =>
       props.selected &&
       css`

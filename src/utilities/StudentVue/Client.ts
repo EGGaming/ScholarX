@@ -221,14 +221,30 @@ class Client {
                   hasDropBox: JSON.parse(assignment.$.HasDropBox),
                   notes: assignment.$.Notes,
                   type: assignment.$.Type,
-                  points: assignment.$.Points,
+                  points: assignment.$.Points.replace(/\.0+/g, ''),
                   score: {
                     type: assignment.$.ScoreType,
-                    value: assignment.$.Score,
+                    value: assignment.$.Score.replace(/\.0+/g, ''),
                   },
                   gradebookId: assignment.$.GradebookID,
                   studentId: assignment.$.StudentID,
                   teacherId: assignment.$.TeacherID,
+                  resources: assignment.Resources[0].Resource?.map(({ $ }) => ({
+                    file: {
+                      type: $.FileType,
+                      name: $.FileName,
+                      serverRoute: $.ServerFileName,
+                    },
+                    resource: {
+                      id: $.ResourceID,
+                      name: $.ResourceName,
+                      date: $.ResourceDate,
+                    },
+                    sequence: $.Sequence,
+                    classId: $.ClassID,
+                    gradebookId: $.GradebookID,
+                    type: $.Type,
+                  })),
                 })) ?? [],
             };
           }),

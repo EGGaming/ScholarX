@@ -1,7 +1,13 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ModifiedCalendarEvent } from '@shared/Events/Event/Events.types';
-import { CalendarEvent, ClassSchedule, Message, StudentClass } from '@utilities/StudentVue/types';
+import {
+  CalendarEvent,
+  ClassSchedule,
+  Message,
+  StudentClass,
+  StudentClassAssignment,
+} from '@utilities/StudentVue/types';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -19,6 +25,9 @@ export type RootStackParamList = {
   ClassViewer: {
     class: StudentClass;
     schedule: ClassSchedule;
+  };
+  AssignmentViewer: {
+    assignment: StudentClassAssignment;
   };
 };
 

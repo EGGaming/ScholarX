@@ -7,7 +7,7 @@ import { FieldProps } from '@shared/Field/Field.types';
 import React from 'react';
 
 const Field: React.FC<FieldProps> = (props) => {
-  const { reveal, hint, text, title } = props;
+  const { reveal, hint, text, title, typographyProps } = props;
   const [visible, toggle] = React.useReducer((s) => !s, false);
   const visibleText = React.useMemo(() => {
     if (reveal) {
@@ -40,7 +40,7 @@ const Field: React.FC<FieldProps> = (props) => {
           {title}
         </Typography>
       )}
-      <Typography>{visibleText}</Typography>
+      <Typography {...typographyProps}>{visibleText}</Typography>
     </Flex>
   );
 };

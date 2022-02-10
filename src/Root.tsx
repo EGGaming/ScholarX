@@ -18,6 +18,7 @@ import { Status } from '@utilities/StudentVue';
 import EventsScreen from '@screens/Events/Events';
 import Space from '@components/Space/Space';
 import ClassViewer from '@screens/ClassViewer/ClassViewer';
+import AssignmentViewer from '@screens/AssignmentViewer/AssignmentViewer';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -82,6 +83,16 @@ const Root: React.FC = () => {
       <RootStack.Screen
         name='ClassViewer'
         component={ClassViewer}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: '',
+          headerBackVisible: true,
+        }}
+      />
+      <RootStack.Screen
+        name='AssignmentViewer'
+        component={AssignmentViewer}
         options={{
           headerShown: true,
           header: (props) => <Header {...props} />,

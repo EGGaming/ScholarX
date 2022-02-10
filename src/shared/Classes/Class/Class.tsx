@@ -12,7 +12,7 @@ import { Linking, ToastAndroid, TouchableNativeFeedback } from 'react-native';
 import Divider from '@components/Divider/Divider';
 import { TypographyColors } from '@theme/core.types';
 import { ClassContainer, ClassInfoContainer, GradeSymbolContainer } from './Class.base';
-import { ButtonBase } from '@components/Button/Button.base';
+import { ButtonBase, NativeButtonBase } from '@components/Button/Button.base';
 import { HoldItem } from 'react-native-hold-menu';
 import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
 import * as Clipboard from 'expo-clipboard';
@@ -47,7 +47,7 @@ const Class: React.FC<ClassProps> = (props) => {
   }
 
   return (
-    <ButtonBase onPress={moreInfo}>
+    <NativeButtonBase onPress={moreInfo}>
       <ClassContainer>
         <Space spacing={1}>
           <GradeSymbolContainer>
@@ -77,7 +77,7 @@ const Class: React.FC<ClassProps> = (props) => {
           </ClassInfoContainer>
         </Space>
       </ClassContainer>
-    </ButtonBase>
+    </NativeButtonBase>
   );
 
   return (

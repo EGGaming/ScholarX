@@ -26,7 +26,7 @@ const Space: React.FC<SpaceProps> = (props) => {
       alignItems={alignItems}
       divider={divider}>
       {React.Children.map(children, (child, index) => {
-        if (React.isValidElement(child))
+        if (React.isValidElement(child)) {
           switch (index) {
             default:
               return (
@@ -47,6 +47,7 @@ const Space: React.FC<SpaceProps> = (props) => {
             case React.Children.count(children) - 1:
               return <React.Fragment>{child}</React.Fragment>;
           }
+        }
       })}
     </SpaceBaseContainer>
   );

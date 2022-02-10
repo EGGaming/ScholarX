@@ -22,16 +22,7 @@ const ClassViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'ClassVie
     navigation.setOptions({ headerTitle: schedule.name });
   }, []);
 
-  return (
-    <Tabs options={['Overview', 'Assignments']} container={Container} center>
-      <Tab>
-        <Typography>Overview</Typography>
-      </Tab>
-      <Tab>
-        <ClassAssignments {...route.params} />
-      </Tab>
-    </Tabs>
-  );
+  return <ClassAssignments {...route.params} />;
 };
 
 export default ClassViewer;

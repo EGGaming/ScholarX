@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components/native';
 import { RequireAll } from '@utilities/TypeUtilities';
 import Typography from '@components/Typography/Typography';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
-import { Platform, TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity, TouchableNativeFeedback as NativeFeedback } from 'react-native';
 import { ButtonAccessoryProps, ButtonProps } from '@components/Button/Button.types';
 import { AppColors } from '@theme/core.types';
 
@@ -12,6 +12,49 @@ export const BaseContainer = styled.View`
     overflow: hidden;
   `}
 `;
+
+export const NativeButtonBase = styled(Platform.OS === 'android' ? NativeFeedback : TouchableOpacity).attrs<{
+  color?: AppColors;
+  hexColor?: string;
+  round?: boolean;
+}>((props) => {
+  const { round = false } = props;
+  if (props.color == null) {
+    switch (props.theme.mode) {
+      case 'dark':
+        return {
+          background: NativeFeedback.Ripple(props.theme.palette.primary.dark, round),
+          activeOpacity: 0.5,
+        };
+      case 'light':
+        return {
+          background: NativeFeedback.Ripple(props.theme.palette.constants.GRAY['300'], round),
+          activeOpacity: 0.5,
+        };
+    }
+  } else {
+    if (props.color === 'inherit')
+      return {
+        activeOpacity: 0.5,
+      };
+    switch (props.theme.mode) {
+      case 'dark':
+        return {
+          background: NativeFeedback.Ripple(props.theme.palette[props.color].dark, round),
+          activeOpacity: 0.5,
+        };
+      case 'light':
+        return {
+          background: NativeFeedback.Ripple(props.theme.palette[props.color].light, round),
+          activeOpacity: 0.5,
+        };
+    }
+  }
+})<{
+  color?: AppColors;
+  hexColor?: string;
+  round?: boolean;
+}>``;
 
 export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity).attrs<{
   color?: AppColors;

@@ -48,26 +48,36 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
     };
   }, [event]);
 
+  if (event.DayType === 'Assignment')
+    return (
+      <Card>
+        <Space spacing={1} direction='vertical'>
+          <>
+            <Typography variant='caption' color='textSecondary' numberOfLines={1}>
+              {assignment.class}
+            </Typography>
+            <Typography variant='body' bold>
+              {assignment.assignmentName}
+            </Typography>
+          </>
+          <>
+            <Typography variant='body2'>
+              Score:{' '}
+              <Typography variant='body2' color={theme.mode === 'dark' ? 'secondary' : 'primary'}>
+                {assignment.score}
+              </Typography>
+            </Typography>
+          </>
+        </Space>
+      </Card>
+    );
+
   return (
     <Card>
-      <Space spacing={1} direction='vertical'>
-        <>
-          <Typography variant='caption' color='textSecondary' numberOfLines={1}>
-            {assignment.class}
-          </Typography>
-          <Typography variant='body' bold>
-            {assignment.assignmentName}
-          </Typography>
-        </>
-        <>
-          <Typography variant='body2'>
-            Score:{' '}
-            <Typography variant='body2' color={theme.mode === 'dark' ? 'secondary' : 'primary'}>
-              {assignment.score}
-            </Typography>
-          </Typography>
-        </>
-      </Space>
+      <Typography numberOfLines={1}>{event.DayType}</Typography>
+      <Typography numberOfLines={1} color='textSecondary' variant='body2'>
+        {event.Title}
+      </Typography>
     </Card>
   );
 };

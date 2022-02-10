@@ -1,5 +1,6 @@
 import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
+import Illustration from '@components/Illustration/Illustration';
 import Loader from '@components/Loader/Loader';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
@@ -84,7 +85,7 @@ const DistrictList: React.FC<NativeStackScreenProps<LoginStackParamList, 'Distri
           <Loader size='large' />
         ) : (
           <DistrictErrorContainer>
-            {!focused && <DistrictNotFoundImage />}
+            {!focused && <Illustration type='not-found' />}
             <Typography variant='h1' bold>
               Not found
             </Typography>

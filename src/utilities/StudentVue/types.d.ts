@@ -186,6 +186,24 @@ export interface StudentClassAssignment {
   studentId: string;
   teacherId: string;
   type: string;
+  resources?: AssignmentResource[];
+}
+
+export interface AssignmentResource {
+  file: {
+    type: string;
+    name: string;
+    serverRoute: string;
+  };
+  resource: {
+    id: string;
+    name: string;
+    date: string;
+  };
+  sequence: string;
+  classId: string;
+  gradebookId: string;
+  type: string;
 }
 
 export interface GradebookXMLObject {
@@ -257,7 +275,23 @@ export interface GradebookXMLObject {
                   TeacherID: string;
                   Type: string;
                 };
-                Resources: string[];
+                Resources: {
+                  Resource: {
+                    $: {
+                      ClassID: string;
+                      FileName: string;
+                      FileType: string;
+                      GradebookID: string;
+                      ResourceDate: string;
+                      ResourceID: string;
+                      ResourceName: string;
+                      Sequence: string;
+                      TeacherID: string;
+                      Type: string;
+                      ServerFileName: string;
+                    };
+                  }[];
+                }[];
                 Standards: string[];
               }[];
             }[];

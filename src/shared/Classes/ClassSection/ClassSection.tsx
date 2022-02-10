@@ -4,12 +4,12 @@ import Typography from '@components/Typography/Typography';
 import { ClassSectionContainer } from '@shared/Classes/ClassSection/ClassSection.base';
 import { StudentClassAssignment } from '@utilities/StudentVue/types';
 import React from 'react';
-import { SectionListData, SectionListRenderItem } from 'react-native';
+import { SectionListData } from 'react-native';
 
 const ClassSection: React.FC<{ title: string }> = React.memo(({ title }) => {
   return (
     <ClassSectionContainer>
-      <Typography variant='body2' color='textSecondary' bold>
+      <Typography variant='caption' color='textSecondary' bold>
         {title}
       </Typography>
     </ClassSectionContainer>

@@ -1,4 +1,4 @@
-import { ButtonBase } from '@components/Button/Button.base';
+import { ButtonBase, NativeButtonBase } from '@components/Button/Button.base';
 import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import { ListItemContainer } from '@components/List/ListItem.base';
@@ -7,7 +7,7 @@ import useComponentMounted from '@utilities/useComponentMounted';
 import React from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, concat, withTiming } from 'react-native-reanimated';
 
-const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent }) => {
+const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent, icon }) => {
   const rotation = useSharedValue(0);
   const translationY = useSharedValue(-10);
   const opacity = useSharedValue(0);
@@ -30,31 +30,36 @@ const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent })
       if (expand) {
         rotation.value = withTiming(180, { duration: 100 });
         translationY.value = withSpring(0);
-        opacity.value = withTiming(1, { duration: 250 });
+        opacity.value = withTiming(1, { duration: 50 });
       } else {
         rotation.value = withTiming(0, { duration: 100 });
-        translationY.value = withSpring(-10);
-        opacity.value = withTiming(0, { duration: 250 });
+        translationY.value = withTiming(-10, { duration: 100 });
+        opacity.value = withTiming(0, { duration: 50 });
       }
     }
   }, [expand]);
 
   return (
-    <ButtonBase onPress={expandContent ? handleOnPress : onPress}>
+    <NativeButtonBase onPress={expandContent ? handleOnPress : onPress}>
       <ListItemContainer>
         <Flex direction='row' alignItems='center'>
-          <Flex grow>{children}</Flex>
+          <Flex shrink>{children}</Flex>
           {expandContent && (
-            <Flex shrink>
+            <Flex grow justifyContent='flex-end'>
               <Animated.View style={rotationStyle}>
                 <Icon bundle='Feather' name='chevron-down' color='disabled' />
               </Animated.View>
             </Flex>
           )}
+          {icon && (
+            <Flex grow justifyContent='flex-end'>
+              {icon}
+            </Flex>
+          )}
         </Flex>
         {expand && <Animated.View style={slideIn}>{expandContent}</Animated.View>}
       </ListItemContainer>
-    </ButtonBase>
+    </NativeButtonBase>
   );
 };
 

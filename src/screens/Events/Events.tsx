@@ -9,7 +9,7 @@ import { sub, format, getDate, add, isThisMonth, isSameDay, isSameMonth, isSameY
 import _ from 'lodash';
 import React from 'react';
 import { Dimensions, ScrollView } from 'react-native';
-import { getDaysInMonth, addDays } from 'date-fns';
+import { getDaysInMonth } from 'date-fns';
 import Day from '@screens/Events/Day/Day';
 import Flex from '@components/Flex/Flex';
 import Skeleton from '@components/Skeleton/Skeleton';
@@ -18,6 +18,8 @@ import Icon from '@components/Icon/Icon';
 import EventItem from '@screens/Events/EventItem/EventItem';
 import { BlankSpacer, EventListContainer } from '@screens/Events/Events.base';
 import { Month } from '@utilities/HumanTime';
+import EventItemLoading from './EventItemLoading/EventItemLoading';
+import EventEmpty from './EventEmpty/EventEmpty';
 
 const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'>> = () => {
   const [calendar] = useCalendar();
@@ -104,9 +106,16 @@ const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'
           <BlankSpacer />
           <BlankSpacer />
         </EventListContainer>
-        {eventsOnSelectedDate.map((event) => (
-          <EventItem event={event} key={event.Title} />
-        ))}
+
+        {calendar ? (
+          eventsOnSelectedDate.length > 0 ? (
+            eventsOnSelectedDate.map((event) => <EventItem event={event} key={event.Title} />)
+          ) : (
+            <EventEmpty />
+          )
+        ) : (
+          new Array(Math.floor(Math.random() * 4 + 1)).fill('').map((_, i) => <EventItemLoading key={i} />)
+        )}
       </Flex>
     </ScrollView>
   );

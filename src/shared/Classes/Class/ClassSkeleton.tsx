@@ -8,9 +8,9 @@ const ClassSkeleton: React.FC = () => {
     <ClassContainer>
       <Space spacing={1}>
         <GradeSymbolContainer>
-          <Space spacing={0.5} direction='vertical' alignItems='center'>
-            <Skeleton.Typography variant='h1' width={40} />
-            <Skeleton.Typography variant='body2' width={60} />
+          <Space spacing={0.5} direction='vertical'>
+            <Skeleton.Typography variant='h1' width={40} align='center' />
+            <Skeleton.Typography variant='body2' width={60} align='center' />
           </Space>
         </GradeSymbolContainer>
         <ClassInfoContainer>

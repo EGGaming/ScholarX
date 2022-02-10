@@ -9,6 +9,7 @@ import React from 'react';
 import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import Space from '@components/Space/Space';
+import Icon from '@components/Icon/Icon';
 const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, index, selectedIndex, events }) => {
   const size = useSharedValue(1);
   const styles = useAnimatedStyle(() => ({
@@ -17,6 +18,12 @@ const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, index, se
   function handleOnPress() {
     onIndexChange(index);
   }
+
+  const isHoliday = React.useMemo(() => events.some((event) => event.DayType === 'Holiday'), [events]);
+  const isMaintenance = React.useMemo(
+    () => events.some((event) => event.DayType === 'Regular' && event.Title === 'System Maintenance'),
+    [events]
+  );
 
   React.useEffect(() => {
     if (selectedIndex === index) size.value = withSpring(1.1);
@@ -27,20 +34,20 @@ const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, index, se
     <DayButtonContainer style={styles} selected={selectedIndex === index}>
       <TouchableWithoutFeedback onPress={handleOnPress}>
         <View>
-          <Space spacing={1} container direction='vertical' alignItems='center'>
+          <Space spacing={1} container direction='vertical'>
             <>
-              <Typography color='textSecondary' numberOfLines={1}>
+              <Typography color={isHoliday ? 'secondary' : 'textSecondary'} align='center' bold={isHoliday}>
                 {format(date, 'eee')}
               </Typography>
-              <Typography variant='h3' bold>
+              <Typography variant='h3' bold color={isHoliday ? 'textSecondary' : 'textPrimary'} align='center'>
                 {format(date, 'd')}
               </Typography>
             </>
-            <Space spacing={0.5}>
-              {events.slice(0, 3).map((event) => (
-                <EventTinyCircle key={event.Title} />
-              ))}
-            </Space>
+            <Flex alignItems='center' justifyContent='space-around'>
+              {events.length > 0 && <EventTinyCircle />}
+              {isMaintenance && <Icon bundle='MaterialCommunityIcons' name='cogs' size='small' color='primary' />}
+              {isHoliday && <Icon bundle='MaterialCommunityIcons' name='home' size='small' color='primary' />}
+            </Flex>
           </Space>
         </View>
       </TouchableWithoutFeedback>

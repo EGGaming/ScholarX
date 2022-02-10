@@ -8,7 +8,7 @@ import { KeyExtractor } from '@utilities/TypeUtilities';
 import React from 'react';
 import { format } from 'date-fns';
 import _ from 'lodash';
-import { FlatList, SectionList, SectionListData } from 'react-native';
+import { SectionList, SectionListData } from 'react-native';
 import RenderClassSection from '@shared/Classes/ClassSection/ClassSection';
 const keyExtractor: KeyExtractor<StudentClassAssignment> = (item) => item.gradebookId;
 
@@ -19,7 +19,7 @@ const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
     React.useMemo(
       () =>
         _.uniqBy(studentClass.assignments, 'date.date').map((p) => ({
-          title: format(new Date(p.date.date), 'MMMM d, yyyy'),
+          title: format(new Date(p.date.date), 'EEEE, MMMM d, yyyy'),
           data: studentClass.assignments.filter((assignment) => assignment.date.date === p.date.date),
         })),
       [studentClass.assignments]
@@ -34,7 +34,7 @@ const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
       maxToRenderPerBatch={10}
       renderSectionHeader={RenderClassSection}
       stickySectionHeadersEnabled
-      windowSize={5}
+      windowSize={7}
       updateCellsBatchingPeriod={10}
     />
   );
