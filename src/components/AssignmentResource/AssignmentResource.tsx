@@ -33,9 +33,8 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
       const cachedUri = await FileSystem.getContentUriAsync(fileRef.current);
       if (!cached.exists) {
         const { uri } = await FileSystem.downloadAsync(appState.districtUrl + serverRoute, fileRef.current);
-
         const meta = await FileSystem.getInfoAsync(uri);
-        uriRef.current = uri;
+        uriRef.current = await FileSystem.getContentUriAsync(fileRef.current);
         setBytes(meta.size ?? null);
       } else {
         uriRef.current = cachedUri;
@@ -43,8 +42,9 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
       }
     }
 
-    const openFile = async () => {
+    const openFile = React.useCallback(async () => {
       try {
+        console.log(`Opening pdf at ${uriRef.current}`);
         await IntentLauncher.startActivityAsync('android.intent.action.VIEW' as any, {
           data: uriRef.current,
           flags: 1,
@@ -52,15 +52,15 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
       } catch (e) {
         console.error(e);
       }
-    };
+    }, [uriRef.current]);
 
-    const shareFile = async () => {
+    const shareFile = React.useCallback(async () => {
       try {
         await Sharing.shareAsync(fileRef.current);
       } catch (e) {
         console.error(e);
       }
-    };
+    }, [fileRef.current]);
 
     const menuItems: MenuItemProps[] = React.useMemo(
       () => [

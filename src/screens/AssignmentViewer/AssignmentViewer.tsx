@@ -68,7 +68,7 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
         ) : undefined}
         {assignment.hasDropBox ? (
           <Space container spacing={1} direction='vertical'>
-            <Typography variant='h3'>My work</Typography>
+            <Typography variant='h3'>Dropbox</Typography>
             <Space spacing={1}>
               <Button title='Upload file' icon={<Icon bundle='Feather' name='link' />} />
             </Space>
