@@ -12,13 +12,15 @@ import { ScrollView } from 'react-native';
 import Attachment from '@components/Attachment/Attachment';
 import { useAppReducer } from '@context/AppContext/AppContext';
 import AssignmentResource from '@components/AssignmentResource/AssignmentResource';
+import { AssignmentViewerContainer } from './AssignmentViewer.base';
+import Button from '@components/Button/Button';
+import Icon from '@components/Icon/Icon';
 
 const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'AssignmentViewer'>> = ({
   navigation,
   route,
 }) => {
   const { assignment } = route.params;
-  const [appState] = useAppReducer();
 
   return (
     <ScrollView>
@@ -28,11 +30,14 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
           <Typography color='textSecondary'>{assignment.type}</Typography>
         </Container>
         {assignment.resources ? (
-          <Space spacing={1} direction='vertical'>
+          <Flex direction='column'>
+            <AssignmentViewerContainer>
+              <Typography color='textSecondary'>Resources</Typography>
+            </AssignmentViewerContainer>
             {assignment.resources.map((res) => (
-              <AssignmentResource fileName={res.file.name} serverRoute={res.file.serverRoute} />
+              <AssignmentResource fileName={res.file.name} serverRoute={res.file.serverRoute} key={res.resource.id} />
             ))}
-          </Space>
+          </Flex>
         ) : undefined}
         <Space spacing={2} direction='vertical' container>
           <Field
@@ -60,6 +65,14 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
               {assignment.notes}
             </Typography>
           </Card>
+        ) : undefined}
+        {assignment.hasDropBox ? (
+          <Space container spacing={1} direction='vertical'>
+            <Typography variant='h3'>My work</Typography>
+            <Space spacing={1}>
+              <Button title='Upload file' icon={<Icon bundle='Feather' name='link' />} />
+            </Space>
+          </Space>
         ) : undefined}
       </Flex>
     </ScrollView>

@@ -277,19 +277,32 @@ export interface GradebookXMLObject {
                 };
                 Resources: {
                   Resource: {
-                    $: {
-                      ClassID: string;
-                      FileName: string;
-                      FileType: string;
-                      GradebookID: string;
-                      ResourceDate: string;
-                      ResourceID: string;
-                      ResourceName: string;
-                      Sequence: string;
-                      TeacherID: string;
-                      Type: string;
-                      ServerFileName: string;
-                    };
+                    $:
+                      | {
+                          ClassID: string;
+                          FileName: string;
+                          FileType: string;
+                          GradebookID: string;
+                          ResourceDate: string;
+                          ResourceID: string;
+                          ResourceName: string;
+                          Sequence: string;
+                          TeacherID: string;
+                          Type: string;
+                          ServerFileName: string;
+                        }
+                      | {
+                          ClassID: string;
+                          GradebookID: string;
+                          ResourceDate: string;
+                          ResourceID: string;
+                          ResourceName: string;
+                          Sequence: string;
+                          TeacherID: string;
+                          Type: 'URL';
+                          URL: string;
+                          ServerFileName: string;
+                        };
                   }[];
                 }[];
                 Standards: string[];

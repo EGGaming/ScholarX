@@ -32,6 +32,7 @@ const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={false}
       maxToRenderPerBatch={10}
+      initialNumToRender={15}
       renderSectionHeader={RenderClassSection}
       stickySectionHeadersEnabled
       windowSize={7}

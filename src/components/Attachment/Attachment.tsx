@@ -1,11 +1,14 @@
 import { AttachmentContainer } from '@components/Attachment/Attachment.base';
 import { AttachmentProps } from '@components/Attachment/Attachment.types';
+import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { useAppReducer } from '@context/AppContext/AppContext';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
+import useBytesString from '@utilities/useBytesString';
+import useFileExtensionIcon from '@utilities/useFileExtensionIcon';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as Sharing from 'expo-sharing';
@@ -26,33 +29,8 @@ const Attachment: React.FC<AttachmentProps> = ({ SmAttachmentGU, AttachmentName 
       return `${fileName.substring(0, 9)}...${fileName.substring(fileName.length - 6)}.${fileExtension}`;
     return `${fileName}.${fileExtension}`;
   }, [fileName, fileExtension]);
-  const bytesText = React.useMemo(() => {
-    if (bytes === null) return 'Unknown size';
-    if (bytes === undefined) return 'Downloading...';
-    if (bytes < 1000) return `${bytes} B`;
-    if (bytes >= 1000 && bytes < 1000000) return `${bytes} KB`;
-    if (bytes >= 1000000 && bytes < 1e9) return `${bytes} MB`;
-    if (bytes >= 1e9) return `${bytes} GB`;
-  }, [bytes]);
-  const FileIcon: React.ReactElement<React.ComponentProps<typeof Icon>> = React.useMemo(() => {
-    switch (fileExtension) {
-      case 'doc':
-      case 'docx':
-        return <Icon bundle='FontAwesome5' name='file-word' color='primary' size='large' />;
-      case 'pptx':
-      case 'ppt':
-        return <Icon bundle='FontAwesome5' name='file-powerpoint' color='primary' size='large' />;
-      case 'pdf':
-        return <Icon bundle='FontAwesome5' name='file-pdf' color='primary' size='large' />;
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-      case 'gif':
-        return <Icon bundle='FontAwesome5' name='file-image' color='primary' size='large' />;
-      default:
-        return <Icon bundle='FontAwesome5' name='file' />;
-    }
-  }, [AttachmentName]);
+  const bytesText = useBytesString(bytes);
+  const FileIcon: React.ReactElement<React.ComponentProps<typeof Icon>> = useFileExtensionIcon(AttachmentName);
 
   React.useEffect(() => {
     download();
@@ -69,10 +47,10 @@ const Attachment: React.FC<AttachmentProps> = ({ SmAttachmentGU, AttachmentName 
       const uri = await FileSystem.getContentUriAsync(fileRef.current);
       const meta = await FileSystem.getInfoAsync(uri);
       uriRef.current = uri;
-      setBytes(meta.size ? Math.round(meta.size / 1024) : null);
+      setBytes(meta.size ?? null);
     } else {
       uriRef.current = cachedUri;
-      setBytes(cached.size ? Math.round(cached.size / 1024) : null);
+      setBytes(cached.size ?? null);
     }
   }
 
@@ -109,14 +87,14 @@ const Attachment: React.FC<AttachmentProps> = ({ SmAttachmentGU, AttachmentName 
       <AttachmentContainer>
         <Space spacing={1} alignItems='center'>
           {FileIcon}
-          <Space spacing={0} direction='vertical'>
+          <Flex direction='column'>
             <Typography color='primary' variant='body2' bold onPress={openFile}>
               {shortenedFileName}
             </Typography>
             <Typography color='textSecondary' variant='caption'>
               {bytesText}
             </Typography>
-          </Space>
+          </Flex>
         </Space>
       </AttachmentContainer>
     </HoldItem>
