@@ -114,6 +114,14 @@ export interface ClassSchedule {
   period: number;
   room: string;
   sectiongu: string;
+  time: {
+    start: string;
+    end: string;
+  };
+  date: {
+    start: string;
+    end: string;
+  };
   teacher: {
     name: string;
     email: string;
@@ -199,8 +207,10 @@ export interface AssignmentResource {
     id: string;
     name: string;
     date: string;
+    description?: string;
   };
   sequence: string;
+  url?: string;
   classId: string;
   gradebookId: string;
   type: string;
@@ -277,32 +287,21 @@ export interface GradebookXMLObject {
                 };
                 Resources: {
                   Resource: {
-                    $:
-                      | {
-                          ClassID: string;
-                          FileName: string;
-                          FileType: string;
-                          GradebookID: string;
-                          ResourceDate: string;
-                          ResourceID: string;
-                          ResourceName: string;
-                          Sequence: string;
-                          TeacherID: string;
-                          Type: string;
-                          ServerFileName: string;
-                        }
-                      | {
-                          ClassID: string;
-                          GradebookID: string;
-                          ResourceDate: string;
-                          ResourceID: string;
-                          ResourceName: string;
-                          Sequence: string;
-                          TeacherID: string;
-                          Type: 'URL';
-                          URL: string;
-                          ServerFileName: string;
-                        };
+                    $: {
+                      ClassID: string;
+                      FileName: string;
+                      FileType: string;
+                      GradebookID: string;
+                      ResourceDate: string;
+                      ResourceID: string;
+                      ResourceName: string;
+                      Sequence: string;
+                      TeacherID: string;
+                      Type: string;
+                      ResourceDescription?: string;
+                      URL?: string;
+                      ServerFileName: string;
+                    };
                   }[];
                 }[];
                 Standards: string[];
@@ -325,6 +324,39 @@ export interface StudentClassScheduleXMLObject {
       'xmlns:xsd': string;
       'xmlns:xsi': string;
     };
+    TodayScheduleInfoData: {
+      $: {
+        Date: string;
+      };
+      SchoolInfos: {
+        SchoolInfo: {
+          $: {
+            SchoolName: string;
+            BellSchedName: string;
+          };
+          Classes: {
+            ClassInfo: {
+              $: {
+                Period: string;
+                ClassName: string;
+                ClassURL: string;
+                StartTime: string;
+                EndTime: string;
+                TeacherName: string;
+                RoomName: string;
+                TeacherEmail: string;
+                EmailSubject: string;
+                StaffGU: string;
+                EndDate: string;
+                StartDate: string;
+                SectionGU: string;
+                HideClassStartEndTime: string;
+              };
+            }[];
+          }[];
+        }[];
+      }[];
+    }[];
     ClassLists: {
       ClassListing: {
         $: {

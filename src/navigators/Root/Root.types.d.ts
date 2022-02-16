@@ -24,11 +24,11 @@ export type RootStackParamList = {
   Events: undefined;
   ClassViewer: {
     class: StudentClass;
-    schedule: ClassSchedule;
   };
   AssignmentViewer: {
     assignment: StudentClassAssignment;
   };
+  AssignmentFilters: undefined;
 };
 
 export type RootStackNavigationProps = NativeStackNavigationProp<RootStackParamList>;

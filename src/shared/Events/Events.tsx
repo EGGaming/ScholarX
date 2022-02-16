@@ -95,7 +95,7 @@ const Events: React.FC = () => {
   }, []);
 
   return (
-    <Space spacing={1} direction='vertical'>
+    <Flex direction='column'>
       <EventsContainer>
         <Typography variant='h3' bold>
           Upcoming events
@@ -108,25 +108,22 @@ const Events: React.FC = () => {
           iconPlacement='right'
         />
       </EventsContainer>
-      {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {new Array(3).fill('').map((_, i) => (
-          <Event key={i} isSkeleton />
-        ))}
-        {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
-          <Event item={item} key={`${item.Title}: ${item.Date}`} />
-        ))}
-      </ScrollView> */}
-      {calendar == null || upcoming == null ? (
+
+      {!calendar || !upcoming ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {new Array(3).fill('').map((_, i) => (
-            <Event key={i} isSkeleton />
-          ))}
+          <Space container spacing={1}>
+            {new Array(3).fill('').map((_, i) => (
+              <Event key={i} isSkeleton />
+            ))}
+          </Space>
         </ScrollView>
       ) : calendar.events.length > 0 ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
-            <Event item={item} key={`${item.Title}: ${item.Date}`} />
-          ))}
+          <Space container spacing={1}>
+            {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
+              <Event item={item} key={`${item.Title}: ${item.Date}`} />
+            ))}
+          </Space>
         </ScrollView>
       ) : (
         <Card>
@@ -136,7 +133,7 @@ const Events: React.FC = () => {
           </Typography>
         </Card>
       )}
-    </Space>
+    </Flex>
   );
 };
 

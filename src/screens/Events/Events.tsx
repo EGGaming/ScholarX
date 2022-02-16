@@ -109,7 +109,11 @@ const EventsScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Events'
 
         {calendar ? (
           eventsOnSelectedDate.length > 0 ? (
-            eventsOnSelectedDate.map((event) => <EventItem event={event} key={event.Title} />)
+            <Space container spacing={1} direction='vertical'>
+              {eventsOnSelectedDate.map((event) => (
+                <EventItem event={event} key={event.Title} />
+              ))}
+            </Space>
           ) : (
             <EventEmpty />
           )

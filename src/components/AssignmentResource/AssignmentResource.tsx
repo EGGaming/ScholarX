@@ -6,10 +6,11 @@ import { useAppReducer } from '@context/AppContext/AppContext';
 import useFileDetails from '@utilities/useFileDetails';
 import React from 'react';
 import { AssignemntResourceProps } from './AssignmentResource.types';
-import { Linking, TouchableWithoutFeedback } from 'react-native';
+import { Linking, ToastAndroid, TouchableWithoutFeedback } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import * as IntentLauncher from 'expo-intent-launcher';
 import * as Sharing from 'expo-sharing';
+import * as Clipboard from 'expo-clipboard';
 import useBytesString from '@utilities/useBytesString';
 import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
 import { HoldItem } from 'react-native-hold-menu';
@@ -93,14 +94,38 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
   }
 
   // todo: add URL Type
+  const handleOpenURL = React.useCallback(() => {
+    Linking.openURL(props.fileName);
+  }, [props.fileName]);
+  const menuItems: MenuItemProps[] = React.useMemo(
+    () => [
+      { text: 'Actions', isTitle: true },
+      {
+        text: 'Open URL',
+        onPress: handleOpenURL,
+        icon: 'link',
+      },
+      {
+        text: 'Copy URL',
+        onPress: () => {
+          Clipboard.setString(props.fileName);
+          ToastAndroid.showWithGravity(`Copied to clipboard.`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+        },
+        icon: 'copy',
+      },
+    ],
+    [props.fileName]
+  );
   return (
-    <Card>
-      <TouchableWithoutFeedback>
-        <Typography bold color='primary' variant='body2' numberOfLines={1}>
-          {props.fileName}
-        </Typography>
-      </TouchableWithoutFeedback>
-    </Card>
+    <HoldItem items={menuItems}>
+      <Card>
+        <TouchableWithoutFeedback onPress={handleOpenURL}>
+          <Typography bold color='primary' variant='body2' numberOfLines={1}>
+            {props.fileName}
+          </Typography>
+        </TouchableWithoutFeedback>
+      </Card>
+    </HoldItem>
   );
 };
 

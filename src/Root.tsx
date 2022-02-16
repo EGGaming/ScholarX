@@ -19,6 +19,7 @@ import EventsScreen from '@screens/Events/Events';
 import Space from '@components/Space/Space';
 import ClassViewer from '@screens/ClassViewer/ClassViewer';
 import AssignmentViewer from '@screens/AssignmentViewer/AssignmentViewer';
+import AssignmentFilters from '@screens/AssignmentFilters/AssignmentFilters';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -83,12 +84,20 @@ const Root: React.FC = () => {
       <RootStack.Screen
         name='ClassViewer'
         component={ClassViewer}
-        options={{
+        options={({ navigation }) => ({
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: '',
+          headerRight: (props) => (
+            <IconButton
+              icon={<Icon bundle='Feather' name='filter' />}
+              onPress={() => {
+                navigation.navigate('AssignmentFilters');
+              }}
+            />
+          ),
           headerBackVisible: true,
-        }}
+        })}
       />
       <RootStack.Screen
         name='AssignmentViewer'
@@ -97,6 +106,16 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: '',
+          headerBackVisible: true,
+        }}
+      />
+      <RootStack.Screen
+        name='AssignmentFilters'
+        component={AssignmentFilters}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: 'Filter',
           headerBackVisible: true,
         }}
       />

@@ -15,8 +15,7 @@ export const CardContainer = styled.View`
 export const CardBaseButtonContainer = styled.View<CardProps>`
   ${(props) => css`
     border-radius: ${props.theme.borderRadius}px;
-    overflow: hidden;
-    margin: ${props.theme.spacing(2, 3)};
+    overflow: visible;
     ${() =>
       props.width &&
       css`
@@ -31,7 +30,7 @@ export const CardBaseButtonContainer = styled.View<CardProps>`
       switch (Platform.OS) {
         case 'android':
           return css`
-            elevation: 5;
+            elevation: 4;
           `;
         case 'ios':
           return css`

@@ -13,15 +13,17 @@ import RenderClassSection from '@shared/Classes/ClassSection/ClassSection';
 const keyExtractor: KeyExtractor<StudentClassAssignment> = (item) => item.gradebookId;
 
 const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
-  const { class: studentClass, schedule } = props;
+  const { class: studentClass } = props;
 
   const data: SectionListData<StudentClassAssignment, { title: string; data: StudentClassAssignment[] }>[] =
     React.useMemo(
       () =>
-        _.uniqBy(studentClass.assignments, 'date.date').map((p) => ({
-          title: format(new Date(p.date.date), 'EEEE, MMMM d, yyyy'),
-          data: studentClass.assignments.filter((assignment) => assignment.date.date === p.date.date),
-        })),
+        _.sortBy(_.uniqBy(studentClass.assignments, 'date.date'), ['date.date'])
+          .reverse()
+          .map((p) => ({
+            title: format(new Date(p.date.date), 'EEEE, MMMM d, yyyy'),
+            data: studentClass.assignments.filter((assignment) => assignment.date.date === p.date.date),
+          })),
       [studentClass.assignments]
     );
 

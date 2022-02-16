@@ -7,7 +7,9 @@ export const BottomTabHeaderContainer = styled.View`
     align-items: center;
     justify-content: space-between;
     background-color: ${props.theme.palette.background.default};
-    padding: ${props.theme.spacing(7, 2, 1, 3)};
+    padding: ${props.theme.spacing(4.5, 3, 0.5, 3)};
+    border-bottom-color: ${props.theme.palette.divider};
+    border-bottom-width: 1px;
   `}
 `;
 

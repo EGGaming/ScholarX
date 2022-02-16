@@ -23,7 +23,7 @@ const Event: React.FC<EventProps> = (props) => {
     const { item } = props;
     const navigation = useRootNavigation();
     const parsedDate = Date.parse(item.Date);
-    const title = format(parsedDate, 'EEEE, MMM do, yyyy');
+    const title = format(parsedDate, 'EE, MMM d');
     const upcomingEvents = useFutureEvents();
     const theme = useAppTheme();
 
@@ -63,30 +63,17 @@ const Event: React.FC<EventProps> = (props) => {
     }, [upcomingEvents, item.DayType]);
 
     return (
-      <Card>
+      <Card onPress={onPress}>
         <Space spacing={1} direction='vertical'>
-          <Space spacing={0.5} alignItems='center'>
-            {icon}
-            <EventContentContainer>
-              <Typography variant='caption' color={titleColor} bold>
-                {dateTitle}
-              </Typography>
-              <Typography bold variant='h3'>
-                {title}
-              </Typography>
-              <Typography color='textSecondary' variant='body2'>
-                {secondaryText}
-              </Typography>
-            </EventContentContainer>
-          </Space>
-          <Button
-            title='Details'
-            iconPlacement='right'
-            textCentered
-            color={theme.mode === 'dark' ? 'secondary' : 'primary'}
-            variant='contained'
-            onPress={onPress}
-          />
+          <EventContentContainer>
+            <Typography variant='caption' color={titleColor} bold>
+              {dateTitle}
+            </Typography>
+            <Typography bold>{title}</Typography>
+          </EventContentContainer>
+          <Typography color='primary' variant='body2' align='center'>
+            {secondaryText}
+          </Typography>
         </Space>
       </Card>
     );
@@ -96,17 +83,12 @@ const Event: React.FC<EventProps> = (props) => {
     if (isSkeleton)
       return (
         <Card>
-          <Space spacing={1.75} direction='vertical'>
-            <Space spacing={0.5} alignItems='center'>
-              <Skeleton.Circle size='large' preset='icon' />
-              <EventContentContainer>
-                <Skeleton.Typography width={80} variant='caption' />
-                <Skeleton.Typography width={190} variant='h3' />
-
-                <Skeleton.Typography width={130} variant='body2' />
-              </EventContentContainer>
-            </Space>
-            <Skeleton.Box preset='button' />
+          <Space spacing={1.5} direction='vertical'>
+            <EventContentContainer>
+              <Skeleton.Typography variant='caption' width={80} align='center' />
+              <Skeleton.Typography variant='body' width={120} align='center' />
+            </EventContentContainer>
+            <Skeleton.Typography variant='body2' width={120} align='center' />
           </Space>
         </Card>
       );

@@ -231,15 +231,17 @@ class Client {
                   teacherId: assignment.$.TeacherID,
                   resources: assignment.Resources[0].Resource?.map(({ $ }) => ({
                     file: {
-                      type: $.FileType,
-                      name: $.FileName,
+                      type: $.FileType!,
+                      name: $.FileName!,
                       serverRoute: $.ServerFileName,
                     },
                     resource: {
                       id: $.ResourceID,
                       name: $.ResourceName,
                       date: $.ResourceDate,
+                      description: $.ResourceDescription,
                     },
+                    url: $.URL,
                     sequence: $.Sequence,
                     classId: $.ClassID,
                     gradebookId: $.GradebookID,
@@ -276,17 +278,29 @@ class Client {
             index: Number(StudentClassSchedule.$.TermIndex),
             code: Number(StudentClassSchedule.$.TermIndex) + 1,
           },
-          classes: StudentClassSchedule.ClassLists[0].ClassListing.map((obj) => ({
-            name: obj.$.CourseTitle,
-            period: Number(obj.$.Period),
-            room: obj.$.RoomName,
-            sectiongu: obj.$.SectionGU,
-            teacher: {
-              name: obj.$.Teacher,
-              email: obj.$.TeacherEmail,
-              staffgu: obj.$.TeacherStaffGU,
-            },
-          })),
+          classes: StudentClassSchedule.TodayScheduleInfoData[0].SchoolInfos[0].SchoolInfo[0].Classes[0].ClassInfo.map(
+            ({ $: obj }) => ({
+              name:
+                StudentClassSchedule.ClassLists[0].ClassListing.find(({ $ }) => $.SectionGU === obj.SectionGU)?.$
+                  .CourseTitle ?? '',
+              period: Number(obj.Period),
+              room: obj.RoomName,
+              sectiongu: obj.SectionGU,
+              time: {
+                start: obj.StartTime,
+                end: obj.EndTime,
+              },
+              date: {
+                start: obj.StartDate,
+                end: obj.EndDate,
+              },
+              teacher: {
+                name: obj.TeacherName,
+                email: obj.TeacherEmail,
+                staffgu: obj.StaffGU,
+              },
+            })
+          ),
           terms: StudentClassSchedule.TermLists[0].TermListing.map((obj) => ({
             term: {
               name: obj.$.TermName,

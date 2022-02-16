@@ -19,6 +19,7 @@ import CalendarProvider from '@context/CalendarContext/CalendarContext';
 import ClassScheduleProvider from '@context/ClassScheduleContext/ClassScheduleContext';
 import GradebookProvider from '@context/GradebookContext/GradebookContext';
 import SkeletonSharedValueProvider from '@context/SkeletonSharedValueContext/SkeletonSharedValueContext';
+import AssignmentFilterProvider from '@context/AssignmentFilterContext/AssignmentFilterContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -31,24 +32,26 @@ export default function App() {
             <CalendarProvider>
               <ClassScheduleProvider>
                 <GradebookProvider>
-                  <SearchDistrictFocusedProvider>
-                    <SearchDistrictProvider>
-                      <NotificationContextProvider>
-                        <SessionContextProvider>
-                          <SkeletonSharedValueProvider>
-                            <AppContextProvider>
-                              <StatusBar />
-                              <NavigationContainer theme={navigationTheme}>
-                                <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-                                  <Root />
-                                </HoldMenuProvider>
-                              </NavigationContainer>
-                            </AppContextProvider>
-                          </SkeletonSharedValueProvider>
-                        </SessionContextProvider>
-                      </NotificationContextProvider>
-                    </SearchDistrictProvider>
-                  </SearchDistrictFocusedProvider>
+                  <AssignmentFilterProvider>
+                    <SearchDistrictFocusedProvider>
+                      <SearchDistrictProvider>
+                        <NotificationContextProvider>
+                          <SessionContextProvider>
+                            <SkeletonSharedValueProvider>
+                              <AppContextProvider>
+                                <StatusBar />
+                                <NavigationContainer theme={navigationTheme}>
+                                  <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
+                                    <Root />
+                                  </HoldMenuProvider>
+                                </NavigationContainer>
+                              </AppContextProvider>
+                            </SkeletonSharedValueProvider>
+                          </SessionContextProvider>
+                        </NotificationContextProvider>
+                      </SearchDistrictProvider>
+                    </SearchDistrictFocusedProvider>
+                  </AssignmentFilterProvider>
                 </GradebookProvider>
               </ClassScheduleProvider>
             </CalendarProvider>

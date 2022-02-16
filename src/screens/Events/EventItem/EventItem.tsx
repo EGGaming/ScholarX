@@ -22,8 +22,6 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
     navigation.navigate('EventViewer', { event, title });
   }
 
-  const theme = useAppTheme();
-
   const assignment: Assignment = React.useMemo(() => {
     const teacherName = (event.Title.match(/\w+, \w/) ?? [''])[0];
     const className = (event.Title.match(/\s\s.*(?= : )/) ?? [''])[0].substring(2);
@@ -63,7 +61,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
           <>
             <Typography variant='body2'>
               Score:{' '}
-              <Typography variant='body2' color={theme.mode === 'dark' ? 'secondary' : 'primary'}>
+              <Typography variant='body2' color='primary'>
                 {assignment.score}
               </Typography>
             </Typography>

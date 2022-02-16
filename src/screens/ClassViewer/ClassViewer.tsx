@@ -17,9 +17,9 @@ import { FlatList } from 'react-native';
 import { ClassViewerGradeContainer } from './ClassViewer.base';
 
 const ClassViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'ClassViewer'>> = ({ navigation, route }) => {
-  const { schedule } = route.params;
+  const { class: classInfo } = route.params;
   React.useEffect(() => {
-    navigation.setOptions({ headerTitle: schedule.name });
+    navigation.setOptions({ headerTitle: classInfo.name });
   }, []);
 
   return <ClassAssignments {...route.params} />;

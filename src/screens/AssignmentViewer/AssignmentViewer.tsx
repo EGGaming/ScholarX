@@ -34,9 +34,22 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
             <AssignmentViewerContainer>
               <Typography color='textSecondary'>Resources</Typography>
             </AssignmentViewerContainer>
-            {assignment.resources.map((res) => (
-              <AssignmentResource fileName={res.file.name} serverRoute={res.file.serverRoute} key={res.resource.id} />
-            ))}
+            <Space spacing={1}>
+              <>
+                {assignment.resources.map((res) =>
+                  res.url ? <AssignmentResource key={res.url} fileName={res.url} /> : undefined
+                )}
+              </>
+              <>
+                {assignment.resources.map((res) => (
+                  <AssignmentResource
+                    fileName={res.file.name}
+                    serverRoute={res.file.serverRoute}
+                    key={res.resource.id}
+                  />
+                ))}
+              </>
+            </Space>
           </Flex>
         ) : undefined}
         <Space spacing={2} direction='vertical' container>

@@ -63,10 +63,8 @@ const Classes: React.FC = () => {
       </ClassesHeaderContainer>
 
       <Flex direction='column'>
-        {schedule && gradebook
-          ? schedule.classes.map((classSchedule, i) => (
-              <Class key={classSchedule.name} class={classSchedule} classInfo={gradebook.classes[i]} />
-            ))
+        {gradebook
+          ? gradebook.classes.map((studentClass, i) => <Class key={studentClass.name} classInfo={studentClass} />)
           : new Array(6).fill('').map((_, i) => <ClassSkeleton key={i} />)}
       </Flex>
     </Space>

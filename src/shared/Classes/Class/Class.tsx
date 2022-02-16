@@ -22,9 +22,9 @@ import useGradeColor from '@utilities/useGradeColor';
 const Class: React.FC<ClassProps> = (props) => {
   const theme = useAppTheme();
   const navigation = useRootNavigation();
-  const { class: classSchedule, classInfo } = props;
+  const { classInfo } = props;
   function handleEmail() {
-    Linking.openURL(`mailto:${classSchedule.teacher.email}`);
+    Linking.openURL(`mailto:${classInfo.staff.email}`);
   }
   function handleCopyToClipboard() {
     Clipboard.setString(classInfo.staff.email);
@@ -43,7 +43,7 @@ const Class: React.FC<ClassProps> = (props) => {
   );
 
   function moreInfo() {
-    navigation.navigate('ClassViewer', { class: classInfo, schedule: classSchedule });
+    navigation.navigate('ClassViewer', { class: classInfo });
   }
 
   return (
@@ -63,12 +63,12 @@ const Class: React.FC<ClassProps> = (props) => {
           </GradeSymbolContainer>
           <ClassInfoContainer>
             <Typography bold numberOfLines={1}>
-              {classSchedule.name}
+              {classInfo.name}
             </Typography>
 
             <Space spacing={0.5} alignItems='center'>
               <Typography variant='body2' color='textSecondary'>
-                {classSchedule.teacher.name}
+                {classInfo.staff.name}
               </Typography>
               <HoldItem items={menuItems}>
                 <IconButton icon={<Icon bundle='Feather' name='mail' />} onPress={handleEmail} />
@@ -95,19 +95,19 @@ const Class: React.FC<ClassProps> = (props) => {
           <Flex direction='column' alignItems='center'>
             <Space spacing={0.5} alignItems='center'>
               <Typography variant='caption' color='primary'>
-                Period {classSchedule.period}
+                Period {classInfo.period}
               </Typography>
               <Divider orientation='vertical' />
               <Typography variant='caption' color='textSecondary'>
-                Room {classSchedule.room}
+                Room {classInfo.room}
               </Typography>
             </Space>
             <Typography bold align='center' numberOfLines={1}>
-              {classSchedule.name}
+              {classInfo.name}
             </Typography>
             <Space spacing={0.5} alignItems='center'>
               <Typography variant='body2' color='textSecondary'>
-                {classSchedule.teacher.name}
+                {classInfo.staff.name}
               </Typography>
               <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
             </Space>

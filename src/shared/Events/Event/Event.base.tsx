@@ -11,6 +11,7 @@ export const EventContainer = styled(Card)`
 export const EventContentContainer = styled.View`
   ${(props) => css`
     padding: ${props.theme.spacing(0, 2)};
+    align-items: center;
   `}
 `;
 

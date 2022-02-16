@@ -1,3 +1,4 @@
+import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import Space from '@components/Space/Space';
@@ -20,15 +21,19 @@ const NotificationHeader: React.FC<NativeStackHeaderProps> = (props) => {
 
   return (
     <HeaderContainer>
-      <Space spacing={1} alignItems='center' justifyContent='space-between'>
+      <Space spacing={1} alignItems='center' justifyContent='space-between' shrink>
         {headerBackVisible && (
           <IconButton icon={<Icon bundle='AntDesign' name='back' />} onPress={onBackButtonPressed} />
         )}
-        {typeof headerTitle === 'string' ? (
-          <Typography bold>{headerTitle}</Typography>
-        ) : (
-          <HeaderTitle {...(props as any)} />
-        )}
+        <Flex shrink>
+          {typeof headerTitle === 'string' ? (
+            <Typography bold numberOfLines={1}>
+              {headerTitle}
+            </Typography>
+          ) : (
+            <HeaderTitle {...(props as any)} />
+          )}
+        </Flex>
       </Space>
       {options.headerRight && options.headerRight({ tintColor: options.headerTintColor })}
     </HeaderContainer>

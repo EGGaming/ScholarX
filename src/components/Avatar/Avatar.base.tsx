@@ -17,9 +17,9 @@ export const AvatarBase = styled.Image.attrs<AvatarBaseProps>((props) => ({
           `;
         case 'regular':
           return css`
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
           `;
       }
     }}
@@ -38,9 +38,9 @@ export const AvatarContainer = styled(Paper)<Pick<AvatarBaseProps, 'size'>>`
           `;
         case 'regular':
           return css`
-            width: 48px;
-            height: 48px;
-            border-radius: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
           `;
       }
     }}

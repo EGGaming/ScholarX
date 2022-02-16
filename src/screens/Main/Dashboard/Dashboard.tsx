@@ -6,6 +6,7 @@ import Typography from '@components/Typography/Typography';
 import { useSessionReducer } from '@context/SessionContext/SessionContext';
 import Classes from '@shared/Classes/Classes';
 import Events from '@shared/Events/Events';
+import Schedule from '@shared/Schedule/Schedule';
 import React from 'react';
 import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
@@ -27,6 +28,7 @@ const Dashboard: React.FC = () => {
         </Flex>
       )}
       <Space spacing={2} direction='vertical'>
+        <Schedule />
         <Classes />
         <Events />
       </Space>

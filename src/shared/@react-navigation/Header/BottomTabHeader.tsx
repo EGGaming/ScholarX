@@ -13,9 +13,7 @@ import React from 'react';
 const Header: React.FC<BottomTabHeaderProps> = (props) => {
   return (
     <BottomTabHeaderContainer>
-      <Typography variant='h3' bold>
-        {props.options.tabBarLabel}
-      </Typography>
+      <Typography bold>{props.options.tabBarLabel}</Typography>
       <Space spacing={1} alignItems='center'>
         <NotificationBell />
         <Avatar />
