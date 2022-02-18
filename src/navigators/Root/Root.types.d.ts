@@ -30,6 +30,7 @@ export type RootStackParamList = {
   };
   AssignmentFilters: undefined;
   Schedule: undefined;
+  FilterCategories: undefined;
 };
 
 export type RootStackNavigationProps = NativeStackNavigationProp<RootStackParamList>;

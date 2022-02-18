@@ -22,6 +22,7 @@ import AssignmentViewer from '@screens/AssignmentViewer/AssignmentViewer';
 import AssignmentFilters from '@screens/AssignmentFilters/AssignmentFilters';
 import Schedule from '@screens/Schedule/Schedule';
 import { useAssignmentFilterDispatch } from '@context/AssignmentFilterContext/AssignmentFilterContext';
+import FilterCategories from '@screens/FilterCategories/FilterCategories';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -138,6 +139,16 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: "Today's Schedule",
+          headerBackVisible: true,
+        }}
+      />
+      <RootStack.Screen
+        name='FilterCategories'
+        component={FilterCategories}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: 'Add Categories to Filter',
           headerBackVisible: true,
         }}
       />

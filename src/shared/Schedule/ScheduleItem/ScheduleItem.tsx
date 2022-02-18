@@ -39,7 +39,9 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngo
     };
   }, []);
 
-  if (!isOccuring && onlyShowOngoing) return null;
+  if (!isOccuring && onlyShowOngoing) {
+    return null;
+  }
   return (
     <Card onPress={handleOnPress}>
       <Space spacing={1} justifyContent='space-between'>

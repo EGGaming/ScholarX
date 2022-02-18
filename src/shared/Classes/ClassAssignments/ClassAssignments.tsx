@@ -37,6 +37,11 @@ const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
             break;
         }
 
+        if (filters.selectedAssignments.length > 0)
+          assignments = assignments.filter((assignment) =>
+            filters.selectedAssignments.some((type) => assignment.type === type)
+          );
+
         return assignments.map((p) => ({
           title: format(new Date(p.date.date), 'EEEE, MMMM d, yyyy'),
           data: assignments.filter((assignment) => assignment.date.date === p.date.date),

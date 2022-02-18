@@ -11,6 +11,7 @@ import {
   ButtonIconContainer,
   ButtonText,
   ButtonTextContainer,
+  NativeButtonBase,
 } from '@components/Button/Button.base';
 import Typography from '@components/Typography/Typography';
 import Space from '@components/Space/Space';
@@ -27,6 +28,7 @@ const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & Butto
       textCentered = false,
       disabled = false,
       size = 'medium',
+      native = false,
       onPress = () => void 0,
       ...otherProps
     } = props;
@@ -34,6 +36,11 @@ const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & Butto
     const theme = useAppTheme();
 
     const iconProps: (Partial<IconProps<IconPack>> & React.Attributes) | undefined = React.useMemo(() => {
+      if (disabled)
+        return {
+          color: 'inherit',
+          hexColor: theme.palette.toRGBA(theme.palette.toColorValue(color), 0.5),
+        };
       if (color === 'inherit')
         return {
           color: 'inherit',
@@ -60,103 +67,211 @@ const Button: React.FC<ButtonProps & Omit<DefaultButtonProps, 'onPress'> & Butto
         default:
           return (
             <BaseContainer>
-              <ButtonBase
-                ref={ref as any}
-                hexColor={hexColor}
-                color={color}
-                disabled={disabled}
-                onPress={onPress}
-                {...otherProps}>
-                <ButtonBaseContainer
-                  size={size}
-                  disabled={disabled}
-                  variant={variant}
-                  color={color}
+              {native ? (
+                <NativeButtonBase
+                  ref={ref as any}
                   hexColor={hexColor}
+                  color={color}
+                  disabled={disabled}
                   onPress={onPress}
-                  textCentered={textCentered}>
-                  <ButtonIconContainer placement={iconPlacement}>
-                    {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
-                  </ButtonIconContainer>
-                  <ButtonText
+                  {...otherProps}>
+                  <ButtonBaseContainer
+                    native={native}
                     size={size}
                     disabled={disabled}
                     variant={variant}
-                    onPress={onPress}
                     color={color}
                     hexColor={hexColor}
+                    onPress={onPress}
                     textCentered={textCentered}>
-                    {title}
-                  </ButtonText>
-                </ButtonBaseContainer>
-              </ButtonBase>
+                    <ButtonIconContainer placement={iconPlacement}>
+                      {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                    </ButtonIconContainer>
+                    <ButtonText
+                      size={size}
+                      disabled={disabled}
+                      variant={variant}
+                      onPress={onPress}
+                      color={color}
+                      hexColor={hexColor}
+                      textCentered={textCentered}
+                      native={native}>
+                      {title}
+                    </ButtonText>
+                  </ButtonBaseContainer>
+                </NativeButtonBase>
+              ) : (
+                <ButtonBase
+                  ref={ref as any}
+                  hexColor={hexColor}
+                  color={color}
+                  disabled={disabled}
+                  onPress={onPress}
+                  {...otherProps}>
+                  <ButtonBaseContainer
+                    native={native}
+                    size={size}
+                    disabled={disabled}
+                    variant={variant}
+                    color={color}
+                    hexColor={hexColor}
+                    onPress={onPress}
+                    textCentered={textCentered}>
+                    <ButtonIconContainer placement={iconPlacement}>
+                      {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                    </ButtonIconContainer>
+                    <ButtonText
+                      size={size}
+                      disabled={disabled}
+                      variant={variant}
+                      onPress={onPress}
+                      color={color}
+                      hexColor={hexColor}
+                      textCentered={textCentered}
+                      native={native}>
+                      {title}
+                    </ButtonText>
+                  </ButtonBaseContainer>
+                </ButtonBase>
+              )}
             </BaseContainer>
           );
         case 'right':
           return (
             <BaseContainer>
-              <ButtonBase
-                ref={ref as any}
-                color={color}
-                hexColor={hexColor}
-                disabled={disabled}
-                onPress={onPress}
-                {...otherProps}>
-                <ButtonBaseContainer
-                  size={size}
-                  disabled={disabled}
-                  variant={variant}
-                  onPress={onPress}
+              {native ? (
+                <NativeButtonBase
+                  ref={ref as any}
                   color={color}
                   hexColor={hexColor}
-                  textCentered={textCentered}>
-                  <ButtonText
+                  disabled={disabled}
+                  onPress={onPress}
+                  {...otherProps}>
+                  <ButtonBaseContainer
                     size={size}
                     disabled={disabled}
                     variant={variant}
                     onPress={onPress}
                     color={color}
                     hexColor={hexColor}
-                    textCentered={textCentered}>
-                    {title}
-                  </ButtonText>
-                  <ButtonIconContainer placement={iconPlacement}>
-                    {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
-                  </ButtonIconContainer>
-                </ButtonBaseContainer>
-              </ButtonBase>
+                    textCentered={textCentered}
+                    native={native}>
+                    <ButtonText
+                      size={size}
+                      disabled={disabled}
+                      variant={variant}
+                      onPress={onPress}
+                      color={color}
+                      hexColor={hexColor}
+                      textCentered={textCentered}
+                      native={native}>
+                      {title}
+                    </ButtonText>
+                    <ButtonIconContainer placement={iconPlacement}>
+                      {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                    </ButtonIconContainer>
+                  </ButtonBaseContainer>
+                </NativeButtonBase>
+              ) : (
+                <ButtonBase
+                  ref={ref as any}
+                  color={color}
+                  hexColor={hexColor}
+                  disabled={disabled}
+                  onPress={onPress}
+                  {...otherProps}>
+                  <ButtonBaseContainer
+                    size={size}
+                    disabled={disabled}
+                    variant={variant}
+                    onPress={onPress}
+                    color={color}
+                    hexColor={hexColor}
+                    textCentered={textCentered}
+                    native={native}>
+                    <ButtonText
+                      size={size}
+                      disabled={disabled}
+                      variant={variant}
+                      onPress={onPress}
+                      color={color}
+                      hexColor={hexColor}
+                      textCentered={textCentered}
+                      native={native}>
+                      {title}
+                    </ButtonText>
+                    <ButtonIconContainer placement={iconPlacement}>
+                      {React.isValidElement(icon) && React.cloneElement(icon, iconProps)}
+                    </ButtonIconContainer>
+                  </ButtonBaseContainer>
+                </ButtonBase>
+              )}
             </BaseContainer>
           );
       }
     return (
       <BaseContainer>
-        <ButtonBase
-          ref={ref as any}
-          color={color}
-          hexColor={hexColor}
-          disabled={disabled}
-          onPress={onPress}
-          {...otherProps}>
-          <ButtonBaseContainer
-            size={size}
-            disabled={disabled}
-            variant={variant}
-            onPress={onPress}
+        {native ? (
+          <NativeButtonBase
+            ref={ref as any}
             color={color}
             hexColor={hexColor}
-            textCentered={textCentered}>
-            <ButtonText
+            disabled={disabled}
+            onPress={onPress}
+            {...otherProps}>
+            <ButtonBaseContainer
               size={size}
               disabled={disabled}
               variant={variant}
               onPress={onPress}
               color={color}
               hexColor={hexColor}
-              textCentered={textCentered}>
-              {title}
-            </ButtonText>
-          </ButtonBaseContainer>
-        </ButtonBase>
+              textCentered={textCentered}
+              native={native}>
+              <ButtonText
+                size={size}
+                disabled={disabled}
+                variant={variant}
+                onPress={onPress}
+                color={color}
+                hexColor={hexColor}
+                textCentered={textCentered}
+                native={native}>
+                {title}
+              </ButtonText>
+            </ButtonBaseContainer>
+          </NativeButtonBase>
+        ) : (
+          <ButtonBase
+            ref={ref as any}
+            color={color}
+            hexColor={hexColor}
+            disabled={disabled}
+            onPress={onPress}
+            {...otherProps}>
+            <ButtonBaseContainer
+              size={size}
+              disabled={disabled}
+              variant={variant}
+              onPress={onPress}
+              color={color}
+              hexColor={hexColor}
+              textCentered={textCentered}
+              native={native}>
+              <ButtonText
+                size={size}
+                disabled={disabled}
+                variant={variant}
+                onPress={onPress}
+                color={color}
+                hexColor={hexColor}
+                textCentered={textCentered}
+                native={native}>
+                {title}
+              </ButtonText>
+            </ButtonBaseContainer>
+          </ButtonBase>
+        )}
       </BaseContainer>
     );
   }

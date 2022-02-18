@@ -21,6 +21,7 @@ import GradebookProvider from '@context/GradebookContext/GradebookContext';
 import SkeletonSharedValueProvider from '@context/SkeletonSharedValueContext/SkeletonSharedValueContext';
 import AssignmentFilterProvider from '@context/AssignmentFilterContext/AssignmentFilterContext';
 import ViewingClassProvider from '@context/ViewingClassContext/ViewingClassContext';
+import { PortalProvider, PortalHost } from '@gorhom/portal';
 
 export default function App() {
   const theme = useAppTheme();
@@ -44,7 +45,10 @@ export default function App() {
                                   <StatusBar />
                                   <NavigationContainer theme={navigationTheme}>
                                     <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-                                      <Root />
+                                      <PortalProvider>
+                                        <Root />
+                                        <PortalHost name='Root' />
+                                      </PortalProvider>
                                     </HoldMenuProvider>
                                   </NavigationContainer>
                                 </AppContextProvider>

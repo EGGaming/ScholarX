@@ -26,7 +26,7 @@ const ClassViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'ClassVie
   const setStudentClass = useViewingClassDispatch();
 
   React.useEffect(() => {
-    dispatch({ type: 'IS_VIEWING_CLASS', className: classInfo.name });
+    dispatch({ type: 'IS_VIEWING_CLASS', class: classInfo });
     setStudentClass(classInfo);
     navigation.setOptions({ headerTitle: classInfo.name });
   }, []);

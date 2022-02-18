@@ -1,8 +1,10 @@
 import { useGradebook } from '@context/GradebookContext/GradebookContext';
 import { Reducer, UseReducer } from '@context/helpers';
+import _ from 'lodash';
 import React from 'react';
 import {
   AssignmentFilterContextActions,
+  AssignmentFilterContextFields,
   AssignmentFilterContextState,
   AssignmentFilterOfClassContextState,
   Order,
@@ -14,6 +16,14 @@ const INITIAL_ASSIGNMENTFILTEROFCLASS_STATE: AssignmentFilterOfClassContextState
   selectedAssignments: [],
 };
 
+export const AssignmentFilterField: AssignmentFilterContextFields = {
+  withDropbox: React.createContext<boolean>(false),
+  orderType: React.createContext<Order>(Order.ASCENDING),
+  selectedAssignments: React.createContext<string[]>([]),
+};
+
+export const AssignmentCategoriesContext = React.createContext<string[]>([]);
+
 const AssignmentFilterOfClassContext = React.createContext<AssignmentFilterOfClassContextState | undefined>(
   INITIAL_ASSIGNMENTFILTEROFCLASS_STATE
 );
@@ -24,6 +34,34 @@ const AssignmentFilterDispatchContext = React.createContext<React.Dispatch<Assig
 
 const reducer: Reducer<AssignmentFilterContextState, AssignmentFilterContextActions> = (state, action) => {
   switch (action.type) {
+    case 'DESELECT_ALL_ASSIGNMENT_TYPES':
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [state.currentlyViewingClass]: {
+            ...state.filters[state.currentlyViewingClass],
+            selectedAssignments: [],
+          },
+        },
+      };
+    case 'APPEND_OR_REMOVE_ASSIGNMENT_TYPE':
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [state.currentlyViewingClass]: {
+            ...state.filters[state.currentlyViewingClass],
+            selectedAssignments: state.filters[state.currentlyViewingClass].selectedAssignments.some(
+              (assignment) => assignment === action.assignmentType
+            )
+              ? state.filters[state.currentlyViewingClass].selectedAssignments.filter(
+                  (assignment) => assignment !== action.assignmentType
+                )
+              : [...state.filters[state.currentlyViewingClass].selectedAssignments, action.assignmentType],
+          },
+        },
+      };
     case 'REMOVE_ASSIGNMENT_TYPE':
       return {
         ...state,
@@ -62,7 +100,8 @@ const reducer: Reducer<AssignmentFilterContextState, AssignmentFilterContextActi
     case 'IS_VIEWING_CLASS':
       return {
         ...state,
-        currentlyViewingClass: action.className,
+        currentlyViewingClass: action.class.name,
+        assignmentCategories: _.uniq(action.class.assignments.map((assignment) => assignment.type)) ?? [],
       };
     case 'INITIALIZE_CLASS_FILTER':
       return {
@@ -90,12 +129,14 @@ const reducer: Reducer<AssignmentFilterContextState, AssignmentFilterContextActi
 
 const INITIAL_STATE: AssignmentFilterContextState = {
   currentlyViewingClass: '',
+  assignmentCategories: [],
   filters: {},
 };
 
 export const useAssignmentFilter = () => React.useContext(AssignmentFilterContext);
 export const useAssignmentFilterDispatch = () => React.useContext(AssignmentFilterDispatchContext);
 export const useAssignmentFilterOfClass = () => React.useContext(AssignmentFilterOfClassContext);
+export const useAssignmentCategories = () => React.useContext(AssignmentCategoriesContext);
 
 const AssignmentFilterProvider: React.FC = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE);
@@ -110,7 +151,18 @@ const AssignmentFilterProvider: React.FC = ({ children }) => {
   return (
     <AssignmentFilterContext.Provider value={[state, dispatch]}>
       <AssignmentFilterOfClassContext.Provider value={state.filters[state.currentlyViewingClass]}>
-        <AssignmentFilterDispatchContext.Provider value={dispatch}>{children}</AssignmentFilterDispatchContext.Provider>
+        <AssignmentFilterDispatchContext.Provider value={dispatch}>
+          <AssignmentFilterField.withDropbox.Provider value={state.filters[state.currentlyViewingClass].withDropbox}>
+            <AssignmentFilterField.orderType.Provider value={state.filters[state.currentlyViewingClass].orderType}>
+              <AssignmentFilterField.selectedAssignments.Provider
+                value={state.filters[state.currentlyViewingClass].selectedAssignments}>
+                <AssignmentCategoriesContext.Provider value={state.assignmentCategories}>
+                  {children}
+                </AssignmentCategoriesContext.Provider>
+              </AssignmentFilterField.selectedAssignments.Provider>
+            </AssignmentFilterField.orderType.Provider>
+          </AssignmentFilterField.withDropbox.Provider>
+        </AssignmentFilterDispatchContext.Provider>
       </AssignmentFilterOfClassContext.Provider>
     </AssignmentFilterContext.Provider>
   );

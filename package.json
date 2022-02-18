@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@gorhom/portal": "^1.0.12",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
@@ -21,6 +22,7 @@
     "expo": "~43.0.2",
     "expo-app-loading": "~1.2.1",
     "expo-asset": "^8.4.3",
+    "expo-clipboard": "~2.0.3",
     "expo-file-system": "~13.0.3",
     "expo-intent-launcher": "~10.0.3",
     "expo-linking": "~2.4.2",
@@ -44,8 +46,7 @@
     "react-native-web": "0.17.1",
     "react-native-xml2js": "^1.0.3",
     "styled-components": "^5.3.3",
-    "url": "^0.11.0",
-    "expo-clipboard": "~2.0.3"
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

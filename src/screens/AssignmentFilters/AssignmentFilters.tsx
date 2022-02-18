@@ -41,7 +41,7 @@ const AssignmentFilters: React.FC = () => {
         <Space direction='vertical' container spacing={1}>
           <OrderType onChange={handleOnOrderTypeChange} orderType={filters.orderType} />
           <StudentDropbox onChange={handleOnStudentDropboxChange} withDropbox={filters.withDropbox} />
-          <ShowOnlyCategories />
+          <ShowOnlyCategories selectedAssignments={filters.selectedAssignments} />
         </Space>
       </ScrollView>
     );

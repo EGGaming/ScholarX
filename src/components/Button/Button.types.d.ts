@@ -9,6 +9,7 @@ export interface ButtonProps {
   textCentered?: boolean;
   disabled?: boolean;
   size?: 'small' | 'medium';
+  native?: boolean;
   onPress?: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
 }
 export interface ButtonAccessoryProps {

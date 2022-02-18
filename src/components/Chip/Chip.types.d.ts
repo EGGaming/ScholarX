@@ -6,6 +6,9 @@ export interface ChipProps {
   hexColor?: string;
   onPress?: () => void;
   onRemove?: () => void;
+  variant?: 'outlined' | 'contained';
+  disabled?: boolean;
+  visible?: boolean; // Allows for animation on mount and unmount
 }
 
-export type ChipBaseProps = Pick<ChipProps, 'color' | 'hexColor'>;
+export type ChipBaseProps = Required<Pick<ChipProps, 'color' | 'hexColor' | 'variant' | 'disabled'>>;

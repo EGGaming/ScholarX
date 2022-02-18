@@ -1,3 +1,4 @@
+import { NativeSyntheticEvent, NativeTouchEvent } from 'react-native';
 import { AppColors, ButtonVariants } from '@theme/core.types';
 
 export interface IconButtonProps {
