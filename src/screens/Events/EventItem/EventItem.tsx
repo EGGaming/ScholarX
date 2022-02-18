@@ -13,11 +13,19 @@ import { useAppTheme } from '@theme/core';
 import { TypographyColors } from '@theme/core.types';
 import { format, formatDistance, isFuture, isPast, isToday, isTomorrow } from 'date-fns';
 import React from 'react';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const EventItem: React.FC<EventItemProps> = ({ event }) => {
   const navigation = useRootNavigation();
   const parsedDate = Date.parse(event.Date);
   const title = format(parsedDate, 'EEE, MMM do, yyyy');
+  const opacity = useSharedValue(0);
+  React.useEffect(() => {
+    opacity.value = withSpring(1);
+  }, []);
+  const style = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
   function onPress() {
     navigation.navigate('EventViewer', { event, title });
   }
@@ -48,7 +56,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
 
   if (event.DayType === 'Assignment')
     return (
-      <Card>
+      <Card style={style}>
         <Space spacing={1} direction='vertical'>
           <>
             <Typography variant='caption' color='textSecondary' numberOfLines={1}>
@@ -71,7 +79,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
     );
 
   return (
-    <Card>
+    <Card style={style}>
       <Typography numberOfLines={1}>{event.DayType}</Typography>
       <Typography numberOfLines={1} color='textSecondary' variant='body2'>
         {event.Title}

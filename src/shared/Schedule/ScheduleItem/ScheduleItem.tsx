@@ -6,7 +6,7 @@ import Typography from '@components/Typography/Typography';
 import { ClassSchedule } from '@utilities/StudentVue/types';
 import React from 'react';
 import { ScheduleItemProps } from './ScheduleItem.types';
-import { isFuture, isWithinInterval } from 'date-fns';
+import { isFuture, isPast, isWithinInterval } from 'date-fns';
 import { useRootNavigation } from '@navigators/Root/Root';
 
 const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngoing = false, class: studentClass }) => {
@@ -39,9 +39,6 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngo
     };
   }, []);
 
-  if (!isOccuring && onlyShowOngoing) {
-    return null;
-  }
   return (
     <Card onPress={handleOnPress}>
       <Space spacing={1} justifyContent='space-between'>

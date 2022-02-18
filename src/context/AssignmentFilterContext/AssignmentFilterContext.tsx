@@ -152,10 +152,12 @@ const AssignmentFilterProvider: React.FC = ({ children }) => {
     <AssignmentFilterContext.Provider value={[state, dispatch]}>
       <AssignmentFilterOfClassContext.Provider value={state.filters[state.currentlyViewingClass]}>
         <AssignmentFilterDispatchContext.Provider value={dispatch}>
-          <AssignmentFilterField.withDropbox.Provider value={state.filters[state.currentlyViewingClass].withDropbox}>
-            <AssignmentFilterField.orderType.Provider value={state.filters[state.currentlyViewingClass].orderType}>
+          <AssignmentFilterField.withDropbox.Provider
+            value={state.filters[state.currentlyViewingClass]?.withDropbox ?? false}>
+            <AssignmentFilterField.orderType.Provider
+              value={state.filters[state.currentlyViewingClass]?.orderType ?? Order.ASCENDING}>
               <AssignmentFilterField.selectedAssignments.Provider
-                value={state.filters[state.currentlyViewingClass].selectedAssignments}>
+                value={state.filters[state.currentlyViewingClass]?.selectedAssignments ?? []}>
                 <AssignmentCategoriesContext.Provider value={state.assignmentCategories}>
                   {children}
                 </AssignmentCategoriesContext.Provider>

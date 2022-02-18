@@ -42,16 +42,13 @@ const SchoolDistrictItem: React.FC<SchoolDistrictItemProps> = (props) => {
 
   return (
     <Animated.View style={animatedStyles}>
-      <SchoolDistrictItemContainer>
+      <SchoolDistrictItemContainer onPress={handleOnPress}>
         <SchoolDistrictItemMetaContainer>
           <Typography variant='body2' color='textSecondary'>
             {item.Address}
           </Typography>
           <Typography bold>{item.Name}</Typography>
         </SchoolDistrictItemMetaContainer>
-        <SchoolDistrictSelectContainer>
-          <Button title='Select' onPress={handleOnPress} variant='contained' />
-        </SchoolDistrictSelectContainer>
       </SchoolDistrictItemContainer>
     </Animated.View>
   );

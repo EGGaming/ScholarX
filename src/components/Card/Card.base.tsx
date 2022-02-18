@@ -1,6 +1,7 @@
 import Paper from '@components/Paper/Paper';
 import { AppColors } from '@theme/core.types';
 import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
+import Animated from 'react-native-reanimated';
 import styled, { css } from 'styled-components/native';
 import { CardProps } from './Card.types';
 
@@ -12,10 +13,11 @@ export const CardContainer = styled.View`
   `}
 `;
 
-export const CardBaseButtonContainer = styled.View<CardProps>`
+export const CardBaseButtonContainer = styled(Animated.View)<CardProps>`
   ${(props) => css`
     border-radius: ${props.theme.borderRadius}px;
     overflow: visible;
+
     ${() =>
       props.width &&
       css`

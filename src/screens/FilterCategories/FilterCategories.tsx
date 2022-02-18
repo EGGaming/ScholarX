@@ -45,6 +45,7 @@ const FilterCategories: React.FC = () => {
           <Space spacing={0} divider direction='vertical'>
             {categories.map((category) => (
               <CategoryItem
+                key={category}
                 checked={selectedCategories.some((selected) => category === selected)}
                 category={category}
               />

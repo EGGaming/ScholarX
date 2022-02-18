@@ -23,7 +23,7 @@ export const NativeButtonBase = styled(Platform.OS === 'android' ? NativeFeedbac
     switch (props.theme.mode) {
       case 'dark':
         return {
-          background: NativeFeedback.Ripple(props.theme.palette.primary.dark, round),
+          background: NativeFeedback.Ripple(props.theme.palette.constants.GRAY['800'], round),
           activeOpacity: 0.5,
         };
       case 'light':
@@ -66,7 +66,7 @@ export const ButtonBase = styled(Platform.OS === 'android' ? TouchableNativeFeed
     switch (props.theme.mode) {
       case 'dark':
         return {
-          background: TouchableNativeFeedback.Ripple(props.theme.palette.primary.dark, round),
+          background: TouchableNativeFeedback.Ripple(props.theme.palette.constants.GRAY['800'], round),
           activeOpacity: 0.5,
         };
       case 'light':

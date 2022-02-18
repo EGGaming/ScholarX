@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components/native';
 
 export const SchoolDistrictItemContainer = styled(Card)`
   ${(props) => css`
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-grow: 1;
   `}
 `;
 

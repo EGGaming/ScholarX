@@ -225,8 +225,8 @@ const darkTheme: DefaultTheme = {
       dark: '#388e3c',
     },
     background: {
-      default: '#262c42',
-      paper: '#3a405a',
+      default: '#222',
+      paper: '#333',
     },
     text: {
       primary: '#fff',
