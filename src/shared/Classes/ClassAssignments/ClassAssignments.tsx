@@ -10,22 +10,40 @@ import { format } from 'date-fns';
 import _ from 'lodash';
 import { SectionList, SectionListData } from 'react-native';
 import RenderClassSection from '@shared/Classes/ClassSection/ClassSection';
+import {
+  useAssignmentFilter,
+  useAssignmentFilterOfClass,
+} from '@context/AssignmentFilterContext/AssignmentFilterContext';
+import { Order } from '@context/AssignmentFilterContext/AssignmentFilterContext.types';
 const keyExtractor: KeyExtractor<StudentClassAssignment> = (item) => item.gradebookId;
 
 const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
   const { class: studentClass } = props;
+  const filters = useAssignmentFilterOfClass();
 
   const data: SectionListData<StudentClassAssignment, { title: string; data: StudentClassAssignment[] }>[] =
-    React.useMemo(
-      () =>
-        _.sortBy(_.uniqBy(studentClass.assignments, 'date.date'), ['date.date'])
-          .reverse()
-          .map((p) => ({
-            title: format(new Date(p.date.date), 'EEEE, MMMM d, yyyy'),
-            data: studentClass.assignments.filter((assignment) => assignment.date.date === p.date.date),
-          })),
-      [studentClass.assignments]
-    );
+    React.useMemo(() => {
+      if (filters) {
+        let assignments = studentClass.assignments;
+
+        if (filters.withDropbox) assignments = assignments.filter((assignment) => assignment.hasDropBox === true);
+
+        switch (filters.orderType) {
+          case Order.ASCENDING:
+            assignments = _.sortBy(_.uniqBy(assignments, 'date.date'), ['date.date']).reverse();
+            break;
+          case Order.DESCENDING:
+            assignments = _.sortBy(_.uniqBy(assignments, 'date.date'), ['date.date']);
+            break;
+        }
+
+        return assignments.map((p) => ({
+          title: format(new Date(p.date.date), 'EEEE, MMMM d, yyyy'),
+          data: assignments.filter((assignment) => assignment.date.date === p.date.date),
+        }));
+      }
+      return [];
+    }, [studentClass.assignments, filters]);
 
   return (
     <SectionList
@@ -34,7 +52,7 @@ const ClassAssignments: React.FC<ClassAssignmentProps> = (props) => {
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={false}
       maxToRenderPerBatch={10}
-      initialNumToRender={15}
+      initialNumToRender={20}
       renderSectionHeader={RenderClassSection}
       stickySectionHeadersEnabled
       windowSize={7}

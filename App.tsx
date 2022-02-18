@@ -20,6 +20,7 @@ import ClassScheduleProvider from '@context/ClassScheduleContext/ClassScheduleCo
 import GradebookProvider from '@context/GradebookContext/GradebookContext';
 import SkeletonSharedValueProvider from '@context/SkeletonSharedValueContext/SkeletonSharedValueContext';
 import AssignmentFilterProvider from '@context/AssignmentFilterContext/AssignmentFilterContext';
+import ViewingClassProvider from '@context/ViewingClassContext/ViewingClassContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -28,34 +29,36 @@ export default function App() {
     <StudentVueClientProvider>
       <ThemeProvider theme={theme}>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <Storage.Provider>
-            <CalendarProvider>
-              <ClassScheduleProvider>
-                <GradebookProvider>
-                  <AssignmentFilterProvider>
-                    <SearchDistrictFocusedProvider>
-                      <SearchDistrictProvider>
-                        <NotificationContextProvider>
-                          <SessionContextProvider>
-                            <SkeletonSharedValueProvider>
-                              <AppContextProvider>
-                                <StatusBar />
-                                <NavigationContainer theme={navigationTheme}>
-                                  <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-                                    <Root />
-                                  </HoldMenuProvider>
-                                </NavigationContainer>
-                              </AppContextProvider>
-                            </SkeletonSharedValueProvider>
-                          </SessionContextProvider>
-                        </NotificationContextProvider>
-                      </SearchDistrictProvider>
-                    </SearchDistrictFocusedProvider>
-                  </AssignmentFilterProvider>
-                </GradebookProvider>
-              </ClassScheduleProvider>
-            </CalendarProvider>
-          </Storage.Provider>
+          <ViewingClassProvider>
+            <Storage.Provider>
+              <CalendarProvider>
+                <ClassScheduleProvider>
+                  <GradebookProvider>
+                    <AssignmentFilterProvider>
+                      <SearchDistrictFocusedProvider>
+                        <SearchDistrictProvider>
+                          <NotificationContextProvider>
+                            <SessionContextProvider>
+                              <SkeletonSharedValueProvider>
+                                <AppContextProvider>
+                                  <StatusBar />
+                                  <NavigationContainer theme={navigationTheme}>
+                                    <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
+                                      <Root />
+                                    </HoldMenuProvider>
+                                  </NavigationContainer>
+                                </AppContextProvider>
+                              </SkeletonSharedValueProvider>
+                            </SessionContextProvider>
+                          </NotificationContextProvider>
+                        </SearchDistrictProvider>
+                      </SearchDistrictFocusedProvider>
+                    </AssignmentFilterProvider>
+                  </GradebookProvider>
+                </ClassScheduleProvider>
+              </CalendarProvider>
+            </Storage.Provider>
+          </ViewingClassProvider>
         </GestureHandlerRootView>
       </ThemeProvider>
     </StudentVueClientProvider>

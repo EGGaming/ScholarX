@@ -5,6 +5,7 @@ export interface ChipProps {
   color?: AppColors;
   hexColor?: string;
   onPress?: () => void;
+  onRemove?: () => void;
 }
 
-export type ChipBaseProps = Required<Pick<ChipProps, 'color' | 'hexColor'>>;
+export type ChipBaseProps = Pick<ChipProps, 'color' | 'hexColor'>;

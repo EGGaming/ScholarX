@@ -6,11 +6,19 @@ import {
   SwitchBaseTouchable,
 } from '@components/Switch/Switch.base';
 import { SwitchProps } from '@components/Switch/Switch.types';
+import { useAppTheme } from '@theme/core';
 import React from 'react';
 import { Animated, View } from 'react-native';
 
 const Switch: React.FC<SwitchProps> = (props) => {
-  const { checked = false, onChange = () => void 0, disabled = false, color = 'primary', hexColor = '' } = props;
+  const theme = useAppTheme();
+  const {
+    checked = false,
+    onChange = () => void 0,
+    disabled = false,
+    color = theme.mode === 'dark' ? 'secondary' : 'primary',
+    hexColor = '',
+  } = props;
   const slideAnimation = React.useRef(new Animated.Value(0)).current;
 
   React.useEffect(() => {

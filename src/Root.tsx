@@ -20,11 +20,14 @@ import Space from '@components/Space/Space';
 import ClassViewer from '@screens/ClassViewer/ClassViewer';
 import AssignmentViewer from '@screens/AssignmentViewer/AssignmentViewer';
 import AssignmentFilters from '@screens/AssignmentFilters/AssignmentFilters';
+import Schedule from '@screens/Schedule/Schedule';
+import { useAssignmentFilterDispatch } from '@context/AssignmentFilterContext/AssignmentFilterContext';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
   const [client] = useStudentVue();
   const [notifications, dispatch] = useNotificationReducer();
+  const filtersDispatch = useAssignmentFilterDispatch();
   const markAllRead = React.useCallback(async () => {
     dispatch({ type: 'MARK_ALL_READ' });
     await Promise.all(notifications.notifications.map((msg) => client.updateMessage(msg)));
@@ -115,7 +118,26 @@ const Root: React.FC = () => {
         options={{
           headerShown: true,
           header: (props) => <Header {...props} />,
+          headerRight: () => (
+            <Button
+              title='Reset Filters'
+              size='small'
+              onPress={() => {
+                filtersDispatch({ type: 'RESET_FILTERS' });
+              }}
+            />
+          ),
           headerTitle: 'Filter',
+          headerBackVisible: true,
+        }}
+      />
+      <RootStack.Screen
+        name='Schedule'
+        component={Schedule}
+        options={{
+          headerShown: true,
+          header: (props) => <Header {...props} />,
+          headerTitle: "Today's Schedule",
           headerBackVisible: true,
         }}
       />

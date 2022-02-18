@@ -29,6 +29,7 @@ export type RootStackParamList = {
     assignment: StudentClassAssignment;
   };
   AssignmentFilters: undefined;
+  Schedule: undefined;
 };
 
 export type RootStackNavigationProps = NativeStackNavigationProp<RootStackParamList>;

@@ -1,25 +1,30 @@
 import { StudentClassAssignment } from '@utilities/StudentVue/types';
 import { Paths } from '@utilities/TypeUtilities';
 
-type AddFilterProperties<T> = {
-  [K in keyof T]: T[K] extends Record<string, unknown>
-    ? AddFilterProperties<T[K]>
-    : T[K] extends boolean
-    ? boolean
-    : Array<T[K]>;
-};
-
 export interface AssignmentFilterContextState {
+  currentlyViewingClass: string;
+  filters: Record<string, AssignmentFilterOfClassContextState>;
+}
+
+export interface AssignmentFilterOfClassContextState {
   withDropbox: boolean;
+  orderType: Order;
+  selectedAssignments: string[];
 }
 
-export enum FieldVisibility {
-  INCLUDE = 'Include',
-  VISIBLE = 'Show All',
+export enum Order {
+  ASCENDING = 'Ascending',
+  DESCENDING = 'Descending',
 }
 
-export type AssignmentFilterContextActions = {
-  type: 'ADD_FILTER';
-  key: keyof AssignmentFilterContextState;
-  value: any;
-};
+export type AssignmentFilterContextActions =
+  | {
+      type: 'ADD_FILTER';
+      key: keyof AssignmentFilterOfClassContextState;
+      value: any;
+    }
+  | { type: 'INITIALIZE_CLASS_FILTER'; className: string }
+  | { type: 'IS_VIEWING_CLASS'; className: string }
+  | { type: 'RESET_FILTERS' }
+  | { type: 'APPEND_ASSIGNMENT_TYPE'; assignmentType: string }
+  | { type: 'REMOVE_ASSIGNMENT_TYPE'; assignmentType: string };

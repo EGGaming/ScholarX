@@ -6,17 +6,42 @@ import Typography from '@components/Typography/Typography';
 import { ClassSchedule } from '@utilities/StudentVue/types';
 import React from 'react';
 import { ScheduleItemProps } from './ScheduleItem.types';
-import { isFuture, isWithinInterval, parse } from 'date-fns';
+import { isFuture, isWithinInterval } from 'date-fns';
+import { useRootNavigation } from '@navigators/Root/Root';
 
-const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule }) => {
-  const parsedStartDate = new Date(classSchedule.date.start);
-  const parsedEndDate = new Date(classSchedule.date.end);
-  const isOccuring = isWithinInterval(new Date(), {
-    start: parsedStartDate,
-    end: parsedEndDate,
-  });
+const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngoing = false, class: studentClass }) => {
+  const parsedStartDate = React.useMemo(() => new Date(classSchedule.date.start), [classSchedule.date.end]);
+  const parsedEndDate = React.useMemo(() => new Date(classSchedule.date.end), [classSchedule.date.end]);
+  const navigation = useRootNavigation();
+  const [isOccuring, setIsOccuring] = React.useState<boolean>(() =>
+    isWithinInterval(new Date(), {
+      start: parsedStartDate,
+      end: parsedEndDate,
+    })
+  );
+
+  const handleOnPress = React.useCallback(() => {
+    navigation.navigate('ClassViewer', { class: studentClass });
+  }, [studentClass]);
+
+  React.useEffect(() => {
+    const updater = setInterval(() => {
+      setIsOccuring(() =>
+        isWithinInterval(new Date(), {
+          start: parsedStartDate,
+          end: parsedEndDate,
+        })
+      );
+    }, 30000);
+
+    return () => {
+      clearInterval(updater);
+    };
+  }, []);
+
+  if (!isOccuring && onlyShowOngoing) return null;
   return (
-    <Card>
+    <Card onPress={handleOnPress}>
       <Space spacing={1} justifyContent='space-between'>
         <Flex direction='column' shrink>
           <Typography bold numberOfLines={1}>

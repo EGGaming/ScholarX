@@ -146,7 +146,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
           </Space>
           <Space spacing={1} justifyContent='flex-end' alignItems='center' direction='horizontal'>
             <Typography>Stay signed in?</Typography>
-            <Switch checked={state.staySignedIn} onChange={toggleSignIn} color='secondary' />
+            <Switch checked={state.staySignedIn} onChange={toggleSignIn} />
           </Space>
           <Button
             title={loading ? 'Logging in...' : 'Sign in'}

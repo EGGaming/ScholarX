@@ -28,8 +28,8 @@ const Dashboard: React.FC = () => {
         </Flex>
       )}
       <Space spacing={2} direction='vertical'>
-        <Schedule />
         <Classes />
+        <Schedule />
         <Events />
       </Space>
     </Container>

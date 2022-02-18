@@ -6,12 +6,12 @@ const Container: React.FC<ContainerProps> = (props) => {
   const { scrollable, header = false } = props;
   if (scrollable)
     return (
-      <ScrollViewContainer header scrollable={true}>
+      <ScrollViewContainer header={header} scrollable={true}>
         {props.children}
       </ScrollViewContainer>
     );
   return (
-    <ViewContainer header scrollable={false}>
+    <ViewContainer header={header} scrollable={false}>
       {props.children}
     </ViewContainer>
   );

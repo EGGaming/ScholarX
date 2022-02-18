@@ -20,7 +20,7 @@ export const FlexContainer = styled.View<Required<FlexProps>>`
     ${() => {
       if (props.container)
         return css`
-          padding: ${props.theme.spacing(3)};
+          padding: ${props.containerProps.header ? props.theme.spacing(0, 3) : props.theme.spacing(3)};
         `;
     }}
     flex-direction: ${props.direction};

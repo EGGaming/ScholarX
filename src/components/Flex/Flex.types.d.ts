@@ -1,3 +1,4 @@
+import { ContainerProps } from '@components/Container/Container.types';
 import { FlexStyle } from 'react-native';
 
 export interface FlexProps {
@@ -7,4 +8,5 @@ export interface FlexProps {
   grow?: boolean;
   shrink?: boolean;
   container?: boolean;
+  containerProps?: ContainerProps;
 }

@@ -10,10 +10,12 @@ const Flex: React.FC<FlexProps> = (props) => {
     shrink = false,
     grow = false,
     container = false,
+    containerProps = { header: false },
   } = props;
   return (
     <FlexContainer
       container={container}
+      containerProps={containerProps}
       justifyContent={justifyContent}
       alignItems={alignItems}
       direction={direction}
