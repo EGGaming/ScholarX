@@ -18,11 +18,19 @@ import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/
 import * as Clipboard from 'expo-clipboard';
 import { useRootNavigation } from '@navigators/Root/Root';
 import useGradeColor from '@utilities/useGradeColor';
+import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 const Class: React.FC<ClassProps> = (props) => {
   const theme = useAppTheme();
   const navigation = useRootNavigation();
   const { classInfo } = props;
+  const opacity = useSharedValue(0);
+  React.useEffect(() => {
+    opacity.value = withSpring(1);
+  }, []);
+  const style = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
   function handleEmail() {
     Linking.openURL(`mailto:${classInfo.staff.email}`);
   }
@@ -48,7 +56,7 @@ const Class: React.FC<ClassProps> = (props) => {
 
   return (
     <NativeButtonBase onPress={moreInfo}>
-      <ClassContainer>
+      <ClassContainer style={style}>
         <Space spacing={1}>
           <GradeSymbolContainer>
             <Typography

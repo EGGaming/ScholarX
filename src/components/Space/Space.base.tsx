@@ -70,7 +70,7 @@ export const SpaceBaseContainer = styled.View<SpaceBaseProps>`
   ${(props) => {
     if (props.container)
       return css`
-        padding: ${props.theme.spacing(3)};
+        padding: ${props.containerProps.header ? props.theme.spacing(0, 3) : props.theme.spacing(3)};
       `;
   }}
 `;

@@ -1,7 +1,11 @@
 import { ClassSchedule, StudentClass } from '@utilities/StudentVue/types';
 
-interface ScheduleItemProps {
+export interface ScheduleItemProps {
   classSchedule: ClassSchedule;
   class: StudentClass;
   onlyShowOngoing?: boolean;
+}
+
+export interface ScheduleItemCardProps {
+  isOccuring: boolean;
 }

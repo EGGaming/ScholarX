@@ -50,7 +50,7 @@ export const SkeletonTypographyBase = styled(Animated.View)<Required<SkeletonTyp
     border-radius: ${props.theme.borderRadius}px;
     width: ${typeof props.width === 'number' ? `${props.width}px` : props.width};
     background-color: ${props.theme.mode === 'dark'
-      ? props.theme.palette.primary.dark
+      ? props.theme.palette.constants.GRAY[600]
       : props.theme.palette.constants.GRAY[400]};
     align-self: ${props.align};
   `}
@@ -61,7 +61,7 @@ export const SkeletonBoxBase = styled(Animated.View)<SkeletonBoxProps>`
     display: flex;
     border-radius: ${props.rounded ? props.theme.borderRadius : 0}px;
     background-color: ${props.theme.mode === 'dark'
-      ? props.theme.palette.primary.dark
+      ? props.theme.palette.constants.GRAY[600]
       : props.theme.palette.constants.GRAY[400]};
   `}
   ${(props) => {
@@ -133,7 +133,7 @@ export const SkeletonCircleBase = styled(Animated.View)<SkeletonCircleProps>`
   }}
   ${(props) => css`
     background-color: ${props.theme.mode === 'dark'
-      ? props.theme.palette.primary.dark
+      ? props.theme.palette.constants.GRAY[600]
       : props.theme.palette.constants.GRAY[400]};
   `}
 `;

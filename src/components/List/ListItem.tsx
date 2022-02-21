@@ -9,15 +9,21 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring, concat, withTim
 
 const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent, icon }) => {
   const rotation = useSharedValue(0);
-  const translationY = useSharedValue(-10);
-  const opacity = useSharedValue(0);
+  const expandedContentTranslationY = useSharedValue(-10);
+  const baseOpacity = useSharedValue(0);
+  const baseTranslationY = useSharedValue(-10);
+  const expandedContentOpacity = useSharedValue(0);
   const rotationStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
   }));
 
   const slideIn = useAnimatedStyle(() => ({
-    transform: [{ translateY: translationY.value }],
-    opacity: opacity.value,
+    transform: [{ translateY: expandedContentTranslationY.value }],
+    opacity: expandedContentOpacity.value,
+  }));
+  const baseStyle = useAnimatedStyle(() => ({
+    opacity: baseOpacity.value,
+    transform: [{ translateY: baseTranslationY.value }],
   }));
   const isMounted = useComponentMounted();
   const [expand, toggle] = React.useReducer((s) => !s, false);
@@ -26,22 +32,49 @@ const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent, i
   }, [toggle]);
 
   React.useEffect(() => {
+    baseOpacity.value = withSpring(1);
+    baseTranslationY.value = withTiming(0, { duration: 300 });
+  }, []);
+
+  React.useEffect(() => {
     if (isMounted) {
       if (expand) {
         rotation.value = withTiming(180, { duration: 100 });
-        translationY.value = withSpring(0);
-        opacity.value = withTiming(1, { duration: 50 });
+        expandedContentTranslationY.value = withSpring(0);
+        expandedContentOpacity.value = withTiming(1, { duration: 50 });
       } else {
         rotation.value = withTiming(0, { duration: 100 });
-        translationY.value = withTiming(-10, { duration: 100 });
-        opacity.value = withTiming(0, { duration: 50 });
+        expandedContentTranslationY.value = withTiming(-10, { duration: 100 });
+        expandedContentOpacity.value = withTiming(0, { duration: 50 });
       }
     }
   }, [expand]);
 
+  if (!onPress)
+    return (
+      <ListItemContainer style={baseStyle}>
+        <Flex direction='row' alignItems='center'>
+          <Flex shrink>{children}</Flex>
+          {expandContent && (
+            <Flex grow justifyContent='flex-end'>
+              <Animated.View style={rotationStyle}>
+                <Icon bundle='Feather' name='chevron-down' color='disabled' />
+              </Animated.View>
+            </Flex>
+          )}
+          {icon && (
+            <Flex grow justifyContent='flex-end'>
+              {icon}
+            </Flex>
+          )}
+        </Flex>
+        {expand && <Animated.View style={slideIn}>{expandContent}</Animated.View>}
+      </ListItemContainer>
+    );
+
   return (
     <NativeButtonBase onPress={expandContent ? handleOnPress : onPress}>
-      <ListItemContainer>
+      <ListItemContainer style={baseStyle}>
         <Flex direction='row' alignItems='center'>
           <Flex shrink>{children}</Flex>
           {expandContent && (

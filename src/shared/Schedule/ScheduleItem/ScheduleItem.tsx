@@ -8,6 +8,7 @@ import React from 'react';
 import { ScheduleItemProps } from './ScheduleItem.types';
 import { isFuture, isPast, isWithinInterval } from 'date-fns';
 import { useRootNavigation } from '@navigators/Root/Root';
+import { ScheduleItemCard } from '@shared/Schedule/ScheduleItem/ScheduleItem.base';
 
 const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngoing = false, class: studentClass }) => {
   const parsedStartDate = React.useMemo(() => new Date(classSchedule.date.start), [classSchedule.date.end]);
@@ -40,7 +41,7 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngo
   }, []);
 
   return (
-    <Card onPress={handleOnPress}>
+    <ScheduleItemCard isOccuring={isOccuring} onPress={handleOnPress}>
       <Space spacing={1} justifyContent='space-between'>
         <Flex direction='column' shrink>
           <Typography bold numberOfLines={1}>
@@ -66,7 +67,7 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngo
           Period {classSchedule.period}
         </Typography>
       </Space>
-    </Card>
+    </ScheduleItemCard>
   );
 };
 

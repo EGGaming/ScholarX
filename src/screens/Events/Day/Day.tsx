@@ -1,4 +1,4 @@
-import { ButtonBase } from '@components/Button/Button.base';
+import { ButtonBase, NativeButtonBase } from '@components/Button/Button.base';
 import Container from '@components/Container/Container';
 import Flex from '@components/Flex/Flex';
 import Typography from '@components/Typography/Typography';
@@ -6,18 +6,27 @@ import { DayButtonContainer, EventTinyCircle } from '@screens/Events/Day/Day.bas
 import { DayProps } from '@screens/Events/Day/Day.types';
 import { format } from 'date-fns';
 import React from 'react';
-import { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import Space from '@components/Space/Space';
 import Icon from '@components/Icon/Icon';
-const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, index, selectedIndex, events }) => {
+const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, isSelected, index, events }) => {
   const size = useSharedValue(1);
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(-10);
+  React.useEffect(() => {
+    opacity.value = withSpring(1);
+    translateY.value = withTiming(0, { duration: 300 });
+  }, []);
   const styles = useAnimatedStyle(() => ({
-    transform: [{ scale: size.value }],
+    transform: [{ scale: size.value }, { translateY: translateY.value }],
+    opacity: opacity.value,
   }));
   function handleOnPress() {
     onIndexChange(index);
   }
+
+  console.log(`rerendering day ${index}`);
 
   const isHoliday = React.useMemo(() => events.some((event) => event.DayType === 'Holiday'), [events]);
   const isMaintenance = React.useMemo(
@@ -26,13 +35,13 @@ const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, index, se
   );
 
   React.useEffect(() => {
-    if (selectedIndex === index) size.value = withSpring(1.1);
+    if (isSelected) size.value = withSpring(1.1);
     else size.value = withSpring(1);
-  }, [selectedIndex]);
+  }, [isSelected]);
 
   return (
-    <DayButtonContainer style={styles} selected={selectedIndex === index}>
-      <TouchableWithoutFeedback onPress={handleOnPress}>
+    <DayButtonContainer style={styles} selected={isSelected}>
+      <NativeButtonBase round onPress={handleOnPress}>
         <View>
           <Space spacing={1} container direction='vertical'>
             <>
@@ -50,9 +59,11 @@ const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, index, se
             </Flex>
           </Space>
         </View>
-      </TouchableWithoutFeedback>
+      </NativeButtonBase>
     </DayButtonContainer>
   );
 };
 
-export default React.memo(Day);
+export default React.memo(Day, (prev, curr) => {
+  return false;
+});

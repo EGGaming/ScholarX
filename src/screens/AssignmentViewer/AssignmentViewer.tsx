@@ -15,6 +15,7 @@ import AssignmentResource from '@components/AssignmentResource/AssignmentResourc
 import { AssignmentViewerContainer } from './AssignmentViewer.base';
 import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
+import Scrollable from '@components/Scrollable/Scrollable';
 
 const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'AssignmentViewer'>> = ({
   navigation,
@@ -23,34 +24,26 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
   const { assignment } = route.params;
 
   return (
-    <ScrollView>
+    <Scrollable>
       <Flex direction='column'>
         <Container>
           <Typography variant='h3'>{assignment.name}</Typography>
           <Typography color='textSecondary'>{assignment.type}</Typography>
         </Container>
         {assignment.resources ? (
-          <Flex direction='column'>
+          <Space spacing={0.5} direction='vertical' grow>
             <AssignmentViewerContainer>
               <Typography color='textSecondary'>Resources</Typography>
             </AssignmentViewerContainer>
-            <Space spacing={1}>
-              <>
-                {assignment.resources.map((res) =>
-                  res.url ? <AssignmentResource key={res.url} fileName={res.url} /> : undefined
-                )}
-              </>
-              <>
-                {assignment.resources.map((res) => (
-                  <AssignmentResource
-                    fileName={res.file.name}
-                    serverRoute={res.file.serverRoute}
-                    key={res.resource.id}
-                  />
-                ))}
-              </>
+            <Space spacing={1} container containerProps={{ header: true }} grow>
+              {assignment.resources.map((res) =>
+                res.url ? <AssignmentResource key={res.url} fileName={res.url} /> : undefined
+              )}
+              {assignment.resources.map((res) => (
+                <AssignmentResource fileName={res.file.name} serverRoute={res.file.serverRoute} key={res.resource.id} />
+              ))}
             </Space>
-          </Flex>
+          </Space>
         ) : undefined}
         <Space spacing={2} direction='vertical' container>
           <Field
@@ -88,7 +81,7 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
           </Space>
         ) : undefined}
       </Flex>
-    </ScrollView>
+    </Scrollable>
   );
 };
 

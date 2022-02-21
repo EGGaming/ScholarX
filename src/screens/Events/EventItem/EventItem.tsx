@@ -56,7 +56,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
 
   if (event.DayType === 'Assignment')
     return (
-      <Card style={style}>
+      <Card>
         <Space spacing={1} direction='vertical'>
           <>
             <Typography variant='caption' color='textSecondary' numberOfLines={1}>
@@ -79,7 +79,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
     );
 
   return (
-    <Card style={style}>
+    <Card>
       <Typography numberOfLines={1}>{event.DayType}</Typography>
       <Typography numberOfLines={1} color='textSecondary' variant='body2'>
         {event.Title}

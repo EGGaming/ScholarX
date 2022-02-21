@@ -17,6 +17,7 @@ import { useCalendar, useFutureEvents } from '@context/CalendarContext/CalendarC
 import Space from '@components/Space/Space';
 import Flex from '@components/Flex/Flex';
 import Skeleton from '@components/Skeleton/Skeleton';
+import Scrollable from '@components/Scrollable/Scrollable';
 
 const Events: React.FC = () => {
   const navigation = useRootNavigation();
@@ -110,21 +111,21 @@ const Events: React.FC = () => {
       </EventsContainer>
 
       {!calendar || !upcoming ? (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <Scrollable horizontal showsHorizontalScrollIndicator={false}>
           <Space container spacing={1}>
             {new Array(3).fill('').map((_, i) => (
               <Event key={i} isSkeleton />
             ))}
           </Space>
-        </ScrollView>
+        </Scrollable>
       ) : calendar.events.length > 0 ? (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <Scrollable horizontal showsHorizontalScrollIndicator={false}>
           <Space container spacing={1}>
             {upcomingNonDuplicateEvents.slice(0, 3).map((item) => (
               <Event item={item} key={`${item.Title}: ${item.Date}`} />
             ))}
           </Space>
-        </ScrollView>
+        </Scrollable>
       ) : (
         <Card>
           <Typography bold>You're caught up!</Typography>

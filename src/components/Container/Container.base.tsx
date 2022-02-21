@@ -1,4 +1,5 @@
 import { ContainerProps } from '@components/Container/Container.types';
+import Scrollable from '@components/Scrollable/Scrollable';
 import styled, { css } from 'styled-components/native';
 
 export const ViewContainer = styled.View<Required<ContainerProps>>`
@@ -9,7 +10,7 @@ export const ViewContainer = styled.View<Required<ContainerProps>>`
   }}
 `;
 
-export const ScrollViewContainer = styled.ScrollView<Required<ContainerProps>>`
+export const ScrollViewContainer = styled(Scrollable)<Required<ContainerProps>>`
   ${(props) => {
     return css`
       padding: ${props.theme.spacing(3)};

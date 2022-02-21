@@ -7,7 +7,7 @@ import React from 'react';
 
 const StudentDropbox: React.FC<StudentDropboxProps> = ({ withDropbox, onChange }) => {
   return (
-    <Card>
+    <Card disableAnimation>
       <Space spacing={1} justifyContent='space-between'>
         <Flex shrink direction='column'>
           <Typography bold>Dropbox only?</Typography>

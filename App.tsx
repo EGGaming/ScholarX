@@ -22,6 +22,7 @@ import SkeletonSharedValueProvider from '@context/SkeletonSharedValueContext/Ske
 import AssignmentFilterProvider from '@context/AssignmentFilterContext/AssignmentFilterContext';
 import ViewingClassProvider from '@context/ViewingClassContext/ViewingClassContext';
 import { PortalProvider, PortalHost } from '@gorhom/portal';
+import ClassViewerProvider from '@context/ClassViewerContext/ClassViewerContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -41,17 +42,19 @@ export default function App() {
                           <NotificationContextProvider>
                             <SessionContextProvider>
                               <SkeletonSharedValueProvider>
-                                <AppContextProvider>
-                                  <StatusBar />
-                                  <NavigationContainer theme={navigationTheme}>
-                                    <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-                                      <PortalProvider>
-                                        <Root />
-                                        <PortalHost name='Root' />
-                                      </PortalProvider>
-                                    </HoldMenuProvider>
-                                  </NavigationContainer>
-                                </AppContextProvider>
+                                <ClassViewerProvider>
+                                  <AppContextProvider>
+                                    <StatusBar />
+                                    <NavigationContainer theme={navigationTheme}>
+                                      <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
+                                        <PortalProvider>
+                                          <Root />
+                                          <PortalHost name='Root' />
+                                        </PortalProvider>
+                                      </HoldMenuProvider>
+                                    </NavigationContainer>
+                                  </AppContextProvider>
+                                </ClassViewerProvider>
                               </SkeletonSharedValueProvider>
                             </SessionContextProvider>
                           </NotificationContextProvider>

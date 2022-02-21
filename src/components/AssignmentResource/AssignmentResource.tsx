@@ -14,6 +14,7 @@ import * as Clipboard from 'expo-clipboard';
 import useBytesString from '@utilities/useBytesString';
 import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
 import { HoldItem } from 'react-native-hold-menu';
+import { AssignmentResourceContainer } from '@components/AssignmentResource/AssignmentResource.base';
 
 const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
   if (props.serverRoute) {
@@ -73,23 +74,25 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
     );
 
     return (
-      <HoldItem items={menuItems}>
-        <Card>
-          <Space spacing={1} alignItems='center'>
-            {icon}
-            <Flex direction='column'>
-              <TouchableWithoutFeedback onPress={openFile}>
-                <Typography color='primary' bold variant='body2'>
-                  {name}
+      <AssignmentResourceContainer>
+        <HoldItem items={menuItems}>
+          <Card>
+            <Space spacing={1} alignItems='center' grow>
+              {icon}
+              <Flex direction='column'>
+                <TouchableWithoutFeedback onPress={openFile}>
+                  <Typography numberOfLines={1} color='primary' bold variant='body2'>
+                    {fileName}
+                  </Typography>
+                </TouchableWithoutFeedback>
+                <Typography color='textSecondary' variant='caption'>
+                  {fileSize}
                 </Typography>
-              </TouchableWithoutFeedback>
-              <Typography color='textSecondary' variant='caption'>
-                {fileSize}
-              </Typography>
-            </Flex>
-          </Space>
-        </Card>
-      </HoldItem>
+              </Flex>
+            </Space>
+          </Card>
+        </HoldItem>
+      </AssignmentResourceContainer>
     );
   }
 
@@ -117,15 +120,17 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
     [props.fileName]
   );
   return (
-    <HoldItem items={menuItems}>
-      <Card>
-        <TouchableWithoutFeedback onPress={handleOpenURL}>
-          <Typography bold color='primary' variant='body2' numberOfLines={1}>
-            {props.fileName}
-          </Typography>
-        </TouchableWithoutFeedback>
-      </Card>
-    </HoldItem>
+    <AssignmentResourceContainer>
+      <HoldItem items={menuItems}>
+        <Card>
+          <TouchableWithoutFeedback onPress={handleOpenURL}>
+            <Typography bold color='primary' variant='body2' numberOfLines={1}>
+              {props.fileName}
+            </Typography>
+          </TouchableWithoutFeedback>
+        </Card>
+      </HoldItem>
+    </AssignmentResourceContainer>
   );
 };
 

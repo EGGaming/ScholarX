@@ -1,3 +1,4 @@
+import { ContainerProps } from '@components/Container/Container.types';
 import { FlexAlignType, FlexStyle, StyleProp, ViewProps } from 'react-native';
 
 export interface SpaceProps {
@@ -6,6 +7,7 @@ export interface SpaceProps {
   justifyContent?: FlexStyle['justifyContent'];
   alignItems?: FlexAlignType;
   container?: boolean;
+  containerProps?: ContainerProps;
   grow?: boolean;
   shrink?: boolean;
   divider?: boolean;

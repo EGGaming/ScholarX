@@ -1,6 +1,6 @@
 import { LoginStackParamList } from '@navigators/Login/Login.types';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const LoginStack = createNativeStackNavigator<LoginStackParamList>();
+const LoginStack = createStackNavigator<LoginStackParamList>();
 
 export default LoginStack;

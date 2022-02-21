@@ -19,7 +19,22 @@ const TextField = React.forwardRef((props: TextFieldProps & TextInputProps & Tex
   const theme = useAppTheme();
   return (
     <TextFieldBaseContainer width={width}>
-      <Space direction='vertical' spacing={0.5} grow>
+      {error ? (
+        <Space direction='vertical' spacing={0.5}>
+          <TextFieldBase
+            error={error}
+            ref={ref as any}
+            placeholderTextColor={theme.palette.text.disabled}
+            adornmentEnd={adornmentEnd}
+            adornmentStart={adornmentStart}
+            size={size}
+            {...otherProps}
+          />
+          <Typography color='error' variant='body2'>
+            * {error}
+          </Typography>
+        </Space>
+      ) : (
         <TextFieldBase
           error={error}
           ref={ref as any}
@@ -29,12 +44,7 @@ const TextField = React.forwardRef((props: TextFieldProps & TextInputProps & Tex
           size={size}
           {...otherProps}
         />
-        {error && (
-          <Typography color='error' variant='body2'>
-            * {error}
-          </Typography>
-        )}
-      </Space>
+      )}
       {adornmentEnd && <TextFieldAdornmentEndContainer size={size}>{adornmentEnd}</TextFieldAdornmentEndContainer>}
       {adornmentStart && (
         <TextFieldAdornmentStartContainer size={size}>{adornmentStart}</TextFieldAdornmentStartContainer>

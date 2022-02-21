@@ -3,8 +3,8 @@ import React from 'react';
 
 export interface DayProps {
   date: Date;
+  isSelected: boolean;
   index: number;
-  selectedIndex: number;
-  onIndexChange: React.Dispatch<React.SetStateAction<number>>;
+  onIndexChange: (i: number) => void;
   events: CalendarEvent[];
 }

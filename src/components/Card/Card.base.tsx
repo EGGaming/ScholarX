@@ -13,6 +13,39 @@ export const CardContainer = styled.View`
   `}
 `;
 
+export const CardBaseButtonContainerNoAnimation = styled.View<CardProps>`
+  ${(props) => css`
+    border-radius: ${props.theme.borderRadius}px;
+    overflow: visible;
+
+    ${() =>
+      props.width &&
+      css`
+        width: ${typeof props.width === 'number' ? `${props.width}px` : props.width};
+      `}
+    ${() =>
+      props.height &&
+      css`
+        height: ${typeof props.height === 'number' ? `${props.height}px` : props.height};
+      `}
+    ${() => {
+      switch (Platform.OS) {
+        case 'android':
+          return css`
+            elevation: 4;
+          `;
+        case 'ios':
+          return css`
+            shadow-color: #000;
+            shadow-offset: 0px 2px;
+            shadow-opacity: 0.25;
+            shadow-radius: 3.84px;
+          `;
+      }
+    }}
+  `};
+`;
+
 export const CardBaseButtonContainer = styled(Animated.View)<CardProps>`
   ${(props) => css`
     border-radius: ${props.theme.borderRadius}px;

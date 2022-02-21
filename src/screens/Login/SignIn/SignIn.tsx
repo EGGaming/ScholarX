@@ -16,6 +16,9 @@ import StudentVue from '@utilities/StudentVue';
 import React from 'react';
 import * as LocalAuthentication from 'expo-local-authentication';
 import Flex from '@components/Flex/Flex';
+import { Keyboard, TextInput } from 'react-native';
+import PasswordField from '@shared/PasswordField/PasswordField';
+import UsernameField from '@shared/UsernameField/UsernameField';
 
 const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const [state, dispatch] = useAppReducer();
@@ -26,12 +29,29 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [usernameError, setUsernameError] = React.useState<string>('');
   const [client, setClient] = useStudentVue();
-  function onTextUsernameChange(e: string) {
-    dispatch({ type: 'SETTER', key: 'username', payload: e });
-  }
-  function onTextPasswordChange(e: string) {
-    dispatch({ type: 'SETTER', key: 'password', payload: e });
-  }
+  const passwordRef = React.useRef<TextInput>(null);
+  const onTextUsernameChange = React.useCallback(
+    (e: string) => {
+      dispatch({ type: 'SETTER', key: 'username', payload: e });
+    },
+    [dispatch]
+  );
+  const onTextPasswordChange = React.useCallback(
+    (e: string) => {
+      dispatch({ type: 'SETTER', key: 'password', payload: e });
+    },
+    [dispatch]
+  );
+  const [keyboardInView, setKeyboardInView] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const showKeyboardListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardInView(true));
+    const hideKeyboardListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardInView(false));
+    return () => {
+      showKeyboardListener.remove();
+      hideKeyboardListener.remove();
+    };
+  }, []);
 
   React.useEffect(() => {
     if (state.staySignedIn) biometricSignIn();
@@ -59,6 +79,10 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   function toggleSignIn() {
     dispatch({ type: 'TOGGLE_STAY_SIGNED_IN' });
   }
+
+  const onUsernameSubmit = React.useCallback(() => {
+    passwordRef.current?.focus();
+  }, [passwordRef.current]);
 
   const validateForm = React.useCallback(
     (): Promise<void> =>
@@ -108,45 +132,37 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   );
 
   return (
-    <SignInContainer>
-      <BackButtonContainer>
-        <IconButton icon={<Icon bundle='AntDesign' name='back' />} onPress={onBackButtonPress} />
-      </BackButtonContainer>
+    <SignInContainer behavior='height'>
+      {!keyboardInView && (
+        <BackButtonContainer>
+          <IconButton icon={<Icon bundle='AntDesign' name='back' />} onPress={onBackButtonPress} />
+        </BackButtonContainer>
+      )}
       <SignInWrapper>
         <Space direction='vertical' spacing={1} justifyContent='center'>
           <Typography variant='h2' bold>
             {state.districtName}
           </Typography>
-          <Space direction='vertical' spacing={0.5}>
-            <Typography>Username</Typography>
-            <TextField
-              error={usernameError}
-              width='100%'
-              value={state.username}
-              placeholder='Username'
-              onChangeText={onTextUsernameChange}
-            />
-          </Space>
-          <Space direction='vertical' spacing={0.5}>
-            <Typography>Password</Typography>
-            <TextField
-              error={passwordError}
-              width='100%'
-              value={state.password}
-              secureTextEntry={hidePassword}
-              adornmentEnd={
-                <IconButton
-                  icon={<Icon bundle='Feather' name={hidePassword ? 'eye-off' : 'eye'} />}
-                  onPress={toggleHidePassword}
-                />
-              }
-              placeholder='Password'
-              onChangeText={onTextPasswordChange}
-            />
-          </Space>
+
+          <UsernameField
+            onUsernameSubmit={onUsernameSubmit}
+            usernameError={usernameError}
+            username={state.username}
+            onChangeText={onTextUsernameChange}
+          />
+
+          <PasswordField
+            ref={passwordRef}
+            passwordError={passwordError}
+            password={state.password}
+            hidePassword={hidePassword}
+            toggleHidePassword={toggleHidePassword}
+            onChangeText={onTextPasswordChange}
+            onSubmit={onSignIn}
+          />
           <Space spacing={1} justifyContent='flex-end' alignItems='center' direction='horizontal'>
             <Typography>Stay signed in?</Typography>
-            <Switch checked={state.staySignedIn} onChange={toggleSignIn} />
+            <Switch checked={state.staySignedIn} color='secondary' onChange={toggleSignIn} />
           </Space>
           <Button
             title={loading ? 'Logging in...' : 'Sign in'}

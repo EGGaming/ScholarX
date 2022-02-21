@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components/native';
 import { Dimensions } from 'react-native';
 
-export const SignInContainer = styled.View`
+export const SignInContainer = styled.KeyboardAvoidingView`
   width: ${Dimensions.get('window').width}px;
   height: ${Dimensions.get('window').height}px;
   display: flex;

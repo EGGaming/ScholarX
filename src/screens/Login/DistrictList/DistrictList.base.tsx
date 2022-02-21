@@ -3,13 +3,7 @@ import { Dimensions } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 export const DistrictErrorContainer = styled.View`
-  ${(props) => css`
-    padding: ${props.theme.spacing(3)};
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-  `}
+  ${(props) => css``}
 `;
 
 export const DistrictErrorImage = styled.Image.attrs((props) => {

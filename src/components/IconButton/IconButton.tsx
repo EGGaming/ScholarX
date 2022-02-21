@@ -1,6 +1,6 @@
 import Icon from '@components/Icon/Icon';
 import { useAppTheme } from '@theme/core';
-import { IconButtonBase, IconButtonBaseContainer } from '@components/IconButton/IconButton.base';
+import { IconButtonBase, IconButtonBaseContainer, IconButtonContainer } from '@components/IconButton/IconButton.base';
 import { IconButtonProps } from '@components/IconButton/IconButton.types';
 import React from 'react';
 import {
@@ -46,14 +46,16 @@ const IconButton: React.FC<
   }, [variant, theme]);
 
   return (
-    <IconButtonBase size={size} variant={variant} color={color} hexColor={hexColor} onPress={onPress} {...otherProps}>
-      <IconButtonBaseContainer size={size} variant={variant} color={color} hexColor={hexColor}>
-        {React.cloneElement(icon, {
-          size,
-          ...iconPropsColor,
-        })}
-      </IconButtonBaseContainer>
-    </IconButtonBase>
+    <IconButtonBaseContainer>
+      <IconButtonBase size={size} variant={variant} color={color} hexColor={hexColor} onPress={onPress} {...otherProps}>
+        <IconButtonContainer size={size} variant={variant} color={color} hexColor={hexColor}>
+          {React.cloneElement(icon, {
+            size,
+            ...iconPropsColor,
+          })}
+        </IconButtonContainer>
+      </IconButtonBase>
+    </IconButtonBaseContainer>
   );
 };
 

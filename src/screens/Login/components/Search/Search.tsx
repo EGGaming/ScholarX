@@ -23,24 +23,17 @@ const Search: React.FC = () => {
   }
 
   return (
-    <SearchContainer>
-      {focused || search ? (
-        <TextField
-          onBlur={onBlur}
-          autoFocus
-          onFocus={onFocus}
-          size='small'
-          value={search}
-          width='100%'
-          onChangeText={setSearch}
-          adornmentStart={<Icon bundle='Feather' name='search' />}
-          placeholder='School district name'
-          clearButton
-        />
-      ) : (
-        <Typography bold>Find your school district</Typography>
-      )}
-    </SearchContainer>
+    <TextField
+      onBlur={onBlur}
+      onFocus={onFocus}
+      size='small'
+      value={search}
+      width='100%'
+      onChangeText={setSearch}
+      adornmentStart={<Icon bundle='Feather' name='search' />}
+      placeholder='School district name'
+      clearButton
+    />
   );
 };
 

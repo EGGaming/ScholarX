@@ -205,9 +205,9 @@ const darkTheme: DefaultTheme = {
       light: '#c9ceff',
     },
     secondary: {
-      dark: '#e9d481',
+      dark: '#e9d584',
       main: '#f1e5b7',
-      light: '#f8f5e7',
+      light: '#f9f5e3',
     },
     error: {
       main: '#f44336',
@@ -225,8 +225,8 @@ const darkTheme: DefaultTheme = {
       dark: '#388e3c',
     },
     background: {
-      default: '#222',
-      paper: '#333',
+      default: '#232323',
+      paper: '#2a2a2a',
     },
     text: {
       primary: '#fff',

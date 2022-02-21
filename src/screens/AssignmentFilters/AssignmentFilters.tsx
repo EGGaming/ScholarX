@@ -2,6 +2,7 @@ import Button from '@components/Button/Button';
 import Card from '@components/Card/Card';
 import Flex from '@components/Flex/Flex';
 import Menu from '@components/Menu/Menu';
+import Scrollable from '@components/Scrollable/Scrollable';
 import Space from '@components/Space/Space';
 import Switch from '@components/Switch/Switch';
 import Typography from '@components/Typography/Typography';
@@ -37,13 +38,13 @@ const AssignmentFilters: React.FC = () => {
 
   if (filters)
     return (
-      <ScrollView>
+      <Scrollable>
         <Space direction='vertical' container spacing={1}>
           <OrderType onChange={handleOnOrderTypeChange} orderType={filters.orderType} />
           <StudentDropbox onChange={handleOnStudentDropboxChange} withDropbox={filters.withDropbox} />
           <ShowOnlyCategories selectedAssignments={filters.selectedAssignments} />
         </Space>
-      </ScrollView>
+      </Scrollable>
     );
 
   return null;

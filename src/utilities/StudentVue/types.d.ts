@@ -99,7 +99,7 @@ export interface StudentInfo {
 }
 
 export interface Schedule {
-  classes: ClassSchedule[];
+  classes?: ClassSchedule[];
   terms: SchoolTerm[];
   error: string;
   currentTerm: {
@@ -168,8 +168,24 @@ export interface StudentClass {
   grade: {
     raw: string;
     symbol: string;
+    summary?: WeighingMethodology[];
   };
   assignments: StudentClassAssignment[];
+}
+
+export interface WeighingMethodology {
+  type: string;
+  weight: {
+    percentage: {
+      current: string;
+      potential: string;
+    };
+  };
+  points: {
+    current: number;
+    max: number;
+  };
+  calculatedMark: string;
 }
 
 export interface StudentClassAssignment {
@@ -266,6 +282,18 @@ export interface GradebookXMLObject {
               CalculatedScoreString: string;
               MarkName: string;
             };
+            GradeCalculationSummary: {
+              AssignmentGradeCalc: {
+                $: {
+                  Type: string;
+                  Weight: string;
+                  Points: string;
+                  PointsPossible: string;
+                  WeightedPct: string;
+                  CalculatedMark: string;
+                };
+              }[];
+            }[];
             Assignments: {
               Assignment: {
                 $: {
@@ -328,34 +356,36 @@ export interface StudentClassScheduleXMLObject {
       $: {
         Date: string;
       };
-      SchoolInfos: {
-        SchoolInfo: {
-          $: {
-            SchoolName: string;
-            BellSchedName: string;
-          };
-          Classes: {
-            ClassInfo: {
+      SchoolInfos:
+        | {
+            SchoolInfo: {
               $: {
-                Period: string;
-                ClassName: string;
-                ClassURL: string;
-                StartTime: string;
-                EndTime: string;
-                TeacherName: string;
-                RoomName: string;
-                TeacherEmail: string;
-                EmailSubject: string;
-                StaffGU: string;
-                EndDate: string;
-                StartDate: string;
-                SectionGU: string;
-                HideClassStartEndTime: string;
+                SchoolName: string;
+                BellSchedName: string;
               };
+              Classes: {
+                ClassInfo: {
+                  $: {
+                    Period: string;
+                    ClassName: string;
+                    ClassURL: string;
+                    StartTime: string;
+                    EndTime: string;
+                    TeacherName: string;
+                    RoomName: string;
+                    TeacherEmail: string;
+                    EmailSubject: string;
+                    StaffGU: string;
+                    EndDate: string;
+                    StartDate: string;
+                    SectionGU: string;
+                    HideClassStartEndTime: string;
+                  };
+                }[];
+              }[];
             }[];
-          }[];
-        }[];
-      }[];
+          }[]
+        | string[];
     }[];
     ClassLists: {
       ClassListing: {

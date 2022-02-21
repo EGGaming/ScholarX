@@ -16,10 +16,8 @@ import Search from './components/Search/Search';
 import DistrictList from './DistrictList/DistrictList';
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
-  const [session, dispatch] = useSessionReducer();
-  const [app, dispatchApp] = useAppReducer();
-  const [focused, setFocused] = useSearchFocused();
-  const [search] = useSearch();
+  const [session] = useSessionReducer();
+  const [app] = useAppReducer();
   const initialRoute = React.useMemo(() => {
     if (app.districtUrl && app.districtName) return 'SignIn';
     return 'Welcome';
@@ -28,12 +26,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     if (session.validSession) navigation.navigate('Main');
   }, [session.validSession]);
 
-  function onPress() {
-    setFocused(true);
-  }
-
   return (
-    <LoginStack.Navigator initialRouteName={initialRoute} screenOptions={{ header: (props) => <Header {...props} /> }}>
+    <LoginStack.Navigator
+      initialRouteName={initialRoute}
+      screenOptions={{
+        header: (props) => <Header {...props} />,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}>
       <LoginStack.Screen name='Welcome' component={Welcome} options={{ headerShown: false }} />
       <LoginStack.Screen
         name='FindMySchoolDistrict'
@@ -41,18 +40,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         options={{ headerShown: false }}
       />
       <LoginStack.Screen name='SignIn' component={SignIn} options={{ headerShown: false }} />
-      <LoginStack.Screen
-        name='DistrictList'
-        component={DistrictList}
-        options={{
-          headerTitle: React.useCallback(() => <Search />, []),
-          headerRight: () => (
-            <>
-              {!focused && !search && <IconButton icon={<Icon bundle='Feather' name='search' />} onPress={onPress} />}
-            </>
-          ),
-        }}
-      />
+      <LoginStack.Screen name='DistrictList' component={DistrictList} />
     </LoginStack.Navigator>
   );
 };

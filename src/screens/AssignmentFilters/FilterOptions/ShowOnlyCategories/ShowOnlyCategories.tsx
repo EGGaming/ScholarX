@@ -4,6 +4,7 @@ import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import Menu from '@components/Menu/Menu';
+import Scrollable from '@components/Scrollable/Scrollable';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { useAssignmentFilterDispatch } from '@context/AssignmentFilterContext/AssignmentFilterContext';
@@ -30,7 +31,7 @@ const ShowOnlyCategories: React.FC<ShowOnlyCategoriesProps> = ({ selectedAssignm
         <Typography bold>Categories</Typography>
         <Button title='Category' size='small' icon={<Icon bundle='AntDesign' name='plus' />} onPress={handleOnPress} />
       </Flex>
-      <ScrollView
+      <Scrollable
         horizontal
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -47,7 +48,7 @@ const ShowOnlyCategories: React.FC<ShowOnlyCategoriesProps> = ({ selectedAssignm
             />
           ))}
         </Space>
-      </ScrollView>
+      </Scrollable>
     </Space>
   );
 };

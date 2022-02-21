@@ -37,34 +37,19 @@ const Root: React.FC = () => {
   if (!ready) return <AppLoading />;
 
   return (
-    <RootStack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name='Main' component={Main} />
-      <RootStack.Screen name='Login' component={Login} />
+    <RootStack.Navigator initialRouteName='Login' screenOptions={{ presentation: 'card' }}>
+      <RootStack.Screen name='Main' component={Main} options={{ headerShown: false }} />
+      <RootStack.Screen name='Login' component={Login} options={{ headerShown: false }} />
       <RootStack.Screen
         name='Notifications'
         component={NotificationsScreen}
         options={{
           headerShown: true,
           header: (props) => <Header {...props} />,
-          headerBackVisible: true,
           headerRight: () => <Button title='Mark all Read' onPress={markAllRead} size='small' />,
         }}
       />
-      <RootStack.Screen
-        name='Events'
-        component={EventsScreen}
-        options={{
-          headerShown: true,
-          header: (props) => <Header {...props} />,
-          headerTitle: '',
-          headerRight: () => (
-            <Space spacing={1}>
-              <IconButton icon={<Icon bundle='MaterialCommunityIcons' name='calendar-clock' />} onPress={() => {}} />
-              <IconButton icon={<Icon bundle='Feather' name='filter' />} onPress={() => {}} />
-            </Space>
-          ),
-        }}
-      />
+      <RootStack.Screen name='Events' component={EventsScreen} />
       <RootStack.Screen
         name='NotificationViewer'
         component={NotificationViewer}
@@ -72,7 +57,6 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: '',
-          headerBackVisible: true,
         }}
       />
       <RootStack.Screen
@@ -82,27 +66,9 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: '',
-          headerBackVisible: true,
         }}
       />
-      <RootStack.Screen
-        name='ClassViewer'
-        component={ClassViewer}
-        options={({ navigation }) => ({
-          headerShown: true,
-          header: (props) => <Header {...props} />,
-          headerTitle: '',
-          headerRight: (props) => (
-            <IconButton
-              icon={<Icon bundle='Feather' name='filter' />}
-              onPress={() => {
-                navigation.navigate('AssignmentFilters');
-              }}
-            />
-          ),
-          headerBackVisible: true,
-        })}
-      />
+      <RootStack.Screen name='ClassViewer' component={ClassViewer} />
       <RootStack.Screen
         name='AssignmentViewer'
         component={AssignmentViewer}
@@ -110,7 +76,6 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: '',
-          headerBackVisible: true,
         }}
       />
       <RootStack.Screen
@@ -129,7 +94,6 @@ const Root: React.FC = () => {
             />
           ),
           headerTitle: 'Filter',
-          headerBackVisible: true,
         }}
       />
       <RootStack.Screen
@@ -139,7 +103,6 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: "Today's Schedule",
-          headerBackVisible: true,
         }}
       />
       <RootStack.Screen
@@ -149,7 +112,6 @@ const Root: React.FC = () => {
           headerShown: true,
           header: (props) => <Header {...props} />,
           headerTitle: 'Add Categories to Filter',
-          headerBackVisible: true,
         }}
       />
     </RootStack.Navigator>

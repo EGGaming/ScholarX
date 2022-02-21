@@ -1,6 +1,6 @@
 import Badge from '@components/Badge/Badge';
 import Button from '@components/Button/Button';
-import { ButtonBase } from '@components/Button/Button.base';
+import { ButtonBase, NativeButtonBase } from '@components/Button/Button.base';
 import Card from '@components/Card/Card';
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
@@ -33,7 +33,7 @@ const NotificationsItem: React.FC<NotificationsItemProps> = ({ item }) => {
     navigation.navigate('NotificationViewer', { message: item, parsedDate: parsedDate.getTime() });
   }
   return (
-    <ButtonBase onPress={onMessagePress}>
+    <NativeButtonBase onPress={onMessagePress}>
       <NotificationsItemContainer read={unread}>
         <NotificationItemHeader>
           <Space spacing={1} alignItems='center'>
@@ -51,7 +51,7 @@ const NotificationsItem: React.FC<NotificationsItemProps> = ({ item }) => {
           {item.$.Content.replace(/(<[^>]*>?)/gm, '').trim()}
         </Typography>
       </NotificationsItemContainer>
-    </ButtonBase>
+    </NativeButtonBase>
   );
 };
 

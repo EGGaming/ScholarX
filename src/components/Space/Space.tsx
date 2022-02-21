@@ -13,11 +13,13 @@ const Space: React.FC<SpaceProps> = (props) => {
     grow = false,
     shrink = false,
     divider = false,
+    containerProps = {},
   } = props;
 
   return (
     <SpaceBaseContainer
       container={container}
+      containerProps={containerProps}
       grow={grow}
       shrink={shrink}
       direction={direction}
@@ -33,6 +35,7 @@ const Space: React.FC<SpaceProps> = (props) => {
                 <React.Fragment>
                   {child}
                   <SpaceBase
+                    containerProps={containerProps}
                     grow={grow}
                     shrink={shrink}
                     container={container}

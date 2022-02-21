@@ -60,48 +60,49 @@ class Storage<T extends AppStorageInterface> {
     initializer: React.Dispatch<Initializer<T[K]>>,
     options: useSyncEffectOptions = {}
   ): void {
-    const { additionalConditions = () => true, customDependencies = [] } = options;
-    const isMounted = useComponentMounted();
-    const dispatch = useStorageDispatch();
-    const dependencies = React.useMemo(() => {
-      return [obj, ...customDependencies];
-    }, [obj, customDependencies]);
-    React.useEffect(() => {
-      dispatch({ type: 'INCREMENT' });
-      (async () => {
-        const stored = await this.get(key);
-        if (stored != null) initializer({ type: 'INITIALIZE', state: stored });
-        else console.error(`Key ${key} does not exist in storage`);
-      })();
-    }, []);
-    React.useEffect(() => {
-      if (isMounted && additionalConditions()) {
-        console.log(`Updating ${key}`);
-        this.set(key, obj);
-      }
-    }, dependencies);
+    // const { additionalConditions = () => true, customDependencies = [] } = options;
+    // const isMounted = useComponentMounted();
+    // const dispatch = useStorageDispatch();
+    // const dependencies = React.useMemo(() => {
+    //   return [obj, ...customDependencies];
+    // }, [obj, customDependencies]);
+    // React.useEffect(() => {
+    //   dispatch({ type: 'INCREMENT' });
+    //   (async () => {
+    //     const stored = await this.get(key);
+    //     if (stored != null) initializer({ type: 'INITIALIZE', state: stored });
+    //     else console.error(`Key ${key} does not exist in storage`);
+    //   })();
+    // }, []);
+    // React.useEffect(() => {
+    //   if (isMounted && additionalConditions()) {
+    //     console.log(`Updating ${key}`);
+    //     this.set(key, obj);
+    //   }
+    // }, dependencies);
   }
 
   initialize(): boolean {
-    const [ready, setReady] = React.useState(false);
-    const [_] = useStudentVue();
-    const [state] = useStorage();
-    React.useEffect(() => {
-      const interval = setInterval(() => {
-        (async () => {
-          const numberOfKeys: number = await this.get('__storedKeysCount' as any);
-          if (numberOfKeys == state) {
-            setReady(true);
-            clearInterval(interval);
-          }
-        })();
-      }, 1);
-      return () => {
-        clearInterval(interval);
-      };
-    }, [state]);
+    return true;
+    // const [ready, setReady] = React.useState(false);
+    // const [_] = useStudentVue();
+    // const [state] = useStorage();
+    // React.useEffect(() => {
+    //   const interval = setInterval(() => {
+    //     (async () => {
+    //       const numberOfKeys: number = await this.get('__storedKeysCount' as any);
+    //       if (numberOfKeys == state) {
+    //         setReady(true);
+    //         clearInterval(interval);
+    //       }
+    //     })();
+    //   }, 1);
+    //   return () => {
+    //     clearInterval(interval);
+    //   };
+    // }, [state]);
 
-    return ready;
+    // return ready;
   }
 
   public Provider: React.FC = ({ children }) => {

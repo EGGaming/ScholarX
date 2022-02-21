@@ -1,13 +1,15 @@
-import { Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
+import { Platform, TouchableOpacity } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 import styled, { css } from 'styled-components/native';
 import { IconButtonProps } from './IconButton.types';
 
-export const IconButtonBaseContainer = styled.View<Required<IconButtonProps>>`
+export const IconButtonBaseContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+export const IconButtonContainer = styled.View<Required<IconButtonProps>>`
   ${(props) => css`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     ${() => {
       switch (props.size) {
         case 'large':

@@ -5,6 +5,7 @@ import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import Loader from '@components/Loader/Loader';
+import Menu from '@components/Menu/Menu';
 import Skeleton from '@components/Skeleton/Skeleton';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
@@ -50,16 +51,16 @@ const Classes: React.FC = () => {
         <Typography bold variant='h3'>
           My Classes
         </Typography>
-        <HoldItem items={menuItems ? menuItems : []} activateOn='tap'>
-          <Button
-            title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
-            size='small'
-            icon={gradebook ? <Icon bundle='Feather' name='chevron-down' /> : <Loader />}
-            disabled={!gradebook}
-            iconPlacement='right'
-            variant='outlined'
-          />
-        </HoldItem>
+        <Menu
+          items={menuItems ? menuItems : []}
+          title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
+          type='text'
+          buttonProps={{
+            disabled: !gradebook,
+            icon: gradebook ? <Icon bundle='Feather' name='chevron-down' /> : <Loader />,
+            iconPlacement: 'right',
+          }}
+        />
       </ClassesHeaderContainer>
 
       <Flex direction='column'>

@@ -15,6 +15,7 @@ import {
   StudentClassAssignment,
   StudentClassScheduleXMLObject,
   StudentInfo,
+  WeighingMethodology,
 } from './types';
 import { format } from 'date-fns';
 
@@ -203,6 +204,22 @@ class Client {
               grade: {
                 raw: course.Marks[0].Mark[0].$.CalculatedScoreRaw,
                 symbol: course.Marks[0].Mark[0].$.CalculatedScoreString,
+                summary: course.Marks[0].Mark[0].GradeCalculationSummary[0].AssignmentGradeCalc?.map(
+                  ({ $ }): WeighingMethodology => ({
+                    type: $.Type,
+                    points: {
+                      current: Number($.Points),
+                      max: Number($.PointsPossible),
+                    },
+                    weight: {
+                      percentage: {
+                        current: $.WeightedPct,
+                        potential: $.Weight,
+                      },
+                    },
+                    calculatedMark: $.CalculatedMark,
+                  })
+                ),
               },
               period: Number(course.$.Period),
               name: course.$.Title,
@@ -278,29 +295,32 @@ class Client {
             index: Number(StudentClassSchedule.$.TermIndex),
             code: Number(StudentClassSchedule.$.TermIndex) + 1,
           },
-          classes: StudentClassSchedule.TodayScheduleInfoData[0].SchoolInfos[0].SchoolInfo[0].Classes[0].ClassInfo.map(
-            ({ $: obj }) => ({
-              name:
-                StudentClassSchedule.ClassLists[0].ClassListing.find(({ $ }) => $.SectionGU === obj.SectionGU)?.$
-                  .CourseTitle ?? '',
-              period: Number(obj.Period),
-              room: obj.RoomName,
-              sectiongu: obj.SectionGU,
-              time: {
-                start: obj.StartTime,
-                end: obj.EndTime,
-              },
-              date: {
-                start: obj.StartDate,
-                end: obj.EndDate,
-              },
-              teacher: {
-                name: obj.TeacherName,
-                email: obj.TeacherEmail,
-                staffgu: obj.StaffGU,
-              },
-            })
-          ),
+          classes:
+            typeof StudentClassSchedule.TodayScheduleInfoData[0].SchoolInfos[0] !== 'string'
+              ? StudentClassSchedule.TodayScheduleInfoData[0].SchoolInfos[0].SchoolInfo[0].Classes[0].ClassInfo.map(
+                  ({ $: obj }) => ({
+                    name:
+                      StudentClassSchedule.ClassLists[0].ClassListing.find(({ $ }) => $.SectionGU === obj.SectionGU)?.$
+                        .CourseTitle ?? '',
+                    period: Number(obj.Period),
+                    room: obj.RoomName,
+                    sectiongu: obj.SectionGU,
+                    time: {
+                      start: obj.StartTime,
+                      end: obj.EndTime,
+                    },
+                    date: {
+                      start: obj.StartDate,
+                      end: obj.EndDate,
+                    },
+                    teacher: {
+                      name: obj.TeacherName,
+                      email: obj.TeacherEmail,
+                      staffgu: obj.StaffGU,
+                    },
+                  })
+                )
+              : undefined,
           terms: StudentClassSchedule.TermLists[0].TermListing.map((obj) => ({
             term: {
               name: obj.$.TermName,

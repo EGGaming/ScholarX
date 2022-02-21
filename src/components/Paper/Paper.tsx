@@ -1,25 +1,8 @@
-import { Platform } from 'react-native';
-import styled, { css } from 'styled-components/native';
-
-const Paper = styled.View`
-  ${() => {
-    switch (Platform.OS) {
-      case 'android':
-        return css`
-          elevation: 5;
-        `;
-      case 'ios':
-        return css`
-          shadow-color: #000;
-          shadow-offset: 0px 2px;
-          shadow-opacity: 0.25;
-          shadow-radius: 3.84px;
-        `;
-    }
-  }}
-  ${(props) => css`
-    background-color: ${props.theme.palette.background.paper};
-  `}
-`;
-
+import { AnimatedPaperBase, PaperBase } from '@components/Paper/Paper.base';
+import { PaperProps } from '@components/Paper/Paper.types';
+import React from 'react';
+const Paper: React.FC<PaperProps> = ({ animated = false, ...rest }) => {
+  if (animated) return <AnimatedPaperBase {...rest} />;
+  return <PaperBase {...rest} />;
+};
 export default Paper;

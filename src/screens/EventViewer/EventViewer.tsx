@@ -13,6 +13,7 @@ import Card from '@components/Card/Card';
 import Flex from '@components/Flex/Flex';
 import _ from 'lodash';
 import { useCalendar } from '@context/CalendarContext/CalendarContext';
+import Scrollable from '@components/Scrollable/Scrollable';
 
 const EventViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'EventViewer'>> = (props) => {
   const {
@@ -54,7 +55,7 @@ const EventViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'EventVie
   );
 
   return (
-    <ScrollView>
+    <Scrollable>
       <TitleContainer>
         <Typography variant='h2'>{title}</Typography>
         <Typography color='textSecondary'>{event.DayType}</Typography>
@@ -101,7 +102,7 @@ const EventViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'EventVie
           </Container>
         )}
       </Space>
-    </ScrollView>
+    </Scrollable>
   );
 };
 

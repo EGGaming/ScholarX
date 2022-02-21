@@ -5,20 +5,23 @@ import IconButton from '@components/IconButton/IconButton';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
-import { BottomTabHeaderContainer } from '@shared/@react-navigation/Header/Header.shared';
+import { BottomTabHeaderContainer, StatusBarSpace } from '@shared/@react-navigation/Header/Header.shared';
 import NotificationBell from '@shared/NotificationBell/NotificationBell';
 import { useAppTheme } from '@theme/core';
 import React from 'react';
 
 const Header: React.FC<BottomTabHeaderProps> = (props) => {
   return (
-    <BottomTabHeaderContainer>
-      <Typography bold>{props.options.tabBarLabel}</Typography>
-      <Space spacing={1} alignItems='center'>
-        <NotificationBell />
-        <Avatar />
-      </Space>
-    </BottomTabHeaderContainer>
+    <>
+      <StatusBarSpace />
+      <BottomTabHeaderContainer>
+        <Typography bold>{props.options.tabBarLabel}</Typography>
+        <Space spacing={1} alignItems='center'>
+          <NotificationBell />
+          <Avatar />
+        </Space>
+      </BottomTabHeaderContainer>
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ import Icon from '@components/Icon/Icon';
 import IconButton from '@components/IconButton/IconButton';
 import ListItem from '@components/List/ListItem';
 import Paper from '@components/Paper/Paper';
+import Scrollable from '@components/Scrollable/Scrollable';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import {
@@ -31,7 +32,7 @@ const FilterCategories: React.FC = () => {
   }
 
   return (
-    <ScrollView>
+    <Scrollable>
       <Space spacing={1} direction='vertical'>
         <Container>
           <Typography bold align='center'>
@@ -67,7 +68,7 @@ const FilterCategories: React.FC = () => {
           </Space>
         </Card>
       </Floating>
-    </ScrollView>
+    </Scrollable>
   );
 };
 
