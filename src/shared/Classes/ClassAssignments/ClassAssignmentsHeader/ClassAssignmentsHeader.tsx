@@ -32,28 +32,30 @@ const ClassAssignmentsHeader: React.FC<ClassAssignmentsHeaderProps> = (props) =>
   );
 
   return (
-    <Space spacing={2} direction='vertical' grow container>
-      <Space spacing={1} direction='vertical'>
-        <Flex grow alignItems='center' justifyContent='space-between'>
-          <Typography variant='h3'>Class</Typography>
+    <>
+      <Space spacing={2} direction='vertical' grow container>
+        <Space spacing={1} direction='vertical'>
+          <Flex grow alignItems='center' justifyContent='space-between'>
+            <Typography variant='h3'>Class</Typography>
 
-          <Menu
-            items={menuItems ? menuItems : []}
-            title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
-            type='text'
-            buttonProps={{
-              disabled: !gradebook,
-              icon: gradebook ? <Icon bundle='Feather' name='chevron-down' /> : <Loader />,
-              iconPlacement: 'right',
-            }}
-          />
-        </Flex>
-        <Typography variant='body2' color='textSecondary'>
-          {studentClass.name}
-        </Typography>
+            <Menu
+              items={menuItems ? menuItems : []}
+              title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
+              type='text'
+              buttonProps={{
+                disabled: !gradebook,
+                icon: gradebook ? <Icon bundle='Feather' name='chevron-down' /> : <Loader />,
+                iconPlacement: 'right',
+              }}
+            />
+          </Flex>
+          <Typography variant='body2' color='textSecondary'>
+            {studentClass.name}
+          </Typography>
+        </Space>
       </Space>
       {currentClass?.grade.summary && <WeightedCategories summary={currentClass.grade.summary} />}
-    </Space>
+    </>
   );
 };
 

@@ -1,6 +1,9 @@
+import Button from '@components/Button/Button';
 import Card from '@components/Card/Card';
 import Container from '@components/Container/Container';
 import Flex from '@components/Flex/Flex';
+import Icon from '@components/Icon/Icon';
+import IconButton from '@components/IconButton/IconButton';
 import Paper from '@components/Paper/Paper';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
@@ -33,10 +36,27 @@ const WeightedCategories: React.FC<WeightedCategoriesProps> = (props) => {
   const theme = useAppTheme();
   const colorOne = theme.palette.primary.main;
   const colorTwo = theme.palette.secondary.main;
+  const [hide, setHide] = React.useState<boolean>(false);
+  function handleOnPress() {
+    setHide((hide) => !hide);
+  }
   return (
     <Animated.View style={style}>
-      <Space spacing={1} direction='vertical'>
+      <Flex justifyContent='space-between' alignItems='center'>
         <Typography>Category Weighing</Typography>
+        <Button
+          title='View'
+          size='small'
+          onPress={handleOnPress}
+          icon={<Icon bundle='Feather' name='chevron-right' />}
+          iconPlacement='right'
+        />
+      </Flex>
+      {/* <Space spacing={1} direction='vertical'>
+        <Flex justifyContent='space-between'>
+          <Typography>Category Weighing</Typography>
+          <IconButton icon={<Icon bundle='Feather' name='chevron-right' />} onPress={handleOnPress} />
+        </Flex>
 
         <Paper animated style={paperStyle}>
           <View
@@ -90,7 +110,7 @@ const WeightedCategories: React.FC<WeightedCategoriesProps> = (props) => {
             </Space>
           </Flex>
         </Paper>
-      </Space>
+      </Space> */}
     </Animated.View>
   );
 };

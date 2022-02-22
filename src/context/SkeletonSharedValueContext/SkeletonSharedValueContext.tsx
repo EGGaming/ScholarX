@@ -7,7 +7,11 @@ const SkeletonSharedValueContext = React.createContext<SharedValue>({} as any);
 export const useSkeletonSharedValue = () => React.useContext(SkeletonSharedValueContext);
 
 const SkeletonSharedValueProvider: React.FC = ({ children }) => {
-  const opacity = useSharedValue(0.4);
+  const opacity = useSharedValue(0.2);
+
+  React.useEffect(() => {
+    opacity.value = withRepeat(withTiming(0.4, { duration: 1000, easing: Easing.exp }), -1, true);
+  }, []);
 
   return <SkeletonSharedValueContext.Provider value={opacity}>{children}</SkeletonSharedValueContext.Provider>;
 };

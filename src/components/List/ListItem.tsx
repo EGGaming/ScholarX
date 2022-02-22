@@ -50,49 +50,49 @@ const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent, i
     }
   }, [expand]);
 
-  if (!onPress)
+  if (onPress || expandContent)
     return (
-      <ListItemContainer style={baseStyle}>
-        <Flex direction='row' alignItems='center'>
-          <Flex shrink>{children}</Flex>
-          {expandContent && (
-            <Flex grow justifyContent='flex-end'>
-              <Animated.View style={rotationStyle}>
-                <Icon bundle='Feather' name='chevron-down' color='disabled' />
-              </Animated.View>
-            </Flex>
-          )}
-          {icon && (
-            <Flex grow justifyContent='flex-end'>
-              {icon}
-            </Flex>
-          )}
-        </Flex>
-        {expand && <Animated.View style={slideIn}>{expandContent}</Animated.View>}
-      </ListItemContainer>
+      <NativeButtonBase onPress={expandContent ? handleOnPress : onPress}>
+        <ListItemContainer style={baseStyle}>
+          <Flex direction='row' alignItems='center'>
+            <Flex shrink>{children}</Flex>
+            {expandContent && (
+              <Flex grow justifyContent='flex-end'>
+                <Animated.View style={rotationStyle}>
+                  <Icon bundle='Feather' name='chevron-down' color='disabled' />
+                </Animated.View>
+              </Flex>
+            )}
+            {icon && (
+              <Flex grow justifyContent='flex-end'>
+                {icon}
+              </Flex>
+            )}
+          </Flex>
+          {expand && <Animated.View style={slideIn}>{expandContent}</Animated.View>}
+        </ListItemContainer>
+      </NativeButtonBase>
     );
 
   return (
-    <NativeButtonBase onPress={expandContent ? handleOnPress : onPress}>
-      <ListItemContainer style={baseStyle}>
-        <Flex direction='row' alignItems='center'>
-          <Flex shrink>{children}</Flex>
-          {expandContent && (
-            <Flex grow justifyContent='flex-end'>
-              <Animated.View style={rotationStyle}>
-                <Icon bundle='Feather' name='chevron-down' color='disabled' />
-              </Animated.View>
-            </Flex>
-          )}
-          {icon && (
-            <Flex grow justifyContent='flex-end'>
-              {icon}
-            </Flex>
-          )}
-        </Flex>
-        {expand && <Animated.View style={slideIn}>{expandContent}</Animated.View>}
-      </ListItemContainer>
-    </NativeButtonBase>
+    <ListItemContainer style={baseStyle}>
+      <Flex direction='row' alignItems='center'>
+        <Flex shrink>{children}</Flex>
+        {expandContent && (
+          <Flex grow justifyContent='flex-end'>
+            <Animated.View style={rotationStyle}>
+              <Icon bundle='Feather' name='chevron-down' color='disabled' />
+            </Animated.View>
+          </Flex>
+        )}
+        {icon && (
+          <Flex grow justifyContent='flex-end'>
+            {icon}
+          </Flex>
+        )}
+      </Flex>
+      {expand && <Animated.View style={slideIn}>{expandContent}</Animated.View>}
+    </ListItemContainer>
   );
 };
 

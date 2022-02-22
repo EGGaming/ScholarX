@@ -10,45 +10,45 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
-const { style } = StyleSheet.create({
-  style: {
-    opacity: 0.4,
-  },
-});
+// const { style } = StyleSheet.create({
+//   style: {
+//     opacity: 0.4,
+//   },
+// });
 
 class Skeleton {
   public static Typography: React.FC<SkeletonTypographyProps> = ({ width, variant = 'body', align = 'flex-start' }) => {
-    // const opacity = useSkeletonSharedValue();
+    const opacity = useSkeletonSharedValue();
 
-    // const style = useAnimatedStyle(
-    //   () => ({
-    //     opacity: opacity.value,
-    //   }),
-    //   []
-    // );
+    const style = useAnimatedStyle(
+      () => ({
+        opacity: opacity.value,
+      }),
+      []
+    );
     return <SkeletonTypographyBase width={width} style={style} variant={variant} align={align} />;
   };
   public static Circle: React.FC<SkeletonCircleProps> = (props) => {
-    // const opacity = useSkeletonSharedValue();
+    const opacity = useSkeletonSharedValue();
 
-    // const style = useAnimatedStyle(
-    //   () => ({
-    //     opacity: opacity.value,
-    //   }),
-    //   []
-    // );
+    const style = useAnimatedStyle(
+      () => ({
+        opacity: opacity.value,
+      }),
+      []
+    );
 
     return <SkeletonCircleBase style={style} {...props} />;
   };
   public static Box: React.FC<SkeletonBoxProps> = (props) => {
-    // const opacity = useSkeletonSharedValue();
+    const opacity = useSkeletonSharedValue();
 
-    // const style = useAnimatedStyle(
-    //   () => ({
-    //     opacity: opacity.value,
-    //   }),
-    //   []
-    // );
+    const style = useAnimatedStyle(
+      () => ({
+        opacity: opacity.value,
+      }),
+      []
+    );
     return <SkeletonBoxBase style={style} {...props} />;
   };
 }
