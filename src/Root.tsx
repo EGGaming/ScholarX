@@ -23,6 +23,7 @@ import AssignmentFilters from '@screens/AssignmentFilters/AssignmentFilters';
 import Schedule from '@screens/Schedule/Schedule';
 import { useAssignmentFilterDispatch } from '@context/AssignmentFilterContext/AssignmentFilterContext';
 import FilterCategories from '@screens/FilterCategories/FilterCategories';
+import CategoryWeighingViewer from '@screens/CategoryWeighingViewer/CategoryWeighingViewer';
 
 const Root: React.FC = () => {
   const ready = Storage.initialize();
@@ -114,6 +115,7 @@ const Root: React.FC = () => {
           headerTitle: 'Add Categories to Filter',
         }}
       />
+      <RootStack.Screen name='CategoryWeighingViewer' component={CategoryWeighingViewer} />
     </RootStack.Navigator>
   );
 };

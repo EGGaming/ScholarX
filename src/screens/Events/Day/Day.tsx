@@ -26,8 +26,6 @@ const Day: React.FC<DayProps> = ({ date, onIndexChange = () => void 0, isSelecte
     onIndexChange(index);
   }
 
-  console.log(`rerendering day ${index}`);
-
   const isHoliday = React.useMemo(() => events.some((event) => event.DayType === 'Holiday'), [events]);
   const isMaintenance = React.useMemo(
     () => events.some((event) => event.DayType === 'Regular' && event.Title === 'System Maintenance'),

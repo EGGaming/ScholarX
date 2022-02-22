@@ -83,7 +83,9 @@ const ClassAssignments: React.FC<NativeStackScreenProps<RootStackParamList, 'Cla
   >([]);
 
   React.useEffect(() => {
-    setLoading(true);
+    return () => {
+      setLoading(true);
+    };
   }, [gradebook, filters, isFocused]);
 
   React.useEffect(() => {
@@ -135,7 +137,7 @@ const ClassAssignments: React.FC<NativeStackScreenProps<RootStackParamList, 'Cla
     });
   }, [gradebook, filters, isFocused]);
 
-  if (!isFocused || loading)
+  if (loading)
     return (
       <Animated.View style={{ paddingTop: containerPaddingTop }}>
         <Flex direction='column'>

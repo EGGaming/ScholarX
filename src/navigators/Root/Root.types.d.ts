@@ -7,6 +7,7 @@ import {
   Message,
   StudentClass,
   StudentClassAssignment,
+  WeighingMethodology,
 } from '@utilities/StudentVue/types';
 
 export type RootStackParamList = {
@@ -31,6 +32,9 @@ export type RootStackParamList = {
   AssignmentFilters: undefined;
   Schedule: undefined;
   FilterCategories: undefined;
+  CategoryWeighingViewer: {
+    summary: WeighingMethodology[];
+  };
 };
 
 export type RootStackNavigationProps = NativeStackNavigationProp<RootStackParamList>;

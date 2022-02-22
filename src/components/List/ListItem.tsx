@@ -3,15 +3,15 @@ import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
 import { ListItemContainer } from '@components/List/ListItem.base';
 import { ListItemProps } from '@components/List/ListItem.types';
+import useCardAnimation from '@utilities/useCardAnimation';
 import useComponentMounted from '@utilities/useComponentMounted';
 import React from 'react';
+import { InteractionManager } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, concat, withTiming } from 'react-native-reanimated';
 
 const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent, icon }) => {
   const rotation = useSharedValue(0);
   const expandedContentTranslationY = useSharedValue(-10);
-  const baseOpacity = useSharedValue(0);
-  const baseTranslationY = useSharedValue(-10);
   const expandedContentOpacity = useSharedValue(0);
   const rotationStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${rotation.value}deg` }],
@@ -21,20 +21,12 @@ const ListItem: React.FC<ListItemProps> = ({ children, onPress, expandContent, i
     transform: [{ translateY: expandedContentTranslationY.value }],
     opacity: expandedContentOpacity.value,
   }));
-  const baseStyle = useAnimatedStyle(() => ({
-    opacity: baseOpacity.value,
-    transform: [{ translateY: baseTranslationY.value }],
-  }));
+  const baseStyle = useCardAnimation();
   const isMounted = useComponentMounted();
   const [expand, toggle] = React.useReducer((s) => !s, false);
   const handleOnPress = React.useCallback(() => {
     toggle();
   }, [toggle]);
-
-  React.useEffect(() => {
-    baseOpacity.value = withSpring(1);
-    baseTranslationY.value = withTiming(0, { duration: 300 });
-  }, []);
 
   React.useEffect(() => {
     if (isMounted) {

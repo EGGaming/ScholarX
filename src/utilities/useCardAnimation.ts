@@ -1,5 +1,6 @@
 import useComponentMounted from '@utilities/useComponentMounted';
 import React from 'react';
+import { InteractionManager } from 'react-native';
 import { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 export default function useCardAnimation() {

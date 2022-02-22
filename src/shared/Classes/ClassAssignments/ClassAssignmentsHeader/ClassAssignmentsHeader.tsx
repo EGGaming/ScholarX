@@ -53,8 +53,8 @@ const ClassAssignmentsHeader: React.FC<ClassAssignmentsHeaderProps> = (props) =>
             {studentClass.name}
           </Typography>
         </Space>
+        {currentClass?.grade.summary && <WeightedCategories summary={currentClass.grade.summary} />}
       </Space>
-      {currentClass?.grade.summary && <WeightedCategories summary={currentClass.grade.summary} />}
     </>
   );
 };

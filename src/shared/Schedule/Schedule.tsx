@@ -19,94 +19,92 @@ import ScheduleItemSkeleton from './ScheduleItemSkeleton';
 const Schedule: React.FC = () => {
   const navigation = useRootNavigation();
   const [schedule] = useClassSchedule();
-  if (schedule != null && schedule.classes != null) {
-    const [gradebook] = useGradebook();
-    const [time, setTime] = React.useState<Date>(new Date());
-    const [nextClass, setNextClass] = React.useState<ClassSchedule>();
-    React.useEffect(() => {
-      const interval = setInterval(() => setTime(new Date()), 1000);
-      return () => {
-        clearInterval(interval);
-      };
-    }, []);
-    function handleGoToSchedule() {
-      navigation.navigate('Schedule');
+  const [gradebook] = useGradebook();
+  const [time, setTime] = React.useState<Date>(new Date());
+  const [nextClass, setNextClass] = React.useState<ClassSchedule>();
+  React.useEffect(() => {
+    const interval = setInterval(() => setTime(new Date()), 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  function handleGoToSchedule() {
+    navigation.navigate('Schedule');
+  }
+  const occuringClass = React.useMemo(() => {
+    if (schedule == null) return null;
+
+    const current = schedule.classes!.filter((classSchedule) =>
+      isWithinInterval(Date.now(), {
+        start: new Date(classSchedule.date.start),
+        end: new Date(classSchedule.date.end),
+      })
+    )[0];
+    setNextClass(schedule.classes![schedule.classes!.indexOf(current) + 1]);
+    return current;
+  }, [schedule, setNextClass]);
+
+  const isFinishedWithSchool = React.useMemo(() => {
+    if (isWeekend(Date.now())) return true;
+    if (schedule == null) return false;
+    for (const classSchedule of schedule.classes!) {
+      if (isPast(new Date(classSchedule.date.end))) return true;
     }
-    const occuringClass = React.useMemo(() => {
-      if (schedule == null) return null;
+    return false;
+  }, [schedule]);
 
-      const current = schedule.classes!.filter((classSchedule) =>
-        isWithinInterval(Date.now(), {
-          start: new Date(classSchedule.date.start),
-          end: new Date(classSchedule.date.end),
-        })
-      )[0];
-      setNextClass(schedule.classes![schedule.classes!.indexOf(current) + 1]);
-      return current;
-    }, [schedule, setNextClass]);
-
-    const isFinishedWithSchool = React.useMemo(() => {
-      if (isWeekend(Date.now())) return true;
-      if (schedule == null) return false;
-      for (const classSchedule of schedule.classes!) {
-        if (isPast(new Date(classSchedule.date.end))) return true;
-      }
-      return false;
-    }, [schedule]);
-
-    return (
-      <Flex direction='column'>
-        <Flex container containerProps={{ header: true }} justifyContent='space-between' alignItems='center'>
-          <Typography bold variant='h3'>
-            {!occuringClass ? 'Upcoming class' : 'Ongoing class'}
+  return (
+    <Flex direction='column'>
+      <Flex container containerProps={{ header: true }} justifyContent='space-between' alignItems='center'>
+        <Typography bold variant='h3'>
+          {!occuringClass ? 'Upcoming class' : 'Ongoing class'}
+        </Typography>
+        <Button
+          size='small'
+          title='Schedule'
+          iconPlacement='right'
+          onPress={handleGoToSchedule}
+          icon={<Icon bundle='Feather' name='chevron-right' />}
+        />
+      </Flex>
+      {schedule && occuringClass && schedule.classes && schedule.classes.indexOf(occuringClass) !== -1 && (
+        <Container header>
+          <Typography variant='body2' color='textSecondary'>
+            {formatDuration(intervalToDuration({ start: time, end: new Date(occuringClass.date.end) }))} left
           </Typography>
-          <Button
-            size='small'
-            title='Schedule'
-            iconPlacement='right'
-            onPress={handleGoToSchedule}
-            icon={<Icon bundle='Feather' name='chevron-right' />}
-          />
-        </Flex>
-        {schedule && occuringClass && schedule.classes.indexOf(occuringClass) !== -1 && (
+        </Container>
+      )}
+      {gradebook ? (
+        occuringClass && schedule && schedule.classes ? (
+          <Container>
+            <ScheduleItem
+              key={occuringClass.sectiongu}
+              classSchedule={occuringClass}
+              class={gradebook.classes[schedule.classes.indexOf(occuringClass)]}
+            />
+          </Container>
+        ) : isFinishedWithSchool ? (
           <Container header>
             <Typography variant='body2' color='textSecondary'>
-              {formatDuration(intervalToDuration({ start: time, end: new Date(occuringClass.date.end) }))} left
+              There are no more classes for today
             </Typography>
           </Container>
-        )}
-        {gradebook ? (
-          occuringClass ? (
-            <Container>
-              <ScheduleItem
-                key={occuringClass.sectiongu}
-                classSchedule={occuringClass}
-                class={gradebook.classes[schedule!.classes.indexOf(occuringClass)]}
-              />
-            </Container>
-          ) : isFinishedWithSchool ? (
-            <Container header>
-              <Typography variant='body2' color='textSecondary'>
-                There are no more classes for today
-              </Typography>
-            </Container>
-          ) : nextClass ? (
-            <Container>
-              <ScheduleItem
-                key={nextClass.sectiongu}
-                classSchedule={nextClass}
-                class={gradebook.classes[schedule!.classes.indexOf(nextClass)]}
-              />
-            </Container>
-          ) : null
-        ) : (
+        ) : nextClass && schedule && schedule.classes ? (
           <Container>
-            <ScheduleItemSkeleton />
+            <ScheduleItem
+              key={nextClass.sectiongu}
+              classSchedule={nextClass}
+              class={gradebook.classes[schedule.classes.indexOf(nextClass)]}
+            />
           </Container>
-        )}
-      </Flex>
-    );
-  }
+        ) : null
+      ) : (
+        <Container>
+          <ScheduleItemSkeleton />
+        </Container>
+      )}
+    </Flex>
+  );
 
   return (
     <Flex container direction='column' grow containerProps={{ header: true }}>

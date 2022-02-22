@@ -7,6 +7,7 @@ import IconButton from '@components/IconButton/IconButton';
 import Paper from '@components/Paper/Paper';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
+import { useRootNavigation } from '@navigators/Root/Root';
 import { WeightedCategoriesProps } from '@shared/Classes/ClassAssignments/WeightedCategories/WeightedCategories.types';
 import { useAppTheme } from '@theme/core';
 import _ from 'lodash';
@@ -17,6 +18,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } fr
 
 const WeightedCategories: React.FC<WeightedCategoriesProps> = (props) => {
   const { summary } = props;
+  const navigation = useRootNavigation();
   const opacity = useSharedValue(0);
   const yOffset = useSharedValue(-10);
   React.useEffect(() => {
@@ -27,18 +29,9 @@ const WeightedCategories: React.FC<WeightedCategoriesProps> = (props) => {
     opacity: opacity.value,
     transform: [{ translateY: yOffset.value }],
   }));
-  const paperStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-    transform: [{ translateY: yOffset.value }],
-    borderRadius: 24,
-  }));
-  const sortedSummary = _.sortBy(summary, [(e) => parseFloat(e.weight.percentage.potential)]);
-  const theme = useAppTheme();
-  const colorOne = theme.palette.primary.main;
-  const colorTwo = theme.palette.secondary.main;
-  const [hide, setHide] = React.useState<boolean>(false);
+
   function handleOnPress() {
-    setHide((hide) => !hide);
+    navigation.navigate('CategoryWeighingViewer', { summary });
   }
   return (
     <Animated.View style={style}>
