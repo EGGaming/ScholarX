@@ -56,30 +56,32 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
           <Field title='Due Date' text={format(Date.parse(assignment.date.dueDate), 'd MMMM, yyyy')} />
         </Space>
 
-        {assignment.description ? (
-          <Card>
-            <Typography bold>Description</Typography>
-            <Typography color='textSecondary' variant='body2'>
-              {assignment.description}
-            </Typography>
-          </Card>
-        ) : undefined}
-        {assignment.notes ? (
-          <Card>
-            <Typography bold>Notes</Typography>
-            <Typography color='textSecondary' variant='body2'>
-              {assignment.notes}
-            </Typography>
-          </Card>
-        ) : undefined}
-        {assignment.hasDropBox ? (
-          <Space container spacing={1} direction='vertical'>
-            <Typography variant='h3'>Dropbox</Typography>
-            <Space spacing={1}>
-              <Button title='Upload file' icon={<Icon bundle='Feather' name='link' />} />
+        <Container>
+          {assignment.description ? (
+            <Card>
+              <Typography bold>Description</Typography>
+              <Typography color='textSecondary' variant='body2'>
+                {assignment.description}
+              </Typography>
+            </Card>
+          ) : undefined}
+          {assignment.notes ? (
+            <Card>
+              <Typography bold>Notes</Typography>
+              <Typography color='textSecondary' variant='body2'>
+                {assignment.notes}
+              </Typography>
+            </Card>
+          ) : undefined}
+          {assignment.hasDropBox ? (
+            <Space spacing={1} direction='vertical'>
+              <Typography variant='h3'>Dropbox</Typography>
+              <Space spacing={1}>
+                <Button title='Upload file' icon={<Icon bundle='Feather' name='link' />} />
+              </Space>
             </Space>
-          </Space>
-        ) : undefined}
+          ) : undefined}
+        </Container>
       </Flex>
     </Scrollable>
   );

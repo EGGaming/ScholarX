@@ -5,6 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import ClassAssignments from '@shared/Classes/ClassAssignments/ClassAssignments';
 
 import React from 'react';
+import { SafeAreaView } from 'react-native';
 
 const ClassViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'ClassViewer'>> = (props) => {
   const { class: classInfo } = props.route.params;
@@ -15,6 +16,10 @@ const ClassViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'ClassVie
     dispatch({ type: 'IS_VIEWING_CLASS', class: classInfo });
     setStudentClass(classInfo);
   }, []);
-  return <ClassAssignments {...props} />;
+  return (
+    <SafeAreaView>
+      <ClassAssignments {...props} />
+    </SafeAreaView>
+  );
 };
 export default ClassViewer;

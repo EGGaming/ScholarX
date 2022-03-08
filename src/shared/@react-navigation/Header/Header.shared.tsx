@@ -1,6 +1,8 @@
 import Paper from '@components/Paper/Paper';
 import Space from '@components/Space/Space';
-import { Dimensions, StatusBar } from 'react-native';
+import isIphoneWithNotch from '@utilities/isIphoneWithNotch';
+import { Dimensions, Platform, StatusBar } from 'react-native';
+import { getStatusBarHeight, isIphoneX } from 'react-native-iphone-x-helper';
 import Animated from 'react-native-reanimated';
 import styled, { css } from 'styled-components/native';
 
@@ -10,7 +12,15 @@ export const BottomTabHeaderContainer = styled.View`
     align-items: center;
     justify-content: space-between;
     background-color: ${props.theme.palette.background.paper};
-    padding: ${props.theme.spacing(0.5, 3)};
+    ${() => {
+      if (isIphoneWithNotch())
+        return css`
+          padding: ${getStatusBarHeight() + 8}px ${props.theme.spacing(3, 0.5, 3)};
+        `;
+      return css`
+        padding: ${props.theme.spacing(0.5, 3)};
+      `;
+    }}
     border-bottom-color: ${props.theme.palette.divider};
     border-bottom-width: 1px;
   `}
@@ -31,6 +41,14 @@ export const HeaderContainer = styled.View`
     justify-content: space-between;
     align-items: center;
     background-color: ${props.theme.palette.background.default};
-    padding: ${props.theme.spacing(1.5, 2)};
+    ${() => {
+      if (isIphoneWithNotch())
+        return css`
+          padding: ${getStatusBarHeight() + 20}px ${props.theme.spacing(2, 1.5, 2)};
+        `;
+      return css`
+        padding: ${props.theme.spacing(1.5, 2)};
+      `;
+    }}
   `}
 `;

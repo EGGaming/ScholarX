@@ -23,8 +23,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     return 'Welcome';
   }, [app.districtName, app.districtUrl]);
   React.useEffect(() => {
-    if (session.validSession) navigation.navigate('Main');
-  }, [session.validSession]);
+    if (session.loggedIn) navigation.navigate('Main');
+  }, [session.loggedIn]);
 
   return (
     <LoginStack.Navigator

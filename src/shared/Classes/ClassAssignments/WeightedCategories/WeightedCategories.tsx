@@ -12,15 +12,17 @@ import { WeightedCategoriesProps } from '@shared/Classes/ClassAssignments/Weight
 import { useAppTheme } from '@theme/core';
 import _ from 'lodash';
 import React from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, InteractionManager, View } from 'react-native';
 import { BarChart, PieChart, StackedBarChart } from 'react-native-chart-kit';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 const WeightedCategories: React.FC<WeightedCategoriesProps> = (props) => {
   const { summary } = props;
   const navigation = useRootNavigation();
+
   const opacity = useSharedValue(0);
   const yOffset = useSharedValue(-10);
+
   React.useEffect(() => {
     opacity.value = withTiming(1, { duration: 400 });
     yOffset.value = withTiming(0, { duration: 400 });
@@ -33,6 +35,7 @@ const WeightedCategories: React.FC<WeightedCategoriesProps> = (props) => {
   function handleOnPress() {
     navigation.navigate('CategoryWeighingViewer', { summary });
   }
+
   return (
     <Animated.View style={style}>
       <Flex justifyContent='space-between' alignItems='center'>

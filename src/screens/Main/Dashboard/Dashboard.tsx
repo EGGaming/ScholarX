@@ -4,6 +4,7 @@ import Icon from '@components/Icon/Icon';
 import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { useSessionReducer } from '@context/SessionContext/SessionContext';
+import { useStudentInfo } from '@context/StudentInfoContext/StudentInfoContext';
 import Classes from '@shared/Classes/Classes';
 import Events from '@shared/Events/Events';
 import Schedule from '@shared/Schedule/Schedule';
@@ -13,25 +14,29 @@ import styled from 'styled-components/native';
 
 const Dashboard: React.FC = () => {
   const [session] = useSessionReducer();
-
+  const [studentInfo] = useStudentInfo();
   return (
     <Container>
-      {session.validSession && (
-        <Flex container direction='column'>
-          <Space spacing={0.5} alignItems='center'>
-            <Typography color='textSecondary'>Hello, {session.nickname ? session.nickname : session.name}</Typography>
-            <Typography>👋</Typography>
+      {studentInfo && (
+        <>
+          <Flex container direction='column'>
+            <Space spacing={0.5} alignItems='center'>
+              <Typography color='textSecondary'>
+                Hello, {studentInfo.student.nickname ? studentInfo.student.nickname : studentInfo.student.name}
+              </Typography>
+              <Typography>👋</Typography>
+            </Space>
+            <Typography variant='h2' bold>
+              Welcome back
+            </Typography>
+          </Flex>
+          <Space spacing={2} direction='vertical'>
+            {/* <Classes />
+            <Schedule />
+            <Events /> */}
           </Space>
-          <Typography variant='h2' bold>
-            Welcome back
-          </Typography>
-        </Flex>
+        </>
       )}
-      <Space spacing={2} direction='vertical'>
-        <Classes />
-        <Schedule />
-        <Events />
-      </Space>
     </Container>
   );
 };

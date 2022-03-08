@@ -6,6 +6,7 @@ import React from 'react';
 import Icon from '@components/Icon/Icon';
 import { PasswordFieldProps } from '@shared/PasswordField/PasswordField.types';
 import { TextInput } from 'react-native';
+import isViewport from '@utilities/isViewport';
 
 const PasswordField = React.forwardRef((props: PasswordFieldProps, ref) => {
   const { passwordError, password, hidePassword, toggleHidePassword, onChangeText, onSubmit } = props;
@@ -14,6 +15,7 @@ const PasswordField = React.forwardRef((props: PasswordFieldProps, ref) => {
       <Typography>Password</Typography>
       <TextField
         ref={ref}
+        size={isViewport('xs') ? 'small' : 'medium'}
         error={passwordError}
         width='100%'
         value={password}

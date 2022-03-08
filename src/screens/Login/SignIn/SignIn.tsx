@@ -7,29 +7,32 @@ import Switch from '@components/Switch/Switch';
 import TextField from '@components/TextField/TextField';
 import Typography from '@components/Typography/Typography';
 import { useAppReducer } from '@context/AppContext/AppContext';
-import { useSessionReducer } from '@context/SessionContext/SessionContext';
+import { useSessionDispatch, useSessionReducer } from '@context/SessionContext/SessionContext';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { BackButtonContainer, SignInContainer, SignInWrapper } from '@screens/Login/SignIn/SignIn.shared';
 import { SignInProps } from '@screens/Login/SignIn/SignIn.types';
-import StudentVue from '@utilities/StudentVue';
 import React from 'react';
+import StudentVue, { RequestException } from 'studentvue';
+
 import * as LocalAuthentication from 'expo-local-authentication';
 import Flex from '@components/Flex/Flex';
-import { Keyboard, TextInput } from 'react-native';
+import { Keyboard, TextInput, TouchableWithoutFeedback } from 'react-native';
 import PasswordField from '@shared/PasswordField/PasswordField';
 import UsernameField from '@shared/UsernameField/UsernameField';
+import { useSetStudentInfo } from '@context/StudentInfoContext/StudentInfoContext';
 
 const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const [state, dispatch] = useAppReducer();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [session, dispatchSession] = useSessionReducer();
+  const dispatchSession = useSessionDispatch();
   const [hidePassword, toggleHidePassword] = React.useReducer((s) => !s, true);
-  const [error, setError] = React.useState<string>('');
+  const [error, setError] = React.useState<RequestException | null>(null);
   const [passwordError, setPasswordError] = React.useState<string>('');
   const [usernameError, setUsernameError] = React.useState<string>('');
   const [client, setClient] = useStudentVue();
   const passwordRef = React.useRef<TextInput>(null);
+  const setStudentInfo = useSetStudentInfo();
   const onTextUsernameChange = React.useCallback(
     (e: string) => {
       dispatch({ type: 'SETTER', key: 'username', payload: e });
@@ -58,7 +61,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
     return () => {
       setPasswordError('');
       setUsernameError('');
-      setError('');
+      setError(null);
       if (client == null) dispatch({ type: 'CLEAR_DISTRICT' });
     };
   }, []);
@@ -108,11 +111,16 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
       await validateForm();
       try {
         setLoading(true);
-        const [client, studentInfo] = await StudentVue.login(state.districtUrl, state.username, state.password);
+        const client = await StudentVue.login(state.districtUrl, {
+          username: state.username,
+          password: state.password,
+        });
+        const studentInfo = await client.studentInfo();
+        setStudentInfo(studentInfo);
         setClient(client);
-        dispatchSession({ type: 'LOGIN', user: studentInfo });
+        dispatchSession({ type: 'LOGIN' });
       } catch (e) {
-        setError(`${e}`.substring(14));
+        setError(e as RequestException);
       } finally {
         setLoading(false);
       }
@@ -132,54 +140,56 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   );
 
   return (
-    <SignInContainer behavior='height'>
-      {!keyboardInView && (
-        <BackButtonContainer>
-          <IconButton icon={<Icon bundle='AntDesign' name='back' />} onPress={onBackButtonPress} />
-        </BackButtonContainer>
-      )}
-      <SignInWrapper>
-        <Space direction='vertical' spacing={1} justifyContent='center'>
-          <Typography variant='h2' bold>
-            {state.districtName}
-          </Typography>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <SignInContainer behavior='height'>
+        {!keyboardInView && (
+          <BackButtonContainer>
+            <IconButton icon={<Icon bundle='AntDesign' name='back' />} onPress={onBackButtonPress} />
+          </BackButtonContainer>
+        )}
+        <SignInWrapper>
+          <Space direction='vertical' spacing={1} justifyContent='center'>
+            <Typography variant='h2' bold>
+              {state.districtName}
+            </Typography>
 
-          <UsernameField
-            onUsernameSubmit={onUsernameSubmit}
-            usernameError={usernameError}
-            username={state.username}
-            onChangeText={onTextUsernameChange}
-          />
+            <UsernameField
+              onUsernameSubmit={onUsernameSubmit}
+              usernameError={usernameError}
+              username={state.username}
+              onChangeText={onTextUsernameChange}
+            />
 
-          <PasswordField
-            ref={passwordRef}
-            passwordError={passwordError}
-            password={state.password}
-            hidePassword={hidePassword}
-            toggleHidePassword={toggleHidePassword}
-            onChangeText={onTextPasswordChange}
-            onSubmit={onSignIn}
-          />
-          <Space spacing={1} justifyContent='flex-end' alignItems='center' direction='horizontal'>
-            <Typography>Stay signed in?</Typography>
-            <Switch checked={state.staySignedIn} color='secondary' onChange={toggleSignIn} />
+            <PasswordField
+              ref={passwordRef}
+              passwordError={passwordError}
+              password={state.password}
+              hidePassword={hidePassword}
+              toggleHidePassword={toggleHidePassword}
+              onChangeText={onTextPasswordChange}
+              onSubmit={onSignIn}
+            />
+            <Space spacing={1} justifyContent='flex-end' alignItems='center' direction='horizontal'>
+              <Typography>Stay signed in?</Typography>
+              <Switch checked={state.staySignedIn} color='secondary' onChange={toggleSignIn} />
+            </Space>
+            <Button
+              title={loading ? 'Logging in...' : 'Sign in'}
+              onPress={onSignIn}
+              textCentered
+              variant='contained'
+              disabled={loading}
+              icon={loading && <Loading />}
+            />
+            {error && (
+              <Flex grow justifyContent='center'>
+                <Typography color='error'>Error: {error.message}</Typography>
+              </Flex>
+            )}
           </Space>
-          <Button
-            title={loading ? 'Logging in...' : 'Sign in'}
-            onPress={onSignIn}
-            textCentered
-            variant='contained'
-            disabled={loading}
-            icon={loading && <Loading />}
-          />
-          {error && (
-            <Flex grow justifyContent='center'>
-              <Typography color='error'>{error}</Typography>
-            </Flex>
-          )}
-        </Space>
-      </SignInWrapper>
-    </SignInContainer>
+        </SignInWrapper>
+      </SignInContainer>
+    </TouchableWithoutFeedback>
   );
 };
 

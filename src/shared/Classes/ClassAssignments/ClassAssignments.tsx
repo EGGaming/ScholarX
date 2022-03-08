@@ -8,7 +8,7 @@ import { KeyExtractor } from '@utilities/TypeUtilities';
 import React from 'react';
 import { format } from 'date-fns';
 import _ from 'lodash';
-import { Dimensions, SectionList, SectionListData } from 'react-native';
+import { Dimensions, SafeAreaView, SectionList, SectionListData } from 'react-native';
 import RenderClassSection from '@shared/Classes/ClassSection/ClassSection';
 import {
   useAssignmentFilter,

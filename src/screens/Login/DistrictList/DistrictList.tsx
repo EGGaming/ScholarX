@@ -24,13 +24,14 @@ import useDistrictListReducer from '@screens/Login/DistrictList/reducer/District
 import Header from '@shared/@react-navigation/Header';
 import { RenderSchoolDistrictItem } from '@shared/SchoolDistricts/SchoolDistricts.utils';
 import { useAppTheme } from '@theme/core';
-import StudentVue from '@utilities/StudentVue';
-import { DistrictInfo } from '@utilities/StudentVue/types';
+// import StudentVue from '@utilities/StudentVue';
+import StudentVue from 'studentvue';
 import { KeyExtractor } from '@utilities/TypeUtilities';
 import React from 'react';
 import { FlatList, Animated } from 'react-native';
 import { useCollapsibleHeader, UseCollapsibleOptions } from 'react-navigation-collapsible';
-const keyExtractor: KeyExtractor<DistrictInfo> = (item) => item.PvueURL;
+import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces';
+const keyExtractor: KeyExtractor<SchoolDistrict> = (item) => item.parentVueUrl;
 
 const stickyHeaderHeight = 60;
 const DistrictList: React.FC<NativeStackScreenProps<LoginStackParamList, 'DistrictList'>> = ({
@@ -40,7 +41,7 @@ const DistrictList: React.FC<NativeStackScreenProps<LoginStackParamList, 'Distri
 }) => {
   const [search, setSearch] = useSearch();
   const [focused, setFocused] = useSearchFocused();
-  const [districts, setDistricts] = React.useState<DistrictInfo[]>([]);
+  const [districts, setDistricts] = React.useState<SchoolDistrict[]>([]);
   const [state, dispatch] = useDistrictListReducer();
   const theme = useAppTheme();
   const options: UseCollapsibleOptions = {
@@ -72,7 +73,7 @@ const DistrictList: React.FC<NativeStackScreenProps<LoginStackParamList, 'Distri
 
   const fetchDistrictsFromAPI = React.useCallback(() => {
     if (!state.loading) dispatch({ type: 'RESET_STATE' });
-    StudentVue.districts(zipCode)
+    StudentVue.findDistricts(zipCode)
       .then(setDistricts)
       .catch((err) => dispatch({ type: 'ERROR', error: err }))
       .finally(() => dispatch({ type: 'STOP_LOADING' }));
@@ -87,7 +88,7 @@ const DistrictList: React.FC<NativeStackScreenProps<LoginStackParamList, 'Distri
 
   const filtered = React.useMemo(() => {
     if (search.length === 0) return districts;
-    return districts.filter((district) => district.Name.toLowerCase().includes(search.toLowerCase().trim()));
+    return districts.filter((district) => district.name.toLowerCase().includes(search.toLowerCase().trim()));
   }, [districts, search]);
 
   if (state.error)

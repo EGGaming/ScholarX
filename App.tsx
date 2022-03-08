@@ -23,6 +23,7 @@ import AssignmentFilterProvider from '@context/AssignmentFilterContext/Assignmen
 import ViewingClassProvider from '@context/ViewingClassContext/ViewingClassContext';
 import { PortalProvider, PortalHost } from '@gorhom/portal';
 import ClassViewerProvider from '@context/ClassViewerContext/ClassViewerContext';
+import StudentInfoProvider from '@context/StudentInfoContext/StudentInfoContext';
 
 export default function App() {
   const theme = useAppTheme();
@@ -38,27 +39,29 @@ export default function App() {
                   <GradebookProvider>
                     <AssignmentFilterProvider>
                       <SearchDistrictFocusedProvider>
-                        <SearchDistrictProvider>
-                          <NotificationContextProvider>
-                            <SessionContextProvider>
-                              <SkeletonSharedValueProvider>
-                                <ClassViewerProvider>
-                                  <AppContextProvider>
-                                    <StatusBar />
-                                    <NavigationContainer theme={navigationTheme}>
-                                      <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
-                                        <PortalProvider>
-                                          <Root />
-                                          <PortalHost name='Root' />
-                                        </PortalProvider>
-                                      </HoldMenuProvider>
-                                    </NavigationContainer>
-                                  </AppContextProvider>
-                                </ClassViewerProvider>
-                              </SkeletonSharedValueProvider>
-                            </SessionContextProvider>
-                          </NotificationContextProvider>
-                        </SearchDistrictProvider>
+                        <StudentInfoProvider>
+                          <SearchDistrictProvider>
+                            <NotificationContextProvider>
+                              <SessionContextProvider>
+                                <SkeletonSharedValueProvider>
+                                  <ClassViewerProvider>
+                                    <AppContextProvider>
+                                      <StatusBar translucent />
+                                      <NavigationContainer theme={navigationTheme}>
+                                        <HoldMenuProvider theme={theme.mode as any} iconComponent={FeatherIcon}>
+                                          <PortalProvider>
+                                            <Root />
+                                            <PortalHost name='Root' />
+                                          </PortalProvider>
+                                        </HoldMenuProvider>
+                                      </NavigationContainer>
+                                    </AppContextProvider>
+                                  </ClassViewerProvider>
+                                </SkeletonSharedValueProvider>
+                              </SessionContextProvider>
+                            </NotificationContextProvider>
+                          </SearchDistrictProvider>
+                        </StudentInfoProvider>
                       </SearchDistrictFocusedProvider>
                     </AssignmentFilterProvider>
                   </GradebookProvider>

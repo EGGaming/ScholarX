@@ -70,7 +70,7 @@ export const TextFieldBase = styled.TextInput<TextFieldAccessoryProps>`
         `;
       case 'small':
         return css`
-          padding: ${props.theme.spacing(1, props.adornmentEnd ? 5 : 1, 1, props.adornmentStart ? 5 : 1)};
+          padding: ${props.theme.spacing(1.5, props.adornmentEnd ? 5 : 1.5, 1.5, props.adornmentStart ? 5 : 1.5)};
           background-color: ${props.theme.palette.background.default};
           color: ${props.theme.palette.text.primary};
           border-radius: ${props.theme.borderRadius}px;

@@ -14,7 +14,6 @@ import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClient
 import EventViewer from '@screens/EventViewer/EventViewer';
 import { useNotificationDispatch, useNotificationReducer } from '@context/NotificationContext/NotificationContext';
 import Icon from '@components/Icon/Icon';
-import { Status } from '@utilities/StudentVue';
 import EventsScreen from '@screens/Events/Events';
 import Space from '@components/Space/Space';
 import ClassViewer from '@screens/ClassViewer/ClassViewer';

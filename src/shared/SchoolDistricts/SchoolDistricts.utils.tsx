@@ -1,8 +1,8 @@
 import SchoolDistrictItem from '@shared/SchoolDistricts/SchoolDistrictItem/SchoolDistrictItem';
-import { DistrictInfo } from '@utilities/StudentVue/types';
 import React from 'react';
 import { ListRenderItem } from 'react-native';
+import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces';
 
-export const RenderSchoolDistrictItem: ListRenderItem<DistrictInfo> = (props) => {
+export const RenderSchoolDistrictItem: ListRenderItem<SchoolDistrict> = (props) => {
   return <SchoolDistrictItem item={props.item} index={props.index} />;
 };
