@@ -1,5 +1,5 @@
 import { Initializer } from '@context/helpers';
-import { Message } from '@utilities/StudentVue/types';
+import { Message } from 'studentvue';
 
 export interface NotificationContextState {
   unreadNotifications: Message[];

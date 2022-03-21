@@ -3,5 +3,5 @@ export interface AvatarBaseProps extends Required<AvatarProps> {
 }
 
 export interface AvatarProps {
-  size?: 'regular' | 'background';
+  size?: 'small' | 'large' | 'medium';
 }

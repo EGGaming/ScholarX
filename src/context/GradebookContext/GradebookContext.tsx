@@ -1,7 +1,5 @@
 import { UseState } from '@context/helpers';
-import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
-import { Gradebook } from '@utilities/StudentVue/types';
-import useStateInitializer from '@utilities/useStateInitializer';
+import { Gradebook } from 'studentvue';
 import React from 'react';
 
 const GradebookContext = React.createContext<UseState<Gradebook | undefined>>({} as any);

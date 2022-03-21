@@ -100,8 +100,9 @@ const reducer: Reducer<AssignmentFilterContextState, AssignmentFilterContextActi
     case 'IS_VIEWING_CLASS':
       return {
         ...state,
-        currentlyViewingClass: action.class.name,
-        assignmentCategories: _.uniq(action.class.assignments.map((assignment) => assignment.type)) ?? [],
+        currentlyViewingClass: action.class.title,
+        assignmentCategories:
+          _.uniq(action.class.marks.flatMap((mark) => mark.assignments).map((assignment) => assignment.type)) ?? [],
       };
     case 'INITIALIZE_CLASS_FILTER':
       return {
@@ -143,8 +144,8 @@ const AssignmentFilterProvider: React.FC = ({ children }) => {
   const [gradebook] = useGradebook();
 
   React.useEffect(() => {
-    gradebook?.classes.forEach((studentClass) => {
-      dispatch({ type: 'INITIALIZE_CLASS_FILTER', className: studentClass.name });
+    gradebook?.courses.forEach((studentClass) => {
+      dispatch({ type: 'INITIALIZE_CLASS_FILTER', className: studentClass.title });
     });
   }, [gradebook]);
 

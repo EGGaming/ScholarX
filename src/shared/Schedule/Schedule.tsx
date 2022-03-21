@@ -9,10 +9,10 @@ import Typography from '@components/Typography/Typography';
 import { useClassSchedule } from '@context/ClassScheduleContext/ClassScheduleContext';
 import { useGradebook } from '@context/GradebookContext/GradebookContext';
 import { useRootNavigation } from '@navigators/Root/Root';
-import { ClassSchedule, StudentClass } from '@utilities/StudentVue/types';
 import { format, formatDuration, intervalToDuration, isPast, isWeekend, isWithinInterval } from 'date-fns';
 import React from 'react';
 import { ScrollView } from 'react-native';
+import { ClassScheduleInfo } from 'studentvue/StudentVue/Client/Client.interfaces';
 import ScheduleItem from './ScheduleItem/ScheduleItem';
 import ScheduleItemSkeleton from './ScheduleItemSkeleton';
 
@@ -21,7 +21,7 @@ const Schedule: React.FC = () => {
   const [schedule] = useClassSchedule();
   const [gradebook] = useGradebook();
   const [time, setTime] = React.useState<Date>(new Date());
-  const [nextClass, setNextClass] = React.useState<ClassSchedule>();
+  const [nextClass, setNextClass] = React.useState<ClassScheduleInfo>();
   React.useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
     return () => {
@@ -34,20 +34,20 @@ const Schedule: React.FC = () => {
   const occuringClass = React.useMemo(() => {
     if (schedule == null) return null;
 
-    const current = schedule.classes!.filter((classSchedule) =>
+    const current = schedule.today[0].classes!.filter((classSchedule) =>
       isWithinInterval(Date.now(), {
         start: new Date(classSchedule.date.start),
         end: new Date(classSchedule.date.end),
       })
     )[0];
-    setNextClass(schedule.classes![schedule.classes!.indexOf(current) + 1]);
+    setNextClass(schedule.today[0].classes![schedule.today[0].classes!.indexOf(current) + 1]);
     return current;
   }, [schedule, setNextClass]);
 
   const isFinishedWithSchool = React.useMemo(() => {
     if (isWeekend(Date.now())) return true;
     if (schedule == null) return false;
-    for (const classSchedule of schedule.classes!) {
+    for (const classSchedule of schedule.today[0].classes!) {
       if (isPast(new Date(classSchedule.date.end))) return true;
     }
     return false;
@@ -67,7 +67,7 @@ const Schedule: React.FC = () => {
           icon={<Icon bundle='Feather' name='chevron-right' />}
         />
       </Flex>
-      {schedule && occuringClass && schedule.classes && schedule.classes.indexOf(occuringClass) !== -1 && (
+      {schedule && occuringClass && schedule.classes && schedule.today[0].classes.indexOf(occuringClass) !== -1 && (
         <Container header>
           <Typography variant='body2' color='textSecondary'>
             {formatDuration(intervalToDuration({ start: time, end: new Date(occuringClass.date.end) }))} left
@@ -78,9 +78,9 @@ const Schedule: React.FC = () => {
         occuringClass && schedule && schedule.classes ? (
           <Container>
             <ScheduleItem
-              key={occuringClass.sectiongu}
+              key={occuringClass.sectionGu}
               classSchedule={occuringClass}
-              class={gradebook.classes[schedule.classes.indexOf(occuringClass)]}
+              class={gradebook.courses[schedule.today[0].classes.indexOf(occuringClass)]}
             />
           </Container>
         ) : isFinishedWithSchool ? (
@@ -92,9 +92,9 @@ const Schedule: React.FC = () => {
         ) : nextClass && schedule && schedule.classes ? (
           <Container>
             <ScheduleItem
-              key={nextClass.sectiongu}
+              key={nextClass.sectionGu}
               classSchedule={nextClass}
-              class={gradebook.classes[schedule.classes.indexOf(nextClass)]}
+              class={gradebook.courses[schedule.today[0].classes.indexOf(nextClass)]}
             />
           </Container>
         ) : null

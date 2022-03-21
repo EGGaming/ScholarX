@@ -2,13 +2,15 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackScreenProps } from '@react-navigation/stack';
 import { ModifiedCalendarEvent } from '@shared/Events/Event/Events.types';
 import {
-  CalendarEvent,
-  ClassSchedule,
+  Event,
+  Schedule as ClassSchedule,
   Message,
-  StudentClass,
-  StudentClassAssignment,
-  WeighingMethodology,
-} from '@utilities/StudentVue/types';
+  Course as StudentClass,
+  Assignment as StudentClassAssignment,
+  WeightedCategory,
+  Assignment,
+  Course,
+} from 'studentvue';
 
 export type RootStackParamList = {
   Main: undefined;
@@ -19,21 +21,21 @@ export type RootStackParamList = {
     parsedDate: number;
   };
   EventViewer: {
-    event: CalendarEvent;
+    event: Event;
     title: string;
   };
   Events: undefined;
   ClassViewer: {
-    class: StudentClass;
+    class: Course;
   };
   AssignmentViewer: {
-    assignment: StudentClassAssignment;
+    assignment: Assignment;
   };
   AssignmentFilters: undefined;
   Schedule: undefined;
   FilterCategories: undefined;
   CategoryWeighingViewer: {
-    summary: WeighingMethodology[];
+    summary: WeightedCategory[];
   };
 };
 

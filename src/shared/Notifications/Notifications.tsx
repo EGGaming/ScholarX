@@ -1,15 +1,14 @@
 import Divider from '@components/Divider/Divider';
 import { useNotificationReducer } from '@context/NotificationContext/NotificationContext';
-import { NotificationsProps } from '@shared/Notifications/Notifications.types';
 import { RenderNotificationItem } from '@shared/Notifications/Notifications.utils';
-import { Message } from '@utilities/StudentVue/types';
+import { Message } from 'studentvue';
 import { KeyExtractor } from '@utilities/TypeUtilities';
 import React from 'react';
 import { FlatList } from 'react-native';
 
-const keyExtractor: KeyExtractor<Message> = (item) => item.$.ID;
+const keyExtractor: KeyExtractor<Message> = (item) => item.id;
 
-const Notifications: React.FC<NotificationsProps> = () => {
+const Notifications: React.FC = () => {
   const [notifications] = useNotificationReducer();
   return (
     <FlatList

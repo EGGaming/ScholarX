@@ -77,7 +77,7 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
 
   React.useEffect(() => {
     (async () => {
-      await client.updateMessage(message);
+      await message.markAsRead();
       dispatch({ type: 'MARK_AS_READ', message });
     })();
   }, []);
@@ -90,27 +90,22 @@ const NotificationViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'N
             {timestamp}
           </Typography>
           <Typography variant='h2' bold>
-            {message.$.SubjectNoHTML}
+            {message.subject.raw}
           </Typography>
           <Space spacing={1} alignItems='center'>
             <Icon bundle='FontAwesome5' name='user' />
-            <Typography>{message.$.From}</Typography>
+            <Typography>{message.from.name}</Typography>
           </Space>
         </Space>
-        {typeof message.AttachmentDatas[0] != 'string' &&
-          message.AttachmentDatas[0].AttachmentData.map((data) => (
-            <Attachment
-              key={data.$.SmAttachmentGU}
-              SmAttachmentGU={data.$.SmAttachmentGU}
-              AttachmentName={data.$.AttachmentName}
-            />
-          ))}
+        {message.attachments.map((attachment) => (
+          <Attachment key={attachment.name} attachment={attachment} />
+        ))}
         <RenderHTML
           baseStyle={{ padding: theme.spacing(0, 0, 16, 0) }}
           // enableCSSInlineProcessing={false}
           ignoredDomTags={['meta']}
           contentWidth={width}
-          source={{ html: message.$.Content }}
+          source={{ html: message.htmlContent }}
           tagsStyles={tagStyles}
           customHTMLElementModels={customHTMLElementModels}
         />

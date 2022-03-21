@@ -1,5 +1,5 @@
 import { UseState } from '@context/helpers';
-import { StudentClass } from '@utilities/StudentVue/types';
+import { Course as StudentClass } from 'studentvue';
 import React from 'react';
 
 const ViewingClassContext = React.createContext<UseState<StudentClass | undefined>>([] as any);

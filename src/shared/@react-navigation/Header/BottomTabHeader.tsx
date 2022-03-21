@@ -18,7 +18,7 @@ const Header: React.FC<BottomTabHeaderProps> = (props) => {
         <Typography bold>{props.options.tabBarLabel}</Typography>
         <Space spacing={1} alignItems='center'>
           <NotificationBell />
-          <Avatar />
+          <Avatar size='small' />
         </Space>
       </BottomTabHeaderContainer>
     </>

@@ -24,6 +24,14 @@ import ViewingClassProvider from '@context/ViewingClassContext/ViewingClassConte
 import { PortalProvider, PortalHost } from '@gorhom/portal';
 import ClassViewerProvider from '@context/ClassViewerContext/ClassViewerContext';
 import StudentInfoProvider from '@context/StudentInfoContext/StudentInfoContext';
+import { decode, encode } from 'base-64';
+if (!global.btoa) {
+  global.btoa = encode;
+}
+
+if (!global.atob) {
+  global.atob = decode;
+}
 
 export default function App() {
   const theme = useAppTheme();

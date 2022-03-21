@@ -1,4 +1,4 @@
-import { ClassSchedule, Schedule, StudentClass } from '@utilities/StudentVue/types';
+import { Course as StudentClass } from 'studentvue';
 
 export interface ClassProps {
   classInfo: StudentClass;

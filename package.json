@@ -18,6 +18,7 @@
     "@react-navigation/stack": "^6.0.11",
     "@unimodules/core": "~7.2.0",
     "axios": "^0.24.0",
+    "base-64": "^1.0.0",
     "date-fns": "^2.28.0",
     "expo": "~43.0.2",
     "expo-app-loading": "~1.2.1",
@@ -49,12 +50,13 @@
     "react-native-web": "0.17.1",
     "react-native-xml2js": "^1.0.3",
     "react-navigation-collapsible": "^6.3.0",
-    "studentvue": "^1.0.6",
+    "studentvue": "^1.0.11",
     "styled-components": "^5.3.3",
     "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/base-64": "^1.0.0",
     "@types/lodash": "^4.14.178",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",

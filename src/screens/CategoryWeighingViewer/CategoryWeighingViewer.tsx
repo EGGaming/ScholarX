@@ -38,7 +38,7 @@ const CategoryWeighingViewer: React.FC<StackScreenProps<RootStackParamList, 'Cat
   const theme = useAppTheme();
   const { onScroll, containerPaddingTop, scrollIndicatorInsetTop, translateY } = useCollapsibleHeader(options);
   const [gradebook] = useGradebook();
-  const sortedSummary = _.sortBy(summary, [(e) => parseFloat(e.weight.percentage.potential)]);
+  const sortedSummary = _.sortBy(summary, [(e) => parseFloat(e.weight.standard)]);
   const colorOne = theme.palette.primary.main;
   const colorTwo = theme.palette.secondary.main;
   return (
@@ -53,7 +53,7 @@ const CategoryWeighingViewer: React.FC<StackScreenProps<RootStackParamList, 'Cat
               Category Weighing
             </Typography>
             <Typography color='textSecondary' align='center'>
-              {gradebook?.currentPeriod.name}
+              {gradebook?.reportingPeriod.current.name}
             </Typography>
           </Container>
           <Flex direction='column'>
@@ -62,8 +62,8 @@ const CategoryWeighingViewer: React.FC<StackScreenProps<RootStackParamList, 'Cat
                 labels: sortedSummary.map((weighted) => weighted.type),
                 legend: ['Current points', 'Available points'],
                 data: sortedSummary.map((weighted) => [
-                  parseInt(weighted.weight.percentage.current),
-                  parseInt(weighted.weight.percentage.potential) - parseInt(weighted.weight.percentage.current),
+                  parseInt(weighted.weight.evaluated),
+                  parseInt(weighted.weight.standard) - parseInt(weighted.weight.evaluated),
                 ]),
                 barColors: [colorOne, colorTwo],
               }}
@@ -106,7 +106,7 @@ const CategoryWeighingViewer: React.FC<StackScreenProps<RootStackParamList, 'Cat
                 <Card key={weighted.type}>
                   <Typography>{weighted.type}</Typography>
                   <Typography variant='body2' color='textSecondary'>
-                    % of grade: {weighted.weight.percentage.potential}
+                    % of grade: {weighted.weight.standard}
                   </Typography>
                 </Card>
               ))}

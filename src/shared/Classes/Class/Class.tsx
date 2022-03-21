@@ -39,7 +39,7 @@ const Class: React.FC<ClassProps> = (props) => {
     ToastAndroid.showWithGravity(`Copied to clipboard.`, ToastAndroid.SHORT, ToastAndroid.BOTTOM);
   }
 
-  const gradeColor = useGradeColor(classInfo.grade.symbol);
+  const gradeColor = useGradeColor(classInfo.marks[0].calculatedScore.string);
 
   const menuItems: MenuItemProps[] = React.useMemo(
     () => [
@@ -60,18 +60,18 @@ const Class: React.FC<ClassProps> = (props) => {
         <Space spacing={1}>
           <GradeSymbolContainer>
             <Typography
-              variant={classInfo.grade.symbol !== 'N/A' ? 'h1' : 'h2'}
-              bold={classInfo.grade.symbol !== 'N/A'}
+              variant={classInfo.marks[0].calculatedScore.string !== 'N/A' ? 'h1' : 'h2'}
+              bold={classInfo.marks[0].calculatedScore.string !== 'N/A'}
               color={gradeColor}>
-              {classInfo.grade.symbol}
+              {classInfo.marks[0].calculatedScore.string}
             </Typography>
             <Typography variant='body2' bold color='textSecondary'>
-              ({classInfo.grade.raw})
+              ({classInfo.marks[0].calculatedScore.raw})
             </Typography>
           </GradeSymbolContainer>
           <ClassInfoContainer>
             <Typography bold numberOfLines={1}>
-              {classInfo.name}
+              {classInfo.title}
             </Typography>
 
             <Space spacing={0.5} alignItems='center'>
@@ -86,51 +86,6 @@ const Class: React.FC<ClassProps> = (props) => {
         </Space>
       </ClassContainer>
     </NativeButtonBase>
-  );
-
-  return (
-    <Card width={300}>
-      <Space spacing={1} direction='vertical'>
-        <Space spacing={1} direction='vertical' alignItems='center'>
-          <GradeSymbolContainer>
-            <Typography variant='h1' bold color={gradeColor}>
-              {classInfo.grade.symbol}
-            </Typography>
-            <Typography variant='caption' bold color='textSecondary'>
-              ({classInfo.grade.raw}%)
-            </Typography>
-          </GradeSymbolContainer>
-          <Flex direction='column' alignItems='center'>
-            <Space spacing={0.5} alignItems='center'>
-              <Typography variant='caption' color='primary'>
-                Period {classInfo.period}
-              </Typography>
-              <Divider orientation='vertical' />
-              <Typography variant='caption' color='textSecondary'>
-                Room {classInfo.room}
-              </Typography>
-            </Space>
-            <Typography bold align='center' numberOfLines={1}>
-              {classInfo.name}
-            </Typography>
-            <Space spacing={0.5} alignItems='center'>
-              <Typography variant='body2' color='textSecondary'>
-                {classInfo.staff.name}
-              </Typography>
-              <IconButton icon={<Icon bundle='Feather' name='mail' />} size='small' onPress={handleEmail} />
-            </Space>
-          </Flex>
-        </Space>
-        <Button
-          title='Assignments'
-          onPress={() => {}}
-          variant='contained'
-          color={theme.mode === 'dark' ? 'secondary' : 'primary'}
-          textCentered
-          icon={<Icon bundle='Feather' name='clock' />}
-        />
-      </Space>
-    </Card>
   );
 };
 

@@ -11,24 +11,21 @@ const reducer: Reducer<NotificationContextState, NotificationContextActions> = (
     case 'FETCH_NOTIFICATIONS':
       return {
         ...state,
-        unreadNotifications: action.messages.filter((message) => !JSON.parse(message.$.Read)),
+        unreadNotifications: action.messages.filter((message) => !message.isRead()),
         notifications: action.messages,
       };
     case 'MARK_AS_READ': {
-      const objInArray = state.notifications.filter((msg) => msg.$.ID === action.message.$.ID)[0];
-      const index = state.notifications.indexOf(objInArray);
-      const notificationsModified = state.notifications;
-      notificationsModified[index].$.Read = 'true';
+      const notificationsModified = [...state.notifications, action.message];
       return {
         ...state,
-        unreadNotifications: notificationsModified.filter((msg) => !JSON.parse(msg.$.Read)),
+        unreadNotifications: notificationsModified.filter((msg) => msg.isRead()),
         notifications: notificationsModified,
       };
     }
     case 'MARK_ALL_READ': {
-      const modified = state.notifications;
+      const modified = [...state.notifications];
       for (const notification of modified) {
-        notification.$.Read = 'true';
+        if (!notification.isRead()) notification.markAsRead();
       }
       return {
         ...state,

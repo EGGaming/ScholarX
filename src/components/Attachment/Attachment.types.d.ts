@@ -1,4 +1,5 @@
+import { Attachment } from 'studentvue';
+
 export interface AttachmentProps {
-  AttachmentName: string;
-  SmAttachmentGU: string;
+  attachment: Attachment;
 }

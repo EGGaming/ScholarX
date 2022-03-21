@@ -1,3 +1,4 @@
+import Avatar from '@components/Avatar/Avatar';
 import Button from '@components/Button/Button';
 import Flex from '@components/Flex/Flex';
 import Icon from '@components/Icon/Icon';
@@ -13,7 +14,6 @@ import { View, Text } from 'react-native';
 import styled from 'styled-components/native';
 
 const Dashboard: React.FC = () => {
-  const [session] = useSessionReducer();
   const [studentInfo] = useStudentInfo();
   return (
     <Container>
@@ -31,9 +31,9 @@ const Dashboard: React.FC = () => {
             </Typography>
           </Flex>
           <Space spacing={2} direction='vertical'>
-            {/* <Classes />
+            <Classes />
             <Schedule />
-            <Events /> */}
+            {/* <Events /> */}
           </Space>
         </>
       )}

@@ -16,6 +16,7 @@ import { AssignmentViewerContainer } from './AssignmentViewer.base';
 import Button from '@components/Button/Button';
 import Icon from '@components/Icon/Icon';
 import Scrollable from '@components/Scrollable/Scrollable';
+import { ResourceType } from 'studentvue';
 
 const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'AssignmentViewer'>> = ({
   navigation,
@@ -36,12 +37,16 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
               <Typography color='textSecondary'>Resources</Typography>
             </AssignmentViewerContainer>
             <Space spacing={1} container containerProps={{ header: true }} grow>
-              {assignment.resources.map((res) =>
-                res.url ? <AssignmentResource key={res.url} fileName={res.url} /> : undefined
-              )}
-              {assignment.resources.map((res) => (
-                <AssignmentResource fileName={res.file.name} serverRoute={res.file.serverRoute} key={res.resource.id} />
-              ))}
+              {assignment.resources.map((res) => {
+                switch (res.type) {
+                  case ResourceType.URL:
+                    return <AssignmentResource key={res.url} fileName={res.url} />;
+                  case ResourceType.FILE:
+                    return (
+                      <AssignmentResource fileName={res.file.name} key={res.resource.id} serverRoute={res.file.uri} />
+                    );
+                }
+              })}
             </Space>
           </Space>
         ) : undefined}
@@ -52,8 +57,8 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
             typographyProps={{ color: assignment.score.type === 'Not Due' ? 'textSecondary' : 'secondary' }}
           />
           <Field title='Score Type' text={assignment.score.type} />
-          <Field title='Start Date' text={format(Date.parse(assignment.date.date), 'd MMMM, yyyy')} />
-          <Field title='Due Date' text={format(Date.parse(assignment.date.dueDate), 'd MMMM, yyyy')} />
+          <Field title='Start Date' text={format(assignment.date.start, 'd MMMM, yyyy')} />
+          <Field title='Due Date' text={format(assignment.date.due, 'd MMMM, yyyy')} />
         </Space>
 
         <Container>
@@ -73,7 +78,7 @@ const AssignmentViewer: React.FC<NativeStackScreenProps<RootStackParamList, 'Ass
               </Typography>
             </Card>
           ) : undefined}
-          {assignment.hasDropBox ? (
+          {assignment.hasDropbox ? (
             <Space spacing={1} direction='vertical'>
               <Typography variant='h3'>Dropbox</Typography>
               <Space spacing={1}>

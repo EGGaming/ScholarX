@@ -3,21 +3,18 @@ import Flex from '@components/Flex/Flex';
 import Space from '@components/Space/Space';
 import Icon from '@components/Icon/Icon';
 import Typography from '@components/Typography/Typography';
-import { ClassSchedule } from '@utilities/StudentVue/types';
 import React from 'react';
 import { ScheduleItemProps } from './ScheduleItem.types';
-import { isFuture, isPast, isWithinInterval } from 'date-fns';
+import { format, isFuture, isPast, isWithinInterval } from 'date-fns';
 import { useRootNavigation } from '@navigators/Root/Root';
 import { ScheduleItemCard } from '@shared/Schedule/ScheduleItem/ScheduleItem.base';
 
 const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngoing = false, class: studentClass }) => {
-  const parsedStartDate = React.useMemo(() => new Date(classSchedule.date.start), [classSchedule.date.end]);
-  const parsedEndDate = React.useMemo(() => new Date(classSchedule.date.end), [classSchedule.date.end]);
   const navigation = useRootNavigation();
   const [isOccuring, setIsOccuring] = React.useState<boolean>(() =>
     isWithinInterval(new Date(), {
-      start: parsedStartDate,
-      end: parsedEndDate,
+      start: classSchedule.date.start,
+      end: classSchedule.date.end,
     })
   );
 
@@ -29,8 +26,8 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngo
     const updater = setInterval(() => {
       setIsOccuring(() =>
         isWithinInterval(new Date(), {
-          start: parsedStartDate,
-          end: parsedEndDate,
+          start: classSchedule.date.start,
+          end: classSchedule.date.end,
         })
       );
     }, 30000);
@@ -52,14 +49,14 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ classSchedule, onlyShowOngo
             <Icon
               bundle='MaterialCommunityIcons'
               name={isOccuring ? 'clock' : 'clock-outline'}
-              color={isOccuring ? 'secondary' : isFuture(parsedStartDate) ? 'primary' : 'textSecondary'}
+              color={isOccuring ? 'secondary' : isFuture(classSchedule.date.start) ? 'primary' : 'textSecondary'}
               size='small'
             />
             <Typography
               bold
-              color={isOccuring ? 'secondary' : isFuture(parsedStartDate) ? 'primary' : 'textSecondary'}
+              color={isOccuring ? 'secondary' : isFuture(classSchedule.date.start) ? 'primary' : 'textSecondary'}
               variant='caption'>
-              {classSchedule.time.start} - {classSchedule.time.end}
+              {format(classSchedule.time.start, 'hh:mm a')} - {format(classSchedule.time.end, 'hh:mm a')}
             </Typography>
           </Space>
         </Flex>

@@ -1,7 +1,7 @@
 import { UseState } from '@context/helpers';
 import { useStudentVue } from '@context/StudentVueClientContext/StudentVueClientContext';
 import { Month } from '@utilities/HumanTime';
-import { Calendar, CalendarEvent } from '@utilities/StudentVue/types';
+import { Calendar, Event as CalendarEvent } from 'studentvue';
 import useStateInitializer from '@utilities/useStateInitializer';
 import { addMonths, getDaysInMonth, getMonth, isBefore, isToday } from 'date-fns';
 import React from 'react';
@@ -25,15 +25,14 @@ const CalendarProvider: React.FC = ({ children }) => {
     if (calendar) {
       setFutures(
         calendar.events.filter((event) => {
-          return isBefore(Date.now(), Date.parse(event.Date)) || isToday(Date.parse(event.Date));
+          return isBefore(Date.now(), event.date) || isToday(event.date);
         })
       );
 
       let events: Map<Month, CalendarEvent[]> = new Map();
 
       calendar.events.forEach((event) => {
-        const parsed = Date.parse(event.Date);
-        const month: Month = getMonth(parsed);
+        const month: Month = getMonth(event.date);
         const valuesExistingInMonth = events.get(month);
         if (valuesExistingInMonth) events.set(month, [...valuesExistingInMonth, event]);
         else events.set(month, [event]);

@@ -1,4 +1,4 @@
-import { StudentClass } from '@utilities/StudentVue/types';
+import { Course as StudentClass } from 'studentvue';
 import React from 'react';
 
 export interface AssignmentFilterContextState {

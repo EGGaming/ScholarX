@@ -1,4 +1,4 @@
-import { Message } from '@utilities/StudentVue/types';
+import { Message } from 'studentvue';
 
 export interface NotificationsItemProps {
   item: Message;

@@ -18,7 +18,7 @@ export const BottomTabHeaderContainer = styled.View`
           padding: ${getStatusBarHeight() + 8}px ${props.theme.spacing(3, 0.5, 3)};
         `;
       return css`
-        padding: ${props.theme.spacing(0.5, 3)};
+        padding: ${props.theme.spacing(1, 3)};
       `;
     }}
     border-bottom-color: ${props.theme.palette.divider};

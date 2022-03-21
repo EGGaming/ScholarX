@@ -1,6 +1,6 @@
 import { UseState } from '@context/helpers';
 import Storage from '@utilities/Storage';
-import { Client } from '@utilities/StudentVue';
+import { Client } from 'studentvue';
 import React from 'react';
 
 const StudentVueClientContext = React.createContext<UseState<Client>>(null as any);

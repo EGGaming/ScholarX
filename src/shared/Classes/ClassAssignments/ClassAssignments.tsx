@@ -3,7 +3,7 @@ import Divider from '@components/Divider/Divider';
 import Typography from '@components/Typography/Typography';
 import { ClassAssignmentProps } from '@shared/Classes/ClassAssignments/ClassAssignment.types';
 import RenderClassItem from '@shared/Classes/ClassItem/ClassItem';
-import { StudentClass, StudentClassAssignment } from '@utilities/StudentVue/types';
+import { Course as StudentClass, Assignment as StudentClassAssignment } from 'studentvue';
 import { KeyExtractor } from '@utilities/TypeUtilities';
 import React from 'react';
 import { format } from 'date-fns';
@@ -92,10 +92,10 @@ const ClassAssignments: React.FC<NativeStackScreenProps<RootStackParamList, 'Cla
     InteractionManager.runAfterInteractions(() => {
       if (isFocused && filters && gradebook != null) {
         setData([]);
-        let currentClass = gradebook.classes.find((p) => p.staff.staffgu === studentClass.staff.staffgu);
+        let currentClass = gradebook.courses.find((p) => p.staff.staffGu === studentClass.staff.staffGu);
         setCurrentClass(currentClass);
         if (currentClass == null) return;
-        let assignments = currentClass.assignments;
+        let assignments = currentClass.marks[0].assignments;
 
         switch (filters.orderType) {
           case Order.ASCENDING:
@@ -106,20 +106,20 @@ const ClassAssignments: React.FC<NativeStackScreenProps<RootStackParamList, 'Cla
             break;
         }
 
-        if (filters.withDropbox) assignments = assignments.filter((assignment) => assignment.hasDropBox === true);
+        if (filters.withDropbox) assignments = assignments.filter((assignment) => assignment.hasDropbox);
 
         if (filters.selectedAssignments.length > 0)
           assignments = assignments.filter((assignment) =>
             filters.selectedAssignments.some((type) => assignment.type === type)
           );
 
-        let sectionDates = _.uniqBy(assignments, 'date.date').map((assignment) => assignment.date.date);
+        let sectionDates = _.uniqBy(assignments, (t) => t.date.start).map((assignment) => assignment.date.start);
 
         setData(
           sectionDates.map((p) => {
             const { match, other } = assignments.reduce(
               (prev, current) => {
-                return current.date.date === p
+                return current.date.start === p
                   ? { ...prev, match: [...prev.match, current] }
                   : { ...prev, other: [...prev.other, current] };
               },

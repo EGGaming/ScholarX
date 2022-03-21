@@ -28,13 +28,13 @@ const Classes: React.FC = () => {
   const [client] = useStudentVue();
   const [schedule, setSchedule] = useClassSchedule();
   const [gradebook, setGradebook] = useGradebook();
-  useStateInitializer(() => client.classSchedule(), setSchedule);
+  useStateInitializer(() => client.schedule(), setSchedule);
   useStateInitializer(() => client.gradebook(), setGradebook);
   const menuItems = React.useMemo(
     () =>
       gradebook && [
         { isTitle: true, text: 'Select Term' },
-        ...gradebook.periods.map((period) => ({
+        ...gradebook.reportingPeriod.available.map((period) => ({
           text: period.name,
           onPress: async () => {
             setGradebook(undefined);
@@ -53,7 +53,7 @@ const Classes: React.FC = () => {
         </Typography>
         <Menu
           items={menuItems ? menuItems : []}
-          title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
+          title={gradebook ? gradebook.reportingPeriod.current.name : 'Loading...'}
           type='text'
           buttonProps={{
             disabled: !gradebook,
@@ -65,7 +65,7 @@ const Classes: React.FC = () => {
 
       <Flex direction='column'>
         {gradebook
-          ? gradebook.classes.map((studentClass, i) => <Class key={studentClass.name} classInfo={studentClass} />)
+          ? gradebook.courses.map((studentClass, i) => <Class key={studentClass.title} classInfo={studentClass} />)
           : new Array(6).fill('').map((_, i) => <ClassSkeleton key={i} />)}
       </Flex>
     </Space>

@@ -16,21 +16,21 @@ import React from 'react';
 import { HoldItem } from 'react-native-hold-menu';
 import { MenuItemProps } from 'react-native-hold-menu/lib/typescript/components/menu/types';
 
-const Attachment: React.FC<AttachmentProps> = ({ SmAttachmentGU, AttachmentName }) => {
+const Attachment: React.FC<AttachmentProps> = ({ attachment }) => {
   const [state] = useAppReducer();
   const [client] = useStudentVue();
   const [bytes, setBytes] = React.useState<number | null>();
   const uriRef = React.useRef<string>();
-  const fileRef = React.useRef<string>(FileSystem.cacheDirectory + AttachmentName);
-  const fileName = (AttachmentName.match(/.*(?=[\.])/g) ?? [''])[0];
-  const fileExtension = AttachmentName.substring(fileName.length + 1);
+  const fileRef = React.useRef<string>(FileSystem.cacheDirectory + attachment.name);
+  const fileName = (attachment.name.match(/.*(?=[\.])/g) ?? [''])[0];
+  const fileExtension = attachment.fileExtension;
   const shortenedFileName = React.useMemo(() => {
     if (fileName.length > 10)
       return `${fileName.substring(0, 9)}...${fileName.substring(fileName.length - 6)}.${fileExtension}`;
     return `${fileName}.${fileExtension}`;
   }, [fileName, fileExtension]);
   const bytesText = useBytesString(bytes);
-  const FileIcon: React.ReactElement<React.ComponentProps<typeof Icon>> = useFileExtensionIcon(AttachmentName);
+  const FileIcon: React.ReactElement<React.ComponentProps<typeof Icon>> = useFileExtensionIcon(attachment.name);
 
   React.useEffect(() => {
     download();
@@ -40,8 +40,8 @@ const Attachment: React.FC<AttachmentProps> = ({ SmAttachmentGU, AttachmentName 
     const cached = await FileSystem.getInfoAsync(fileRef.current);
     const cachedUri = await FileSystem.getContentUriAsync(fileRef.current);
     if (!cached.exists) {
-      const attachment = await client.attachment(SmAttachmentGU);
-      await FileSystem.writeAsStringAsync(fileRef.current, attachment.base64, {
+      const base64 = await attachment.get();
+      await FileSystem.writeAsStringAsync(fileRef.current, base64, {
         encoding: FileSystem.EncodingType.Base64,
       });
       const uri = await FileSystem.getContentUriAsync(fileRef.current);

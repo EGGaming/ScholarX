@@ -16,39 +16,34 @@ import React from 'react';
 import { parse, isToday, isThisWeek, format, isYesterday, formatDistanceToNow, isThisYear } from 'date-fns';
 
 const NotificationsItem: React.FC<NotificationsItemProps> = ({ item }) => {
-  const parsedDate = React.useMemo(
-    () => parse(item.$.BeginDate, 'MM/dd/yyyy HH:mm:ss', new Date()),
-    [item.$.BeginDate]
-  );
   const timestamp = React.useMemo(() => {
-    if (isToday(parsedDate)) return format(parsedDate, 'h:m a');
-    if (isYesterday(parsedDate)) return 'Yesterday';
-    if (isThisWeek(parsedDate)) return formatDistanceToNow(parsedDate);
-    if (isThisYear(parsedDate)) return format(parsedDate, 'MMM dd');
-    return format(parsedDate, 'M/dd/yy');
-  }, [item.$.BeginDate]);
-  const unread = !JSON.parse(item.$.Read) as boolean;
+    if (isToday(item.beginDate)) return format(item.beginDate, 'h:m a');
+    if (isYesterday(item.beginDate)) return 'Yesterday';
+    if (isThisWeek(item.beginDate)) return formatDistanceToNow(item.beginDate);
+    if (isThisYear(item.beginDate)) return format(item.beginDate, 'MMM dd');
+    return format(item.beginDate, 'M/dd/yy');
+  }, [item.beginDate]);
   const navigation = useRootNavigation();
   function onMessagePress() {
-    navigation.navigate('NotificationViewer', { message: item, parsedDate: parsedDate.getTime() });
+    navigation.navigate('NotificationViewer', { message: item, parsedDate: item.beginDate.getTime() });
   }
   return (
     <NativeButtonBase onPress={onMessagePress}>
-      <NotificationsItemContainer read={unread}>
+      <NotificationsItemContainer read={!item.isRead()}>
         <NotificationItemHeader>
           <Space spacing={1} alignItems='center'>
             <Icon bundle='FontAwesome5' name='user' />
-            <Typography bold>{item.$.From}</Typography>
+            <Typography bold>{item.from.name}</Typography>
           </Space>
           <Typography variant='body2' color='textSecondary'>
             {timestamp}
           </Typography>
         </NotificationItemHeader>
-        <Typography variant='body2' bold={unread} numberOfLines={1}>
-          {item.$.SubjectNoHTML}
+        <Typography variant='body2' bold={!item.isRead()} numberOfLines={1}>
+          {item.subject.raw}
         </Typography>
         <Typography variant='body2' color='textSecondary' numberOfLines={1}>
-          {item.$.Content.replace(/(<[^>]*>?)/gm, '').trim()}
+          {item.htmlContent.replace(/(<[^>]*>?)/gm, '').trim()}
         </Typography>
       </NotificationsItemContainer>
     </NativeButtonBase>

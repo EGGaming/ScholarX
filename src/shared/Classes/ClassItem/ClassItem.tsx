@@ -6,7 +6,7 @@ import Space from '@components/Space/Space';
 import Typography from '@components/Typography/Typography';
 import { useRootNavigation } from '@navigators/Root/Root';
 import Field from '@shared/Field/Field';
-import { StudentClassAssignment } from '@utilities/StudentVue/types';
+import { Assignment as StudentClassAssignment } from 'studentvue';
 import { RenderItemProps } from '@utilities/TypeUtilities';
 import React from 'react';
 import { ListRenderItem } from 'react-native';

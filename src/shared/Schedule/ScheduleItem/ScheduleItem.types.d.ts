@@ -1,8 +1,8 @@
-import { ClassSchedule, StudentClass } from '@utilities/StudentVue/types';
+import { ClassScheduleInfo, Course } from 'studentvue';
 
 export interface ScheduleItemProps {
-  classSchedule: ClassSchedule;
-  class: StudentClass;
+  classSchedule: ClassScheduleInfo;
+  class: Course;
   onlyShowOngoing?: boolean;
 }
 

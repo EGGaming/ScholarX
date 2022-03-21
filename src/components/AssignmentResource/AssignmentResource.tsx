@@ -34,7 +34,7 @@ const AssignmentResource: React.FC<AssignemntResourceProps> = (props) => {
       const cached = await FileSystem.getInfoAsync(fileRef.current);
       const cachedUri = await FileSystem.getContentUriAsync(fileRef.current);
       if (!cached.exists) {
-        const { uri } = await FileSystem.downloadAsync(appState.districtUrl + serverRoute, fileRef.current);
+        const { uri } = await FileSystem.downloadAsync(serverRoute, fileRef.current);
         const meta = await FileSystem.getInfoAsync(uri);
         uriRef.current = await FileSystem.getContentUriAsync(fileRef.current);
         setBytes(meta.size ?? null);

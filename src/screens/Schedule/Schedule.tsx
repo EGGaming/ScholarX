@@ -16,8 +16,8 @@ const Schedule: React.FC = () => {
   return (
     <Space spacing={1} container direction='vertical'>
       {schedule && gradebook
-        ? schedule.classes.map((classSchedule, i) => (
-            <ScheduleItem key={classSchedule.sectiongu} classSchedule={classSchedule} class={gradebook.classes[i]} />
+        ? schedule.today[0].classes.map((classSchedule, i) => (
+            <ScheduleItem key={classSchedule.sectionGu} classSchedule={classSchedule} class={gradebook.courses[i]} />
           ))
         : new Array(6).fill('').map((_, i) => <ScheduleItemSkeleton key={i} />)}
     </Space>

@@ -19,7 +19,7 @@ const ClassAssignmentsHeader: React.FC<ClassAssignmentsHeaderProps> = (props) =>
     () =>
       gradebook && [
         { isTitle: true, text: 'Select Term' },
-        ...gradebook.periods.map((period) => ({
+        ...gradebook.reportingPeriod.available.map((period) => ({
           text: period.name,
           onPress: async () => {
             setGradebook(undefined);
@@ -40,7 +40,7 @@ const ClassAssignmentsHeader: React.FC<ClassAssignmentsHeaderProps> = (props) =>
 
             <Menu
               items={menuItems ? menuItems : []}
-              title={gradebook ? gradebook.currentPeriod.name : 'Loading...'}
+              title={gradebook ? gradebook.reportingPeriod.current.name : 'Loading...'}
               type='text'
               buttonProps={{
                 disabled: !gradebook,
@@ -50,10 +50,12 @@ const ClassAssignmentsHeader: React.FC<ClassAssignmentsHeaderProps> = (props) =>
             />
           </Flex>
           <Typography variant='body2' color='textSecondary'>
-            {studentClass.name}
+            {studentClass.title}
           </Typography>
         </Space>
-        {currentClass?.grade.summary && <WeightedCategories summary={currentClass.grade.summary} />}
+        {currentClass?.marks[0].weightedCategories && (
+          <WeightedCategories summary={currentClass.marks[0].weightedCategories} />
+        )}
       </Space>
     </>
   );

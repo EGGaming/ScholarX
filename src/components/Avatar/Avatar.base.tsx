@@ -9,17 +9,23 @@ export const AvatarBase = styled.Image.attrs<AvatarBaseProps>((props) => ({
   ${(props) => css`
     ${() => {
       switch (props.size) {
-        case 'background':
+        case 'large':
           return css`
             width: 120px;
             height: 120px;
             border-radius: 30px;
           `;
-        case 'regular':
+        case 'small':
           return css`
             width: 36px;
             height: 36px;
             border-radius: 18px;
+          `;
+        case 'medium':
+          return css`
+            width: 64px;
+            height: 64px;
+            border-radius: 32px;
           `;
       }
     }}
@@ -30,17 +36,23 @@ export const AvatarContainer = styled(Paper)<Pick<AvatarBaseProps, 'size'>>`
   ${(props) => css`
     ${() => {
       switch (props.size) {
-        case 'background':
+        case 'large':
           return css`
             width: 120px;
             height: 120px;
             border-radius: 30px;
           `;
-        case 'regular':
+        case 'small':
           return css`
             width: 36px;
             height: 36px;
             border-radius: 18px;
+          `;
+        case 'medium':
+          return css`
+            width: 64px;
+            height: 64px;
+            border-radius: 32px;
           `;
       }
     }}
